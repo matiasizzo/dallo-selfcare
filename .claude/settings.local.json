@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:dermato-wbs.framer.website)",
+      "mcp__Claude_in_Chrome__tabs_context_mcp",
+      "Read(//c/Users/mizzo/Desktop/**)",
+      "Bash(npm create *)",
+      "Bash(npx create-vite@latest . --template react-ts)",
+      "PowerShell(Set-Location \"C:\\\\Users\\\\mizzo\\\\Desktop\\\\Quevi\"; npm create vite@latest . -- --template react-ts 2>&1)",
+      "Bash(npm install *)"
+    ]
+  }
+}
