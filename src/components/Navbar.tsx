@@ -2,11 +2,12 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, Phone } from 'lucide-react'
 import { SITE, NAV_LINKS } from '../content'
+import logoImg from '../assets/logo.jpeg'
 
 export default function Navbar() {
-  const [scrolled, setScrolled]   = useState(false)
-  const [menuOpen, setMenuOpen]   = useState(false)
-  const [active, setActive]       = useState('')
+  const [scrolled, setScrolled] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
+  const [active, setActive]     = useState('')
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20)
@@ -14,7 +15,6 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  // Close menu on resize to desktop
   useEffect(() => {
     const onResize = () => { if (window.innerWidth >= 1024) setMenuOpen(false) }
     window.addEventListener('resize', onResize)
@@ -31,7 +31,7 @@ export default function Navbar() {
       <motion.header
         className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
           scrolled
-            ? 'bg-white/95 backdrop-blur-md shadow-sm py-3'
+            ? 'bg-cream-200/95 backdrop-blur-md shadow-sm py-3'
             : 'bg-transparent py-5'
         }`}
         initial={{ y: -80, opacity: 0 }}
@@ -41,11 +41,18 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             {/* Logo */}
-            <a
-              href="#hero"
-              className="font-serif text-xl font-bold text-brand-700 hover:text-brand-600 transition-colors"
-            >
-              {SITE.name}
+            <a href="#hero" className="flex items-center gap-2.5">
+              <img
+                src={logoImg}
+                alt={SITE.name}
+                className="h-10 w-auto object-contain"
+              />
+              <span className="font-serif text-lg font-bold text-brand-600 leading-none hidden sm:block">
+                QUEVI<br />
+                <span className="text-xs font-sans font-normal text-carbon-500 tracking-widest uppercase">
+                  Wellness Clinic
+                </span>
+              </span>
             </a>
 
             {/* Desktop nav */}
@@ -58,9 +65,7 @@ export default function Navbar() {
                   className={`relative px-3 py-2 text-sm font-medium transition-colors rounded-lg
                     ${active === link.href
                       ? 'text-brand-600'
-                      : scrolled
-                        ? 'text-neutral-700 hover:text-brand-600'
-                        : 'text-neutral-700 hover:text-brand-600'
+                      : 'text-carbon-700 hover:text-brand-600'
                     }`}
                 >
                   {link.label}
@@ -78,14 +83,14 @@ export default function Navbar() {
             <div className="hidden lg:flex items-center gap-3">
               <a
                 href={`tel:${SITE.phone}`}
-                className="flex items-center gap-1.5 text-sm text-neutral-600 hover:text-brand-600 transition-colors"
+                className="flex items-center gap-1.5 text-sm text-carbon-500 hover:text-brand-600 transition-colors"
               >
                 <Phone size={14} />
                 {SITE.phone}
               </a>
               <a
                 href="#booking"
-                className="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium rounded-full transition-colors duration-200"
+                className="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-cream-50 text-sm font-medium rounded-full transition-colors duration-200"
               >
                 Reservar cita
               </a>
@@ -94,7 +99,7 @@ export default function Navbar() {
             {/* Mobile toggle */}
             <button
               onClick={() => setMenuOpen((v) => !v)}
-              className="lg:hidden p-2 rounded-lg text-neutral-700 hover:bg-neutral-100 transition-colors"
+              className="lg:hidden p-2 rounded-lg text-carbon-700 hover:bg-cream-300 transition-colors"
               aria-label="Toggle menu"
             >
               {menuOpen ? <X size={22} /> : <Menu size={22} />}
@@ -112,7 +117,7 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -16 }}
             transition={{ duration: 0.25 }}
-            className="fixed inset-x-0 top-[64px] z-40 bg-white/98 backdrop-blur-md shadow-xl border-t border-neutral-100 lg:hidden"
+            className="fixed inset-x-0 top-[64px] z-40 bg-cream-200/98 backdrop-blur-md shadow-xl border-t border-cream-400 lg:hidden"
           >
             <nav className="max-w-7xl mx-auto px-6 py-6 flex flex-col gap-1">
               {NAV_LINKS.map((link) => (
@@ -120,15 +125,15 @@ export default function Navbar() {
                   key={link.href}
                   href={link.href}
                   onClick={() => handleNavClick(link.href)}
-                  className="px-4 py-3 text-base font-medium text-neutral-700 hover:text-brand-600 hover:bg-brand-50 rounded-xl transition-colors"
+                  className="px-4 py-3 text-base font-medium text-carbon-700 hover:text-brand-600 hover:bg-cream-300 rounded-xl transition-colors"
                 >
                   {link.label}
                 </a>
               ))}
-              <div className="mt-4 pt-4 border-t border-neutral-100 flex flex-col gap-3">
+              <div className="mt-4 pt-4 border-t border-cream-400 flex flex-col gap-3">
                 <a
                   href={`tel:${SITE.phone}`}
-                  className="flex items-center gap-2 px-4 py-3 text-sm text-neutral-600 hover:text-brand-600 transition-colors"
+                  className="flex items-center gap-2 px-4 py-3 text-sm text-carbon-500 hover:text-brand-600 transition-colors"
                 >
                   <Phone size={16} />
                   {SITE.phone}
@@ -136,7 +141,7 @@ export default function Navbar() {
                 <a
                   href="#booking"
                   onClick={() => setMenuOpen(false)}
-                  className="px-4 py-3 bg-brand-600 hover:bg-brand-700 text-white text-sm font-medium rounded-full text-center transition-colors"
+                  className="px-4 py-3 bg-brand-600 hover:bg-brand-700 text-cream-50 text-sm font-medium rounded-full text-center transition-colors"
                 >
                   Reservar cita gratuita
                 </a>

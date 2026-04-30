@@ -8,7 +8,7 @@
   }
 
   body {
-    @apply font-sans text-neutral-800 bg-white antialiased;
+    @apply font-sans text-carbon-900 bg-cream-200 antialiased;
   }
 
   h1, h2, h3, h4 {
@@ -22,13 +22,7 @@
   }
 }
 
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-}
-::-webkit-scrollbar-track {
-  @apply bg-neutral-100;
-}
-::-webkit-scrollbar-thumb {
-  @apply bg-brand-400 rounded-full;
-}
+/* Scrollbar */
+::-webkit-scrollbar        { width: 5px; }
+::-webkit-scrollbar-track  { background: #ede9e0; }
+::-webkit-scrollbar-thumb  { background: #3d6045; border-radius: 9999px; }
