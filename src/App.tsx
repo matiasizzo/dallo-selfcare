@@ -4,6 +4,7 @@ import Services     from './components/Services'
 import Stats        from './components/Stats'
 import About        from './components/About'
 import Treatments   from './components/Treatments'
+import Rituales     from './components/Rituales'
 import Testimonials from './components/Testimonials'
 import Blog         from './components/Blog'
 import FAQ          from './components/FAQ'
@@ -20,6 +21,7 @@ export default function App() {
         <Stats />
         <About />
         <Treatments />
+        <Rituales />
         <Testimonials />
         <Blog />
         <FAQ />
