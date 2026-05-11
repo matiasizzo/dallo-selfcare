@@ -19,15 +19,35 @@ const SERVICES_OPTIONS = [
 export default function Booking() {
   const { ref, isInView } = useScrollAnimation()
   const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
   const [form, setForm] = useState({ name: '', email: '', phone: '', service: '', message: '' })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setForm((f) => ({ ...f, [e.target.name]: e.target.value }))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setSubmitted(true)
+    setLoading(true)
+    setError(null)
+    try {
+      const res = await fetch('/api/booking', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      })
+      if (!res.ok) {
+        const data = await res.json()
+        throw new Error(data.error ?? 'Error al enviar la solicitud')
+      }
+      setSubmitted(true)
+      setForm({ name: '', email: '', phone: '', service: '', message: '' })
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Error inesperado')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -152,12 +172,16 @@ export default function Booking() {
                     className="px-4 py-3 rounded-xl border border-cream-400 bg-cream-100 text-sm text-carbon-800 placeholder:text-carbon-300 focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent transition-all resize-none"
                   />
                 </div>
+                {error && (
+                  <p className="text-sm text-red-600 text-center">{error}</p>
+                )}
                 <button
                   type="submit"
-                  className="group flex items-center justify-center gap-2 w-full py-3.5 bg-brand-600 hover:bg-brand-700 text-cream-50 font-medium rounded-full transition-all duration-200 shadow-lg shadow-brand-300/30 hover:-translate-y-0.5 mt-2"
+                  disabled={loading}
+                  className="group flex items-center justify-center gap-2 w-full py-3.5 bg-brand-600 hover:bg-brand-700 disabled:opacity-60 disabled:cursor-not-allowed text-cream-50 font-medium rounded-full transition-all duration-200 shadow-lg shadow-brand-300/30 hover:-translate-y-0.5 mt-2"
                 >
-                  Solicitar cita gratuita
-                  <Send size={16} className="transition-transform group-hover:translate-x-1" />
+                  {loading ? 'Enviando...' : 'Solicitar cita gratuita'}
+                  {!loading && <Send size={16} className="transition-transform group-hover:translate-x-1" />}
                 </button>
                 <p className="text-center text-xs text-carbon-400">
                   Al enviar, aceptas nuestra{' '}
