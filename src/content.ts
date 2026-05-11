@@ -3,13 +3,13 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 export const SITE = {
-  name: 'QUEVI Medicina Estética',
+  name: 'QUEVI Wellness Clinic',
   tagline: 'Tu nueva historia de vida de piel',
   description:
     'No analizamos datos, entendemos tu historia clínica para diseñar tu mejor versión con tecnología de precisión.',
   phone: '+34 900 000 000',
   email: 'info@quevi.com',
-  address: 'Madrid, España',
+  address: 'Málaga, España',
   bookingUrl: '#booking',
 }
 
