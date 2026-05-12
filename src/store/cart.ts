@@ -17,7 +17,7 @@ interface CartStore {
   isOpen: boolean
   openCart: () => void
   closeCart: () => void
-  addItem: (item: Omit<CartItem, 'quantity'>) => void
+  addItem: (item: Omit<CartItem, 'quantity'>, qty?: number) => void
   removeItem: (variantId: string) => void
   updateQuantity: (variantId: string, quantity: number) => void
   clearCart: () => void
@@ -34,18 +34,18 @@ export const useCart = create<CartStore>()(
       openCart: () => set({ isOpen: true }),
       closeCart: () => set({ isOpen: false }),
 
-      addItem: (newItem) => {
+      addItem: (newItem, qty = 1) => {
         const items = get().items
         const existing = items.find((i) => i.variantId === newItem.variantId)
         if (existing) {
           set({
             items: items.map((i) =>
-              i.variantId === newItem.variantId ? { ...i, quantity: i.quantity + 1 } : i
+              i.variantId === newItem.variantId ? { ...i, quantity: i.quantity + qty } : i
             ),
             isOpen: true,
           })
         } else {
-          set({ items: [...items, { ...newItem, quantity: 1 }], isOpen: true })
+          set({ items: [...items, { ...newItem, quantity: qty }], isOpen: true })
         }
       },
 
