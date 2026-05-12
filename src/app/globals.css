@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+@theme {
+  --color-sand-50: #FDFAF6;
+  --color-sand-100: #F7F2EA;
+  --color-sand-200: #F2EDE4;
+  --color-sand-300: #E8E0D5;
+  --color-sand-400: #D6CBBC;
+  --color-cocoa-900: #1E1108;
+  --color-cocoa-800: #2A1A0E;
+  --color-cocoa-700: #3B2415;
+  --color-cocoa-600: #5C3D25;
+  --color-cocoa-500: #7A5438;
+  --color-gold: #C9A96E;
+  --color-text: #1C1C1C;
+  --color-text-muted: #7A736C;
+
+  --color-line-balance: #7EB8A0;
+  --color-line-energy: #E8A84C;
+  --color-line-metabolism: #D4687A;
+  --color-line-protection: #8B7BB5;
+  --color-line-senolytic: #5BA3C9;
+  --color-line-skin: #C9A96E;
+
+  --font-cormorant: var(--font-cormorant);
+  --font-sans: var(--font-inter);
+}
+
+:root {
+  --font-cormorant: 'Cormorant Garamond', serif;
+  --font-inter: 'Inter', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+body {
+  background-color: var(--color-sand-200);
+  color: var(--color-text);
+  font-family: var(--font-inter);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
