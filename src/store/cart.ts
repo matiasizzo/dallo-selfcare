@@ -71,6 +71,6 @@ export const useCart = create<CartStore>()(
       totalCents: () =>
         get().items.reduce((sum, i) => sum + i.priceCents * i.quantity, 0),
     }),
-    { name: 'dallo-cart' }
+    { name: 'dallo-cart', skipHydration: true }
   )
 )
