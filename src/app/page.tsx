@@ -5,8 +5,11 @@ import Editorial from '@/components/Editorial'
 import ProductGrid from '@/components/ProductGrid'
 import Collections from '@/components/Collections'
 import Footer from '@/components/Footer'
+import { getProducts } from '@/lib/products'
 
-export default function HomePage() {
+export default async function HomePage() {
+  const products = await getProducts()
+
   return (
     <>
       <AnnouncementBar />
@@ -14,7 +17,7 @@ export default function HomePage() {
       <main>
         <Hero />
         <Editorial />
-        <ProductGrid />
+        <ProductGrid products={products} />
         <Collections />
       </main>
       <Footer />
