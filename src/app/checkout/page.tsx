@@ -4,7 +4,8 @@ import { useState } from 'react'
 import { loadStripe } from '@stripe/stripe-js'
 import { Elements } from '@stripe/react-stripe-js'
 import { useCart } from '@/store/cart'
-import CheckoutForm from '@/components/CheckoutForm'
+import ShippingForm from '@/components/ShippingForm'
+import PaymentForm from '@/components/PaymentForm'
 import AnnouncementBar from '@/components/AnnouncementBar'
 import Navbar from '@/components/Navbar'
 import Link from 'next/link'
@@ -26,10 +27,10 @@ export default function CheckoutPage() {
   const [clientSecret, setClientSecret] = useState<string | null>(null)
   const [shipping, setShipping] = useState<ShippingDetails | null>(null)
   const [error, setError] = useState<string | null>(null)
-  const [loadingIntent, setLoadingIntent] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   async function handleShippingConfirmed(details: ShippingDetails) {
-    setLoadingIntent(true)
+    setLoading(true)
     setError(null)
     try {
       const res = await fetch('/api/checkout/create-intent', {
@@ -44,8 +45,13 @@ export default function CheckoutPage() {
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : 'Error de conexión')
     } finally {
-      setLoadingIntent(false)
+      setLoading(false)
     }
+  }
+
+  function handleEditShipping() {
+    setClientSecret(null)
+    setShipping(null)
   }
 
   if (!items.length) {
@@ -68,13 +74,17 @@ export default function CheckoutPage() {
       <AnnouncementBar />
       <Navbar />
       <main className="bg-white min-h-screen">
-        {!clientSecret ? (
-          <CheckoutForm
-            onShippingConfirmed={handleShippingConfirmed}
-            loading={loadingIntent}
+        {/* Step 1: shipping — no Elements wrapper needed */}
+        {!clientSecret && (
+          <ShippingForm
+            onConfirmed={handleShippingConfirmed}
+            loading={loading}
             error={error}
           />
-        ) : (
+        )}
+
+        {/* Step 2: payment — wrapped in Elements */}
+        {clientSecret && shipping && (
           <Elements
             stripe={stripePromise}
             options={{
@@ -104,12 +114,10 @@ export default function CheckoutPage() {
               },
             }}
           >
-            <CheckoutForm
+            <PaymentForm
               clientSecret={clientSecret}
-              shipping={shipping!}
-              onShippingConfirmed={handleShippingConfirmed}
-              loading={loadingIntent}
-              error={error}
+              shipping={shipping}
+              onEditShipping={handleEditShipping}
             />
           </Elements>
         )}
