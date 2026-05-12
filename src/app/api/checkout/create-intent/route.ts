@@ -20,7 +20,16 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'El carrito está vacío' }, { status: 400 })
   }
 
-  const totalCents = items.reduce((sum, i) => sum + i.priceCents * i.quantity, 0)
+  const totalCents = Math.round(
+    items.reduce((sum, i) => sum + (Number(i.priceCents) || 0) * (Number(i.quantity) || 1), 0)
+  )
+
+  if (!totalCents || totalCents < 50) {
+    return NextResponse.json(
+      { error: `Importe inválido: ${totalCents} céntimos. Comprueba que los productos tienen precio en Supabase.` },
+      { status: 400 }
+    )
+  }
 
   const paymentIntent = await stripe.paymentIntents.create({
     amount: totalCents,
