@@ -18,8 +18,7 @@ export default async function ProductsPage() {
       <main className="min-h-screen">
         <div className="max-w-screen-xl mx-auto px-6 pt-16 pb-4">
           <h1
-            className="text-5xl font-light text-cocoa-900"
-            style={{ fontFamily: 'var(--font-cormorant)' }}
+            className="font-cormorant text-5xl font-light text-cocoa-900"
           >
             Todos los productos
           </h1>

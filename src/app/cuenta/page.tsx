@@ -27,8 +27,7 @@ export default async function AccountPage() {
         <div className="max-w-screen-xl mx-auto px-6 py-16">
           <div className="max-w-2xl">
             <h1
-              className="text-5xl font-light text-cocoa-900 mb-2"
-              style={{ fontFamily: 'var(--font-cormorant)' }}
+              className="font-cormorant text-5xl font-light text-cocoa-900 mb-2"
             >
               {name ? `Hola, ${name.split(' ')[0]}` : 'Mi cuenta'}
             </h1>
@@ -41,8 +40,7 @@ export default async function AccountPage() {
                 className="border border-sand-300 bg-sand-100 p-6 hover:border-cocoa-600 transition-colors group"
               >
                 <p
-                  className="text-xl font-light text-cocoa-900 mb-1 group-hover:text-cocoa-600 transition-colors"
-                  style={{ fontFamily: 'var(--font-cormorant)' }}
+                  className="font-cormorant text-xl font-light text-cocoa-900 mb-1 group-hover:text-cocoa-600 transition-colors"
                 >
                   Mis pedidos
                 </p>
@@ -54,8 +52,7 @@ export default async function AccountPage() {
                 className="border border-sand-300 bg-sand-100 p-6 hover:border-cocoa-600 transition-colors group"
               >
                 <p
-                  className="text-xl font-light text-cocoa-900 mb-1 group-hover:text-cocoa-600 transition-colors"
-                  style={{ fontFamily: 'var(--font-cormorant)' }}
+                  className="font-cormorant text-xl font-light text-cocoa-900 mb-1 group-hover:text-cocoa-600 transition-colors"
                 >
                   Direcciones
                 </p>
@@ -67,8 +64,7 @@ export default async function AccountPage() {
                 className="border border-sand-300 bg-sand-100 p-6 hover:border-cocoa-600 transition-colors group"
               >
                 <p
-                  className="text-xl font-light text-cocoa-900 mb-1 group-hover:text-cocoa-600 transition-colors"
-                  style={{ fontFamily: 'var(--font-cormorant)' }}
+                  className="font-cormorant text-xl font-light text-cocoa-900 mb-1 group-hover:text-cocoa-600 transition-colors"
                 >
                   Perfil
                 </p>
@@ -80,8 +76,7 @@ export default async function AccountPage() {
                 className="border border-sand-300 bg-sand-100 p-6 hover:border-cocoa-600 transition-colors group"
               >
                 <p
-                  className="text-xl font-light text-cocoa-900 mb-1 group-hover:text-cocoa-600 transition-colors"
-                  style={{ fontFamily: 'var(--font-cormorant)' }}
+                  className="font-cormorant text-xl font-light text-cocoa-900 mb-1 group-hover:text-cocoa-600 transition-colors"
                 >
                   Seguir comprando
                 </p>

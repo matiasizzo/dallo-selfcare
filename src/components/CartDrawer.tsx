@@ -36,8 +36,7 @@ export default function CartDrawer() {
               <div className="flex items-center gap-2">
                 <ShoppingBag size={18} strokeWidth={1.5} className="text-cocoa-900" />
                 <span
-                  className="text-lg font-light text-cocoa-900"
-                  style={{ fontFamily: 'var(--font-cormorant)' }}
+                  className="font-cormorant text-lg font-light text-cocoa-900"
                 >
                   Carrito
                 </span>

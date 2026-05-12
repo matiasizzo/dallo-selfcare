@@ -34,8 +34,7 @@ export default async function OrdersPage() {
           </div>
 
           <h1
-            className="text-5xl font-light text-cocoa-900 mb-10"
-            style={{ fontFamily: 'var(--font-cormorant)' }}
+            className="font-cormorant text-5xl font-light text-cocoa-900 mb-10"
           >
             Mis pedidos
           </h1>

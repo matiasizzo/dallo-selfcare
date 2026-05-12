@@ -62,8 +62,7 @@ export default function RegisterPage() {
         <main className="min-h-screen bg-sand-200 flex items-center justify-center px-4 py-24">
           <div className="w-full max-w-sm text-center">
             <h2
-              className="text-4xl font-light text-cocoa-900 mb-4"
-              style={{ fontFamily: 'var(--font-cormorant)' }}
+              className="font-cormorant text-4xl font-light text-cocoa-900 mb-4"
             >
               Revisa tu email
             </h2>
@@ -92,8 +91,7 @@ export default function RegisterPage() {
         <div className="w-full max-w-sm">
           <div className="text-center mb-10">
             <h1
-              className="text-4xl font-light text-cocoa-900 mb-2"
-              style={{ fontFamily: 'var(--font-cormorant)' }}
+              className="font-cormorant text-4xl font-light text-cocoa-900 mb-2"
             >
               Crear cuenta
             </h1>

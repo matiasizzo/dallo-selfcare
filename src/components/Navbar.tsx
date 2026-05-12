@@ -36,8 +36,7 @@ export default function Navbar() {
         {/* Center logo */}
         <Link href="/" className="absolute left-1/2 -translate-x-1/2">
           <span
-            className="text-2xl font-light tracking-[0.15em] text-cocoa-900 select-none"
-            style={{ fontFamily: 'var(--font-cormorant)' }}
+            className="font-cormorant text-2xl font-light tracking-[0.15em] text-cocoa-900 select-none"
           >
             DALL'Ó
           </span>

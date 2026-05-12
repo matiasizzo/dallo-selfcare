@@ -41,8 +41,7 @@ function LoginForm() {
     <div className="w-full max-w-sm">
       <div className="text-center mb-10">
         <h1
-          className="text-4xl font-light text-cocoa-900 mb-2"
-          style={{ fontFamily: 'var(--font-cormorant)' }}
+          className="font-cormorant text-4xl font-light text-cocoa-900 mb-2"
         >
           Iniciar sesión
         </h1>

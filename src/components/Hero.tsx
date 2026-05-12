@@ -15,8 +15,7 @@ export default function Hero() {
         transition={{ duration: 0.8, ease: 'easeOut' }}
       >
         <h1
-          className="text-5xl md:text-6xl lg:text-7xl font-light text-cocoa-900 leading-tight mb-4"
-          style={{ fontFamily: 'var(--font-cormorant)' }}
+          className="font-cormorant text-5xl md:text-6xl lg:text-7xl font-light text-cocoa-900 leading-tight mb-4"
         >
           Alchemy and
           <br />

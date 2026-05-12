@@ -41,8 +41,7 @@ function EditorialBlock({ block }: { block: Block }) {
       transition={{ duration: 0.7 }}
     >
       <h2
-        className="text-3xl md:text-4xl font-light text-cocoa-900 mb-4 leading-snug"
-        style={{ fontFamily: 'var(--font-cormorant)' }}
+        className="font-cormorant text-3xl md:text-4xl font-light text-cocoa-900 mb-4 leading-snug"
       >
         {block.title}
       </h2>

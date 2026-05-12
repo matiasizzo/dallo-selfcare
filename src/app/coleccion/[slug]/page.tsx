@@ -45,8 +45,7 @@ export default async function CollectionPage({ params }: Props) {
           {/* Line accent */}
           <div className="w-8 h-0.5 mb-6" style={{ backgroundColor: lineColor }} />
           <h1
-            className="text-5xl font-light text-cocoa-900 mb-3"
-            style={{ fontFamily: 'var(--font-cormorant)' }}
+            className="font-cormorant text-5xl font-light text-cocoa-900 mb-3"
           >
             {category.name}
           </h1>

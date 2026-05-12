@@ -70,8 +70,7 @@ export default function ProductGrid({ products, title = 'Todos los Productos', s
       <div className="max-w-screen-xl mx-auto">
         <div className="flex items-center justify-between mb-8">
           <h2
-            className="text-2xl font-light text-cocoa-900"
-            style={{ fontFamily: 'var(--font-cormorant)' }}
+            className="font-cormorant text-2xl font-light text-cocoa-900"
           >
             {title}
           </h2>

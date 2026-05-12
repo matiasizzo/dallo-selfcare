@@ -28,8 +28,7 @@ export default function Footer() {
         {/* Newsletter */}
         <div>
           <h3
-            className="text-xl font-light text-cocoa-900 mb-2 leading-snug"
-            style={{ fontFamily: 'var(--font-cormorant)' }}
+            className="font-cormorant text-xl font-light text-cocoa-900 mb-2 leading-snug"
           >
             Faça parte da comunidade Dall'Ó
           </h3>
@@ -105,8 +104,7 @@ export default function Footer() {
       {/* Giant wordmark */}
       <div className="w-full bg-cocoa-900 overflow-hidden py-8">
         <p
-          className="text-center text-[18vw] leading-none font-light text-sand-200 select-none tracking-tight"
-          style={{ fontFamily: 'var(--font-cormorant)' }}
+          className="font-cormorant text-center text-[18vw] leading-none font-light text-sand-200 select-none tracking-tight"
         >
           DALL'Ó
         </p>
