@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { Twitter, Instagram } from 'lucide-react'
+import { Instagram } from 'lucide-react'
 
 const nutriLinks = [
   { label: 'Dall\'Ó Nutri', href: '/coleccion/nutri' },
@@ -13,40 +13,37 @@ const nutriLinks = [
 ]
 
 const brandLinks = [
-  { label: 'Sobre', href: '/sobre' },
-  { label: 'Home', href: '/' },
-  { label: 'Universe', href: '/universe' },
+  { label: 'Sobre nosotros', href: '/sobre' },
   { label: 'Dall\'Ó Nutri', href: '/coleccion/nutri' },
   { label: 'Dall\'Ó Skin', href: '/coleccion/skin' },
+  { label: 'Mi cuenta', href: '/cuenta' },
+  { label: 'Mis pedidos', href: '/cuenta/pedidos' },
 ]
 
 export default function Footer() {
   return (
-    <footer className="w-full bg-sand-100 border-t border-sand-300">
+    <footer className="w-full bg-white border-t border-sand-300">
+
       {/* Newsletter + links */}
-      <div className="max-w-screen-xl mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-3 gap-12">
+      <div className="max-w-screen-xl mx-auto px-8 py-20 grid grid-cols-1 md:grid-cols-3 gap-16">
+
         {/* Newsletter */}
         <div>
-          <h3
-            className="font-cormorant text-xl font-light text-cocoa-900 mb-2 leading-snug"
-          >
-            Faça parte da comunidade Dall'Ó
+          <h3 className="font-cormorant text-2xl font-light text-cocoa-900 mb-2 leading-snug">
+            Únete a la comunidad Dall'Ó
           </h3>
-          <p className="text-xs text-text-muted font-sans mb-6 leading-relaxed">
-            Fique por dentro das novidades e lançamentos
+          <p className="text-xs text-text-muted mb-8 leading-relaxed">
+            Novedades, lanzamientos y contenido exclusivo.
           </p>
-          <form
-            onSubmit={(e) => e.preventDefault()}
-            className="flex gap-0"
-          >
+          <form onSubmit={(e) => e.preventDefault()} className="flex">
             <input
               type="email"
-              placeholder="Dirección de correo electrónico"
-              className="flex-1 border border-sand-400 bg-transparent px-4 py-2.5 text-xs font-sans text-text placeholder:text-text-muted focus:outline-none focus:border-cocoa-600"
+              placeholder="Tu correo electrónico"
+              className="flex-1 border border-sand-400 bg-transparent px-4 py-3 text-xs text-text placeholder:text-text-muted focus:outline-none focus:border-cocoa-900 transition-colors"
             />
             <button
               type="submit"
-              className="bg-cocoa-900 text-sand-100 text-xs tracking-[0.15em] uppercase px-5 py-2.5 font-sans hover:bg-cocoa-800 transition-colors"
+              className="bg-cocoa-900 text-white text-[10px] tracking-[0.2em] uppercase px-5 py-3 hover:bg-cocoa-800 transition-colors"
             >
               Enviar
             </button>
@@ -55,13 +52,11 @@ export default function Footer() {
 
         {/* Nutri links */}
         <div>
-          <ul className="space-y-2.5">
+          <p className="text-[10px] tracking-[0.25em] uppercase text-text-muted mb-6">Líneas</p>
+          <ul className="space-y-3">
             {nutriLinks.map((link) => (
               <li key={link.href}>
-                <Link
-                  href={link.href}
-                  className="text-xs tracking-[0.1em] uppercase text-text-muted font-sans hover:text-cocoa-900 transition-colors"
-                >
+                <Link href={link.href} className="text-xs tracking-[0.1em] uppercase text-text-muted hover:text-cocoa-900 transition-colors">
                   {link.label}
                 </Link>
               </li>
@@ -71,13 +66,11 @@ export default function Footer() {
 
         {/* Brand links */}
         <div>
-          <ul className="space-y-2.5">
+          <p className="text-[10px] tracking-[0.25em] uppercase text-text-muted mb-6">Información</p>
+          <ul className="space-y-3">
             {brandLinks.map((link) => (
               <li key={link.href}>
-                <Link
-                  href={link.href}
-                  className="text-xs tracking-[0.1em] uppercase text-text-muted font-sans hover:text-cocoa-900 transition-colors"
-                >
+                <Link href={link.href} className="text-xs tracking-[0.1em] uppercase text-text-muted hover:text-cocoa-900 transition-colors">
                   {link.label}
                 </Link>
               </li>
@@ -86,26 +79,19 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Copyright row */}
-      <div className="border-t border-sand-300 max-w-screen-xl mx-auto px-6 py-4 flex items-center justify-between">
-        <p className="text-[10px] text-text-muted font-sans tracking-wide">
-          © 2026 DALL'Ó SELFCARE. Tecnologia de Shopify
+      {/* Bottom bar */}
+      <div className="border-t border-sand-300 max-w-screen-xl mx-auto px-8 py-5 flex items-center justify-between">
+        <p className="text-[10px] text-text-muted tracking-wide">
+          © {new Date().getFullYear()} DALL'Ó SELFCARE. Todos los derechos reservados.
         </p>
-        <div className="flex items-center gap-3">
-          <a href="#" aria-label="Instagram" className="text-text-muted hover:text-cocoa-900 transition-colors">
-            <Instagram size={14} strokeWidth={1.5} />
-          </a>
-          <a href="#" aria-label="Twitter/X" className="text-text-muted hover:text-cocoa-900 transition-colors">
-            <Twitter size={14} strokeWidth={1.5} />
-          </a>
-        </div>
+        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-text-muted hover:text-cocoa-900 transition-colors">
+          <Instagram size={15} strokeWidth={1.5} />
+        </a>
       </div>
 
       {/* Giant wordmark */}
-      <div className="w-full bg-cocoa-900 overflow-hidden py-8">
-        <p
-          className="font-cormorant text-center text-[18vw] leading-none font-light text-sand-200 select-none tracking-tight"
-        >
+      <div className="w-full bg-cocoa-900 overflow-hidden py-10">
+        <p className="font-cormorant text-center text-[18vw] leading-none font-light text-sand-200 select-none tracking-tight">
           DALL'Ó
         </p>
       </div>

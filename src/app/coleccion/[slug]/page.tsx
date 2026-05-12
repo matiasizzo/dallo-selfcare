@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation'
+import type { Metadata } from 'next'
 import AnnouncementBar from '@/components/AnnouncementBar'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
@@ -10,15 +11,19 @@ interface Props {
   params: Promise<{ slug: string }>
 }
 
-export async function generateMetadata({ params }: Props) {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
   const { data: cat } = await supabase
     .from('categories')
     .select('name')
     .eq('slug', slug)
     .single<{ name: string }>()
+
+  const name = cat?.name ?? 'Colección'
   return {
-    title: cat ? `${cat.name} — Dall'Ó Selfcare` : "Colección — Dall'Ó Selfcare",
+    title: name,
+    description: `Descubre la línea ${name} de Dall'Ó Selfcare. Suplementación y cosmética de alto rendimiento.`,
+    alternates: { canonical: `/coleccion/${slug}` },
   }
 }
 
@@ -40,16 +45,13 @@ export default async function CollectionPage({ params }: Props) {
     <>
       <AnnouncementBar />
       <Navbar />
-      <main className="min-h-screen">
-        <div className="max-w-screen-xl mx-auto px-6 pt-16 pb-4">
-          {/* Line accent */}
+      <main className="min-h-screen bg-white">
+        <div className="max-w-screen-xl mx-auto px-8 pt-20 pb-6 border-b border-sand-300">
           <div className="w-8 h-0.5 mb-6" style={{ backgroundColor: lineColor }} />
-          <h1
-            className="font-cormorant text-5xl font-light text-cocoa-900 mb-3"
-          >
+          <h1 className="font-cormorant text-6xl font-light text-cocoa-900 mb-3">
             {category.name}
           </h1>
-          <p className="text-sm text-text-muted font-sans">
+          <p className="text-xs tracking-[0.15em] uppercase text-text-muted">
             {products.length} {products.length === 1 ? 'producto' : 'productos'}
           </p>
         </div>

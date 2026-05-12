@@ -14,9 +14,35 @@ const inter = Inter({
   variable: '--font-inter',
 })
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://dallo-selfcare.vercel.app'
+
 export const metadata: Metadata = {
-  title: "Dall'Ó Selfcare — Alchemy and Longevity",
-  description: 'Suplementos de longevidad y cosmética de alta calidad. Supplementing with science.',
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: "Dall'Ó Selfcare — Longevidad en salud",
+    template: "%s | Dall'Ó Selfcare",
+  },
+  description: "Suplementación de precisión y cosmética de alto rendimiento. Ciencia aplicada al bienestar y la longevidad.",
+  keywords: ['suplementos longevidad', 'cosmética lujo', 'bienestar', 'longevidad', 'dall o selfcare'],
+  authors: [{ name: "Dall'Ó Selfcare" }],
+  openGraph: {
+    type: 'website',
+    locale: 'es_ES',
+    url: siteUrl,
+    siteName: "Dall'Ó Selfcare",
+    title: "Dall'Ó Selfcare — Longevidad en salud",
+    description: "Suplementación de precisión y cosmética de alto rendimiento.",
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: "Dall'Ó Selfcare",
+    description: "Suplementación de precisión y cosmética de alto rendimiento.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true },
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

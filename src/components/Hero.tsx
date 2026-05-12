@@ -1,52 +1,50 @@
 'use client'
 
-import { motion } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
 
 export default function Hero() {
   return (
-    <section className="w-full flex flex-col md:flex-row min-h-[580px]">
+    <section className="w-full grid grid-cols-1 md:grid-cols-2 min-h-[88vh]">
+
       {/* Left: text */}
-      <motion.div
-        className="flex-1 bg-sand-100 flex flex-col justify-center px-12 py-16 md:py-24 md:px-16 lg:px-24"
-        initial={{ opacity: 0, x: -30 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.8, ease: 'easeOut' }}
-      >
-        <h1
-          className="font-cormorant text-5xl md:text-6xl lg:text-7xl font-light text-cocoa-900 leading-tight mb-4"
-        >
-          Alchemy and
-          <br />
-          Longevity
-        </h1>
-        <p className="text-sm text-text-muted tracking-wider mb-10 font-sans font-light">
-          Supplementing with science
+      <div className="flex flex-col justify-end px-10 py-16 lg:px-20 lg:py-24 bg-white order-2 md:order-1">
+        <p className="text-[10px] tracking-[0.35em] uppercase text-text-muted mb-6">
+          Alchemy and Longevity
         </p>
-        <Link
-          href="/productos"
-          className="inline-block border border-cocoa-900 text-cocoa-900 text-xs tracking-[0.2em] uppercase px-8 py-3 font-sans hover:bg-cocoa-900 hover:text-sand-100 transition-colors duration-300 w-fit"
-        >
-          Comprar ahora
-        </Link>
-      </motion.div>
+        <h1 className="font-cormorant text-6xl md:text-7xl lg:text-8xl font-light text-cocoa-900 leading-none tracking-wide mb-8">
+          Longevidad<br />en salud
+        </h1>
+        <p className="text-sm text-text-muted leading-relaxed max-w-xs mb-12 font-light">
+          Suplementación de precisión y cosmética de alta calidad para quienes entienden la ciencia del bienestar.
+        </p>
+        <div className="flex items-center gap-6">
+          <Link
+            href="/productos"
+            className="text-[11px] tracking-[0.25em] uppercase border border-cocoa-900 text-cocoa-900 px-8 py-3.5 hover:bg-cocoa-900 hover:text-white transition-colors duration-300"
+          >
+            Comprar ahora
+          </Link>
+          <Link
+            href="/sobre"
+            className="text-[11px] tracking-[0.25em] uppercase text-text-muted hover:text-cocoa-900 transition-colors"
+          >
+            Nuestra filosofía
+          </Link>
+        </div>
+      </div>
 
       {/* Right: image */}
-      <motion.div
-        className="flex-1 relative min-h-[360px] md:min-h-0 overflow-hidden"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1, ease: 'easeOut', delay: 0.2 }}
-      >
+      <div className="relative min-h-[50vh] md:min-h-0 overflow-hidden order-1 md:order-2">
         <Image
-          src="https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=900&q=85"
-          alt="Dall'Ó — Alchemy and Longevity"
+          src="https://images.unsplash.com/photo-1612817288484-6f916006741a?w=1200&q=90"
+          alt="Dall'Ó Selfcare — Longevidad en salud"
           fill
           className="object-cover object-center"
           priority
+          sizes="(max-width: 768px) 100vw, 50vw"
         />
-      </motion.div>
+      </div>
     </section>
   )
 }
