@@ -7,6 +7,7 @@ import { createSupabaseBrowserClient } from '@/lib/supabase-browser'
 import AnnouncementBar from '@/components/AnnouncementBar'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+import SocialLogin from '@/components/SocialLogin'
 
 function LoginForm() {
   const router = useRouter()
@@ -51,6 +52,14 @@ function LoginForm() {
             Regístrate aquí
           </Link>
         </p>
+      </div>
+
+      <SocialLogin redirectTo={redirect} />
+
+      <div className="flex items-center gap-3 my-6">
+        <div className="flex-1 h-px bg-sand-300" />
+        <span className="text-[10px] tracking-[0.15em] uppercase text-text-muted font-sans">o</span>
+        <div className="flex-1 h-px bg-sand-300" />
       </div>
 
       <form onSubmit={handleLogin} className="space-y-4">
