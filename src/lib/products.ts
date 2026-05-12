@@ -1,10 +1,10 @@
-import { supabase, type Product, type Store } from './supabase'
+import { supabase, type Product } from './supabase'
 
 export type { Product }
 
-const DALLO_DOMAIN = 'dalloselfcare.com'
+// "both" = available on Dall'O + QUEVI. "dallo" = Dall'O exclusive.
+const DALLO_FILTER = `available_on.cs.{"both"},available_on.cs.{"dallo"}`
 
-// Maps category slug → line color
 export const LINE_COLORS: Record<string, string> = {
   balance:    '#7EB8A0',
   energy:     '#E8A84C',
@@ -18,19 +18,8 @@ export function formatPrice(cents: number) {
   return new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(cents / 100)
 }
 
-async function getDalloStoreId(): Promise<string | null> {
-  const { data } = await supabase
-    .from('stores')
-    .select('id')
-    .eq('domain', DALLO_DOMAIN)
-    .single<Pick<Store, 'id'>>()
-  return data?.id ?? null
-}
-
 export async function getProducts(): Promise<Product[]> {
-  const storeId = await getDalloStoreId()
-
-  let query = supabase
+  const { data, error } = await supabase
     .from('products')
     .select(`
       *,
@@ -38,13 +27,9 @@ export async function getProducts(): Promise<Product[]> {
       product_variants ( * )
     `)
     .eq('active', true)
+    .or(DALLO_FILTER)
     .order('created_at', { ascending: false })
 
-  if (storeId) {
-    query = query.contains('available_on', [storeId])
-  }
-
-  const { data, error } = await query
   if (error) {
     console.error('getProducts error:', error.message)
     return []
@@ -72,9 +57,6 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
 }
 
 export async function getProductsByCategory(categorySlug: string): Promise<Product[]> {
-  const storeId = await getDalloStoreId()
-
-  // Get category id first
   const { data: cat } = await supabase
     .from('categories')
     .select('id')
@@ -83,7 +65,7 @@ export async function getProductsByCategory(categorySlug: string): Promise<Produ
 
   if (!cat) return []
 
-  let query = supabase
+  const { data, error } = await supabase
     .from('products')
     .select(`
       *,
@@ -92,13 +74,9 @@ export async function getProductsByCategory(categorySlug: string): Promise<Produ
     `)
     .eq('active', true)
     .eq('category_id', cat.id)
+    .or(DALLO_FILTER)
     .order('created_at', { ascending: false })
 
-  if (storeId) {
-    query = query.contains('available_on', [storeId])
-  }
-
-  const { data, error } = await query
   if (error) {
     console.error('getProductsByCategory error:', error.message)
     return []
@@ -108,5 +86,8 @@ export async function getProductsByCategory(categorySlug: string): Promise<Produ
 
 export function getDefaultVariant(product: Product) {
   const variants = product.product_variants ?? []
-  return variants.find((v) => v.is_default && v.active) ?? variants.find((v) => v.active) ?? variants[0] ?? null
+  return variants.find((v) => v.is_default && v.active)
+    ?? variants.find((v) => v.active)
+    ?? variants[0]
+    ?? null
 }
