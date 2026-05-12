@@ -10,7 +10,9 @@
       "Bash(npm install *)",
       "Bash(git add *)",
       "Bash(git commit -m ' *)",
-      "mcp__0c1a7d90-c419-4857-b690-4c4411be9b45__web_fetch_vercel_url"
+      "mcp__0c1a7d90-c419-4857-b690-4c4411be9b45__web_fetch_vercel_url",
+      "mcp__0c1a7d90-c419-4857-b690-4c4411be9b45__list_teams",
+      "mcp__0c1a7d90-c419-4857-b690-4c4411be9b45__list_deployments"
     ]
   }
 }
