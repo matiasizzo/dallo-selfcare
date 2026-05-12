@@ -2,8 +2,12 @@
 
 import Link from 'next/link'
 import { Search, User, ShoppingBag, ChevronDown } from 'lucide-react'
+import { useCart } from '@/store/cart'
 
 export default function Navbar() {
+  const { openCart, totalItems } = useCart()
+  const count = totalItems()
+
   return (
     <nav className="w-full bg-sand-200 border-b border-sand-300 px-6 py-4 relative z-50">
       <div className="max-w-screen-xl mx-auto flex items-center justify-between">
@@ -45,14 +49,23 @@ export default function Navbar() {
             EUR
             <ChevronDown size={12} />
           </button>
-          <button className="text-text hover:text-cocoa-600 transition-colors" aria-label="Search">
+          <button className="text-text hover:text-cocoa-600 transition-colors" aria-label="Buscar">
             <Search size={18} strokeWidth={1.5} />
           </button>
-          <button className="text-text hover:text-cocoa-600 transition-colors" aria-label="Account">
+          <Link href="/cuenta" className="text-text hover:text-cocoa-600 transition-colors" aria-label="Mi cuenta">
             <User size={18} strokeWidth={1.5} />
-          </button>
-          <button className="text-text hover:text-cocoa-600 transition-colors relative" aria-label="Cart">
+          </Link>
+          <button
+            onClick={openCart}
+            className="text-text hover:text-cocoa-600 transition-colors relative"
+            aria-label="Carrito"
+          >
             <ShoppingBag size={18} strokeWidth={1.5} />
+            {count > 0 && (
+              <span className="absolute -top-1.5 -right-1.5 bg-cocoa-900 text-sand-100 text-[9px] font-sans rounded-full w-4 h-4 flex items-center justify-center leading-none">
+                {count > 9 ? '9+' : count}
+              </span>
+            )}
           </button>
         </div>
       </div>

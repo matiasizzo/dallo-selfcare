@@ -3,6 +3,7 @@ import Image from 'next/image'
 import AnnouncementBar from '@/components/AnnouncementBar'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+import AddToCartButton from '@/components/AddToCartButton'
 import { getProductBySlug, LINE_COLORS, formatPrice, getDefaultVariant } from '@/lib/products'
 
 interface Props {
@@ -29,6 +30,8 @@ export default async function ProductPage({ params }: Props) {
   const defaultVariant = getDefaultVariant(product)
   const activeVariants = (product.product_variants ?? []).filter((v) => v.active)
 
+  if (!defaultVariant) notFound()
+
   return (
     <>
       <AnnouncementBar />
@@ -51,7 +54,6 @@ export default async function ProductPage({ params }: Props) {
                   <span className="text-text-muted text-sm font-sans">Sin imagen</span>
                 </div>
               )}
-              {/* Line color bar */}
               <div className="absolute bottom-0 left-0 right-0 h-1.5" style={{ backgroundColor: lineColor }} />
             </div>
 
@@ -73,18 +75,16 @@ export default async function ProductPage({ params }: Props) {
               )}
 
               {/* Price */}
-              {defaultVariant && (
-                <div className="flex items-baseline gap-3 mb-8">
-                  <span className="text-xl font-sans text-cocoa-900">
-                    {formatPrice(defaultVariant.price_cents)}
+              <div className="flex items-baseline gap-3 mb-8">
+                <span className="text-xl font-sans text-cocoa-900">
+                  {formatPrice(defaultVariant.price_cents)}
+                </span>
+                {defaultVariant.compare_at_cents && defaultVariant.compare_at_cents > defaultVariant.price_cents && (
+                  <span className="text-sm font-sans text-text-muted line-through">
+                    {formatPrice(defaultVariant.compare_at_cents)}
                   </span>
-                  {defaultVariant.compare_at_cents && defaultVariant.compare_at_cents > defaultVariant.price_cents && (
-                    <span className="text-sm font-sans text-text-muted line-through">
-                      {formatPrice(defaultVariant.compare_at_cents)}
-                    </span>
-                  )}
-                </div>
-              )}
+                )}
+              </div>
 
               {/* Variants */}
               {activeVariants.length > 1 && (
@@ -104,11 +104,7 @@ export default async function ProductPage({ params }: Props) {
               )}
 
               {/* Add to cart */}
-              <button
-                className="w-full border border-cocoa-900 bg-cocoa-900 text-sand-100 text-xs tracking-[0.2em] uppercase py-4 font-sans hover:bg-cocoa-800 transition-colors mb-4"
-              >
-                Añadir al carrito
-              </button>
+              <AddToCartButton product={product} selectedVariant={defaultVariant} />
 
               {/* Description */}
               {product.description && (
@@ -117,7 +113,7 @@ export default async function ProductPage({ params }: Props) {
                 </div>
               )}
 
-              {/* Details grid */}
+              {/* Details */}
               <div className="mt-8 grid grid-cols-2 gap-4">
                 {product.dosage && (
                   <div>
