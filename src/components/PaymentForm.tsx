@@ -48,6 +48,7 @@ export default function PaymentForm({ clientSecret, shipping, onEditShipping }: 
               city: shipping.city,
               postal_code: shipping.postalCode,
               country: shipping.country,
+              state: '',
             },
           },
         },
