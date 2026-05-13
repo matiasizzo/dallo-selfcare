@@ -6,7 +6,7 @@ import ToneStrip from '@/components/ToneStrip'
 import ProductCarousels from '@/components/ProductCarousels'
 import LineasGallery from '@/components/LineasGallery'
 import Footer from '@/components/Footer'
-import { getProducts } from '@/lib/products'
+import { getProducts, getProductsByCategory } from '@/lib/products'
 
 export const revalidate = 60
 
@@ -19,10 +19,20 @@ export const metadata: Metadata = {
 const NUTRI_SLUGS = ['balance', 'energy', 'metabolism', 'protection', 'senolytic']
 
 export default async function HomePage() {
-  const products = await getProducts()
+  const [products, skinProducts, nutriByCategory] = await Promise.all([
+    getProducts(),
+    getProductsByCategory('skin'),
+    getProductsByCategory('nutri'),
+  ])
 
-  const skinProducts = products.filter(p => p.categories?.slug === 'skin')
-  const nutriProducts = products.filter(p => NUTRI_SLUGS.includes(p.categories?.slug ?? ''))
+  // Fallback: if getProductsByCategory returns empty, filter from getProducts
+  const resolvedSkin = skinProducts.length > 0
+    ? skinProducts
+    : products.filter(p => p.categories?.slug === 'skin')
+
+  const resolvedNutri = nutriByCategory.length > 0
+    ? nutriByCategory
+    : products.filter(p => NUTRI_SLUGS.includes(p.categories?.slug ?? ''))
 
   return (
     <>
@@ -46,7 +56,7 @@ export default async function HomePage() {
           reverse
         />
 
-        <ProductCarousels skinProducts={skinProducts} nutriProducts={nutriProducts} />
+        <ProductCarousels skinProducts={resolvedSkin} nutriProducts={resolvedNutri} />
 
         <LineasGallery />
       </main>
