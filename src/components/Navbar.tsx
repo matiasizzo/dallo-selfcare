@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { Search, User, ShoppingBag } from 'lucide-react'
 import { useCart } from '@/store/cart'
 
@@ -27,9 +28,14 @@ export default function Navbar() {
 
         {/* Center logo */}
         <Link href="/" className="absolute left-1/2 -translate-x-1/2">
-          <span className="font-cormorant text-2xl font-light tracking-[0.2em] text-cocoa-900 select-none">
-            DALL'Ó
-          </span>
+          <Image
+            src="https://niuaflxfiyafckvseruu.supabase.co/storage/v1/object/public/assets/logo-nova-dallo-black.svg"
+            alt="Dall'Ó Selfcare"
+            width={120}
+            height={40}
+            className="h-8 w-auto"
+            priority
+          />
         </Link>
 
         {/* Right icons */}
