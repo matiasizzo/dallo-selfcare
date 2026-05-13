@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { Instagram } from 'lucide-react'
 
 const nutriLinks = [
@@ -89,11 +90,15 @@ export default function Footer() {
         </a>
       </div>
 
-      {/* Giant wordmark */}
-      <div className="w-full bg-cocoa-900 overflow-hidden py-10">
-        <p className="font-cormorant text-center text-[18vw] leading-none font-light text-sand-200 select-none tracking-tight">
-          DALL'Ó
-        </p>
+      {/* Giant logo */}
+      <div className="w-full bg-cocoa-900 overflow-hidden py-14 flex items-center justify-center">
+        <Image
+          src="https://niuaflxfiyafckvseruu.supabase.co/storage/v1/object/public/assets/logo-nova-dallo-dark.webp"
+          alt="Dall'Ó Selfcare"
+          width={400}
+          height={120}
+          className="w-[40vw] max-w-sm h-auto opacity-90"
+        />
       </div>
     </footer>
   )
