@@ -12,6 +12,7 @@
   --color-cocoa-600: #5C3D25;
   --color-cocoa-500: #7A5438;
   --color-gold: #C9A96E;
+  --color-cream: #F6EEE6;
   --color-text: #1C1C1C;
   --color-text-muted: #7A736C;
 
@@ -37,7 +38,7 @@ html, body {
 }
 
 body {
-  background-color: #ffffff;
+  background-color: #F6EEE6;
   color: var(--color-text);
   font-family: var(--font-inter), 'Inter', sans-serif;
   -webkit-font-smoothing: antialiased;

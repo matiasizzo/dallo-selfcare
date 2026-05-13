@@ -22,7 +22,7 @@ export default function SocialLogin({ redirectTo = '/cuenta' }: Props) {
     <div className="space-y-3">
       <button
         onClick={() => loginWith('google')}
-        className="w-full flex items-center justify-center gap-3 border border-sand-400 bg-sand-50 px-4 py-3 text-xs tracking-[0.1em] uppercase font-sans text-text hover:border-cocoa-600 transition-colors"
+        className="w-full flex items-center justify-center gap-3 rounded-full bg-white border border-sand-300 px-4 py-3 text-xs tracking-[0.08em] uppercase text-cocoa-900 hover:border-cocoa-600 hover:shadow-sm transition-all"
       >
         <GoogleIcon />
         Continuar con Google
@@ -30,7 +30,7 @@ export default function SocialLogin({ redirectTo = '/cuenta' }: Props) {
 
       <button
         onClick={() => loginWith('apple')}
-        className="w-full flex items-center justify-center gap-3 border border-sand-400 bg-sand-50 px-4 py-3 text-xs tracking-[0.1em] uppercase font-sans text-text hover:border-cocoa-600 transition-colors"
+        className="w-full flex items-center justify-center gap-3 rounded-full bg-cocoa-900 px-4 py-3 text-xs tracking-[0.08em] uppercase text-white hover:bg-cocoa-800 transition-colors"
       >
         <AppleIcon />
         Continuar con Apple

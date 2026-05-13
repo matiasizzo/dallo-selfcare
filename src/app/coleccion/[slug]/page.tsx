@@ -47,7 +47,7 @@ export default async function CollectionPage({ params }: Props) {
     <>
       <AnnouncementBar />
       <Navbar />
-      <main className="min-h-screen bg-white">
+      <main className="min-h-screen bg-cream">
         <div className="max-w-screen-xl mx-auto px-8 pt-20 pb-6 border-b border-sand-300">
           <div className="w-8 h-0.5 mb-6" style={{ backgroundColor: lineColor }} />
           <h1 className="font-cormorant text-6xl font-light text-cocoa-900 mb-3">

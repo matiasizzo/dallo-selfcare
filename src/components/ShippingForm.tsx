@@ -1,6 +1,8 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
+import Link from 'next/link'
 import { useCart } from '@/store/cart'
 import { formatPrice } from '@/lib/products'
 import type { ShippingDetails } from '@/app/checkout/page'
@@ -28,117 +30,114 @@ export default function ShippingForm({ onConfirmed, loading, error }: Props) {
     onConfirmed(form)
   }
 
-  const inputClass = 'w-full border border-sand-400 bg-white px-4 py-3 text-sm text-text placeholder:text-text-muted focus:outline-none focus:border-cocoa-900 transition-colors'
-  const labelClass = 'block text-[10px] tracking-[0.2em] uppercase text-text-muted mb-1'
+  const inputClass = 'w-full border border-sand-300 bg-white rounded-lg px-4 py-3 text-sm text-cocoa-900 placeholder:text-text-muted focus:outline-none focus:border-cocoa-900 transition-colors'
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 min-h-screen">
-      {/* Order summary */}
-      <div className="bg-sand-100 px-8 py-12 lg:px-14 lg:py-20 border-b lg:border-b-0 lg:border-r border-sand-300 order-2 lg:order-1">
-        <h2 className="font-cormorant text-3xl font-light text-cocoa-900 mb-8">Tu pedido</h2>
+    <div className="min-h-screen bg-cream flex flex-col lg:flex-row">
+
+      {/* LEFT: form */}
+      <div className="flex-1 px-6 py-10 lg:px-14 lg:py-16 lg:max-w-2xl">
+        {/* Logo */}
+        <Link href="/" className="block mb-10">
+          <Image
+            src="https://niuaflxfiyafckvseruu.supabase.co/storage/v1/object/public/assets/logo-nova-dallo-black.svg"
+            alt="Dall'Ó Selfcare" width={100} height={34} className="h-8 w-auto"
+          />
+        </Link>
+
+        {/* Steps */}
+        <div className="flex items-center gap-2 mb-8 text-[10px] tracking-[0.2em] uppercase">
+          <span className="text-cocoa-900 font-medium">Envío</span>
+          <span className="text-sand-400">›</span>
+          <span className="text-text-muted">Pago</span>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <h2 className="font-cormorant text-2xl font-light text-cocoa-900 mb-2">Contacto</h2>
+
+          <input name="email" type="email" required value={form.email} onChange={handleChange}
+            placeholder="Correo electrónico" className={inputClass} />
+
+          <h2 className="font-cormorant text-2xl font-light text-cocoa-900 pt-4 mb-2">Entrega</h2>
+
+          <select name="country" required value={form.country} onChange={handleChange} className={inputClass}>
+            <option value="ES">España</option>
+            <option value="PT">Portugal</option>
+            <option value="FR">Francia</option>
+            <option value="DE">Alemania</option>
+            <option value="IT">Italia</option>
+            <option value="GB">Reino Unido</option>
+            <option value="US">Estados Unidos</option>
+          </select>
+
+          <div className="grid grid-cols-2 gap-3">
+            <input name="name" required value={form.name} onChange={handleChange}
+              placeholder="Nombre" className={inputClass} />
+            <input name="phone" type="tel" value={form.phone} onChange={handleChange}
+              placeholder="Apellidos" className={inputClass} />
+          </div>
+
+          <input name="address" required value={form.address} onChange={handleChange}
+            placeholder="Dirección" className={inputClass} />
+
+          <div className="grid grid-cols-2 gap-3">
+            <input name="postalCode" required value={form.postalCode} onChange={handleChange}
+              placeholder="Código postal" className={inputClass} />
+            <input name="city" required value={form.city} onChange={handleChange}
+              placeholder="Ciudad" className={inputClass} />
+          </div>
+
+          {error && <p className="text-sm text-red-600 bg-red-50 rounded-lg px-4 py-3">{error}</p>}
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full rounded-full bg-cocoa-900 text-white text-xs tracking-[0.2em] uppercase py-4 hover:bg-cocoa-800 transition-colors disabled:opacity-50 mt-2"
+          >
+            {loading ? 'Procesando...' : 'Continuar al pago'}
+          </button>
+        </form>
+      </div>
+
+      {/* RIGHT: order summary */}
+      <div className="lg:w-[420px] bg-sand-100 border-t lg:border-t-0 lg:border-l border-sand-300 px-6 py-10 lg:px-10 lg:py-16">
         <div className="space-y-5">
           {items.map((item) => (
-            <div key={item.variantId} className="flex gap-4">
-              <div className="relative w-16 h-16 bg-sand-200 flex-shrink-0 overflow-hidden">
-                {item.imageUrl && (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={item.imageUrl} alt={item.name} className="w-full h-full object-cover" />
-                )}
-                <span className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-cocoa-900 text-sand-100 text-[10px] flex items-center justify-center">
+            <div key={item.variantId} className="flex gap-4 items-start">
+              <div className="relative w-16 h-16 flex-shrink-0 bg-sand-200 overflow-hidden rounded-sm">
+                {item.imageUrl && <img src={item.imageUrl} alt={item.name} className="w-full h-full object-cover" />}
+                <span className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-cocoa-900 text-white text-[9px] flex items-center justify-center leading-none">
                   {item.quantity}
                 </span>
               </div>
               <div className="flex-1 flex justify-between items-start">
                 <div>
-                  <p className="text-sm text-text">{item.name}</p>
-                  <p className="text-xs text-text-muted">{item.variantName}</p>
+                  <p className="text-sm text-cocoa-900">{item.name}</p>
+                  {item.variantName && item.variantName !== 'Default' && (
+                    <p className="text-xs text-text-muted">{item.variantName}</p>
+                  )}
                 </div>
-                <p className="text-sm text-text">{formatPrice(item.priceCents * item.quantity)}</p>
+                <p className="text-sm text-cocoa-900 ml-4">{formatPrice(item.priceCents * item.quantity)}</p>
               </div>
             </div>
           ))}
         </div>
-        <div className="mt-8 pt-6 border-t border-sand-300 space-y-2">
+
+        <div className="mt-8 pt-6 border-t border-sand-300 space-y-3">
           <div className="flex justify-between text-sm text-text-muted">
             <span>Subtotal</span><span>{formatPrice(total)}</span>
           </div>
           <div className="flex justify-between text-sm text-text-muted">
             <span>Envío</span><span>Calculado al pagar</span>
           </div>
-          <div className="flex justify-between text-base text-cocoa-900 pt-2 border-t border-sand-300">
-            <span>Total</span><span>{formatPrice(total)}</span>
+          <div className="flex justify-between text-base text-cocoa-900 pt-3 border-t border-sand-300 font-medium">
+            <span>Total</span>
+            <div className="text-right">
+              <span className="text-xs text-text-muted mr-1">EUR</span>
+              <span>{formatPrice(total)}</span>
+            </div>
           </div>
         </div>
-      </div>
-
-      {/* Shipping form */}
-      <div className="bg-white px-8 py-12 lg:px-14 lg:py-20 order-1 lg:order-2">
-        <div className="flex items-center gap-3 mb-10">
-          <span className="text-[10px] tracking-[0.2em] uppercase text-cocoa-900">1. Envío</span>
-          <span className="text-sand-400 text-xs">›</span>
-          <span className="text-[10px] tracking-[0.2em] uppercase text-text-muted">2. Pago</span>
-        </div>
-
-        <form onSubmit={handleSubmit} className="space-y-5">
-          <h2 className="font-cormorant text-3xl font-light text-cocoa-900 mb-6">Datos de envío</h2>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label className={labelClass}>Nombre completo *</label>
-              <input name="name" required value={form.name} onChange={handleChange} placeholder="María García" className={inputClass} />
-            </div>
-            <div>
-              <label className={labelClass}>Email *</label>
-              <input name="email" type="email" required value={form.email} onChange={handleChange} placeholder="maria@email.com" className={inputClass} />
-            </div>
-          </div>
-
-          <div>
-            <label className={labelClass}>Teléfono</label>
-            <input name="phone" type="tel" value={form.phone} onChange={handleChange} placeholder="+34 600 000 000" className={inputClass} />
-          </div>
-
-          <div>
-            <label className={labelClass}>Dirección *</label>
-            <input name="address" required value={form.address} onChange={handleChange} placeholder="Calle Mayor 1, 2ºA" className={inputClass} />
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className={labelClass}>Ciudad *</label>
-              <input name="city" required value={form.city} onChange={handleChange} placeholder="Madrid" className={inputClass} />
-            </div>
-            <div>
-              <label className={labelClass}>Código postal *</label>
-              <input name="postalCode" required value={form.postalCode} onChange={handleChange} placeholder="28001" className={inputClass} />
-            </div>
-          </div>
-
-          <div>
-            <label className={labelClass}>País *</label>
-            <select name="country" required value={form.country} onChange={handleChange} className={inputClass}>
-              <option value="ES">España</option>
-              <option value="PT">Portugal</option>
-              <option value="FR">Francia</option>
-              <option value="DE">Alemania</option>
-              <option value="IT">Italia</option>
-              <option value="GB">Reino Unido</option>
-              <option value="US">Estados Unidos</option>
-            </select>
-          </div>
-
-          {error && (
-            <p className="text-sm text-red-600 bg-red-50 px-4 py-3 border border-red-200">{error}</p>
-          )}
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-cocoa-900 text-sand-100 text-xs tracking-[0.2em] uppercase py-4 hover:bg-cocoa-800 transition-colors disabled:opacity-50 mt-4"
-          >
-            {loading ? 'Procesando...' : 'Continuar al pago'}
-          </button>
-        </form>
       </div>
     </div>
   )

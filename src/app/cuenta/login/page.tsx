@@ -2,11 +2,9 @@
 
 import { Suspense, useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { createSupabaseBrowserClient } from '@/lib/supabase-browser'
-import AnnouncementBar from '@/components/AnnouncementBar'
-import Navbar from '@/components/Navbar'
-import Footer from '@/components/Footer'
 import SocialLogin from '@/components/SocialLogin'
 
 function LoginForm() {
@@ -23,108 +21,91 @@ function LoginForm() {
     e.preventDefault()
     setError(null)
     setLoading(true)
-
     const supabase = createSupabaseBrowserClient()
     const { error } = await supabase.auth.signInWithPassword({ email, password })
-
-    if (error) {
-      setError('Email o contraseña incorrectos.')
-      setLoading(false)
-      return
-    }
-
+    if (error) { setError('Email o contraseña incorrectos.'); setLoading(false); return }
     router.push(redirect)
     router.refresh()
   }
 
   return (
-    <div className="w-full max-w-sm">
-      <div className="text-center mb-10">
-        <h1
-          className="font-cormorant text-4xl font-light text-cocoa-900 mb-2"
-        >
-          Iniciar sesión
-        </h1>
-        <p className="text-xs text-text-muted font-sans">
-          ¿Nueva cuenta?{' '}
-          <Link href="/cuenta/registro" className="text-cocoa-900 underline underline-offset-2 hover:text-cocoa-600">
-            Regístrate aquí
-          </Link>
-        </p>
+    <div className="w-full max-w-sm bg-white rounded-2xl shadow-sm px-8 py-10">
+      {/* Logo */}
+      <div className="flex justify-center mb-8">
+        <Image
+          src="https://niuaflxfiyafckvseruu.supabase.co/storage/v1/object/public/assets/logo-nova-dallo-black.svg"
+          alt="Dall'Ó Selfcare"
+          width={100}
+          height={34}
+          className="h-8 w-auto"
+        />
+      </div>
+
+      <div className="text-center mb-8">
+        <h1 className="font-cormorant text-3xl font-light text-cocoa-900 mb-1">Iniciar sesión</h1>
+        <p className="text-xs text-text-muted">Inicia sesión o crea una cuenta</p>
       </div>
 
       <SocialLogin redirectTo={redirect} />
 
       <div className="flex items-center gap-3 my-6">
         <div className="flex-1 h-px bg-sand-300" />
-        <span className="text-[10px] tracking-[0.15em] uppercase text-text-muted font-sans">o</span>
+        <span className="text-[10px] tracking-[0.15em] uppercase text-text-muted">o</span>
         <div className="flex-1 h-px bg-sand-300" />
       </div>
 
       <form onSubmit={handleLogin} className="space-y-4">
-        <div>
-          <label className="block text-[10px] tracking-[0.15em] uppercase text-text-muted font-sans mb-1.5">
-            Email
-          </label>
-          <input
-            type="email"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full border border-sand-400 bg-sand-50 px-4 py-3 text-sm font-sans text-text placeholder:text-text-muted focus:outline-none focus:border-cocoa-600"
-            placeholder="tu@email.com"
-          />
-        </div>
+        <input
+          type="email"
+          required
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className="w-full border border-sand-300 bg-sand-50 rounded-lg px-4 py-3 text-sm text-cocoa-900 placeholder:text-text-muted focus:outline-none focus:border-cocoa-900 transition-colors"
+          placeholder="Correo electrónico"
+        />
 
-        <div>
-          <div className="flex justify-between items-center mb-1.5">
-            <label className="block text-[10px] tracking-[0.15em] uppercase text-text-muted font-sans">
-              Contraseña
-            </label>
-            <Link
-              href="/cuenta/recuperar"
-              className="text-[10px] text-text-muted font-sans hover:text-cocoa-900 transition-colors"
-            >
-              ¿Olvidaste tu contraseña?
-            </Link>
-          </div>
-          <input
-            type="password"
-            required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full border border-sand-400 bg-sand-50 px-4 py-3 text-sm font-sans text-text placeholder:text-text-muted focus:outline-none focus:border-cocoa-600"
-            placeholder="••••••••"
-          />
-        </div>
+        <input
+          type="password"
+          required
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="w-full border border-sand-300 bg-sand-50 rounded-lg px-4 py-3 text-sm text-cocoa-900 placeholder:text-text-muted focus:outline-none focus:border-cocoa-900 transition-colors"
+          placeholder="Contraseña"
+        />
 
-        {error && (
-          <p className="text-xs text-red-600 font-sans">{error}</p>
-        )}
+        {error && <p className="text-xs text-red-600">{error}</p>}
 
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-cocoa-900 text-sand-100 text-xs tracking-[0.2em] uppercase py-4 font-sans hover:bg-cocoa-800 transition-colors disabled:opacity-60 mt-2"
+          className="w-full rounded-full bg-cocoa-900 text-white text-xs tracking-[0.15em] uppercase py-3.5 hover:bg-cocoa-800 transition-colors disabled:opacity-60"
         >
-          {loading ? 'Entrando...' : 'Entrar'}
+          {loading ? 'Entrando...' : 'Continuar'}
         </button>
       </form>
+
+      <div className="mt-6 flex flex-col items-center gap-3 text-[11px] text-text-muted">
+        <Link href="/cuenta/registro" className="hover:text-cocoa-900 transition-colors">
+          ¿No tienes cuenta? <span className="underline underline-offset-2">Regístrate</span>
+        </Link>
+        <Link href="/cuenta/recuperar" className="hover:text-cocoa-900 transition-colors underline underline-offset-2">
+          ¿Olvidaste tu contraseña?
+        </Link>
+      </div>
+
+      <p className="mt-8 text-center text-[10px] text-text-muted">
+        <Link href="/privacidad" className="underline underline-offset-2 hover:text-cocoa-900">Política de privacidad</Link>
+      </p>
     </div>
   )
 }
 
 export default function LoginPage() {
   return (
-    <>
-      <AnnouncementBar />
-      <Navbar />
-      <main className="min-h-screen bg-sand-200 flex items-center justify-center px-4 py-24">
-        <Suspense fallback={null}>
-          <LoginForm />
-        </Suspense>
-      </main>
-      <Footer />
-    </>
+    <main className="min-h-screen bg-cream flex items-center justify-center px-4 py-16">
+      <Suspense fallback={null}>
+        <LoginForm />
+      </Suspense>
+    </main>
   )
 }

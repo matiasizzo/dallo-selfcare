@@ -72,7 +72,7 @@ export default async function OrdersPage() {
     <>
       <AnnouncementBar />
       <Navbar />
-      <main className="min-h-screen bg-white">
+      <main className="min-h-screen bg-cream">
         <div className="max-w-screen-xl mx-auto px-8 pt-20 pb-6 border-b border-sand-300">
           <Link href="/cuenta" className="text-[10px] tracking-[0.2em] uppercase text-text-muted hover:text-cocoa-900 transition-colors">
             ← Mi cuenta

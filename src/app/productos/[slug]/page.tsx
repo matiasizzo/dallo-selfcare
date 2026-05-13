@@ -95,13 +95,13 @@ export default async function ProductPage({ params }: Props) {
       <AnnouncementBar />
       <Navbar />
 
-      <main className="min-h-screen bg-white">
+      <main className="min-h-screen bg-cream">
 
         {/* ── Product hero: full-bleed 2-col ── */}
         <section className="grid grid-cols-1 md:grid-cols-2 min-h-[90vh]">
 
           {/* LEFT: info */}
-          <div className="flex flex-col justify-center px-10 py-16 lg:px-20 xl:px-24 bg-white order-2 md:order-1">
+          <div className="flex flex-col justify-center px-10 py-16 lg:px-20 xl:px-24 bg-cream order-2 md:order-1">
 
             {/* Breadcrumb */}
             {product.categories && (
@@ -243,7 +243,7 @@ export default async function ProductPage({ params }: Props) {
               sizes="(max-width: 768px) 100vw, 50vw"
             />
           </div>
-          <div className="flex-1 flex flex-col justify-center items-start px-12 py-16 lg:px-20 bg-white">
+          <div className="flex-1 flex flex-col justify-center items-start px-12 py-16 lg:px-20 bg-cream">
             <p className="font-cormorant text-3xl md:text-4xl font-light text-cocoa-900 leading-snug max-w-xs italic">
               Cuida tu cuerpo, realza tu belleza, siéntete increíble cada día.
             </p>

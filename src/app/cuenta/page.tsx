@@ -23,7 +23,7 @@ export default async function AccountPage() {
     <>
       <AnnouncementBar />
       <Navbar />
-      <main className="min-h-screen bg-sand-200">
+      <main className="min-h-screen bg-cream">
         <div className="max-w-screen-xl mx-auto px-6 py-16">
           <div className="max-w-2xl">
             <h1

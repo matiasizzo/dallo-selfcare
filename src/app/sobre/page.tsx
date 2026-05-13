@@ -15,7 +15,7 @@ export default function SobrePage() {
     <>
       <AnnouncementBar />
       <Navbar />
-      <main className="bg-white">
+      <main className="bg-cream">
 
         {/* Hero editorial */}
         <section className="max-w-screen-xl mx-auto px-8 pt-20 pb-16 border-b border-sand-300">

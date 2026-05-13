@@ -20,7 +20,7 @@ export default async function ProductsPage() {
     <>
       <AnnouncementBar />
       <Navbar />
-      <main className="min-h-screen bg-white">
+      <main className="min-h-screen bg-cream">
         <div className="max-w-screen-xl mx-auto px-8 pt-20 pb-4 border-b border-sand-300">
           <p className="text-[10px] tracking-[0.3em] uppercase text-text-muted mb-4">Catálogo</p>
           <h1 className="font-cormorant text-6xl font-light text-cocoa-900">
