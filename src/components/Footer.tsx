@@ -1,78 +1,104 @@
 'use client'
 
 import Link from 'next/link'
-import Image from 'next/image'
-import { Instagram } from 'lucide-react'
-
-const nutriLinks = [
-  { label: 'Dall\'Ó Nutri', href: '/coleccion/nutri' },
-  { label: 'Metabolism', href: '/coleccion/metabolism' },
-  { label: 'Balance', href: '/coleccion/balance' },
-  { label: 'Protection', href: '/coleccion/protection' },
-  { label: 'Energy', href: '/coleccion/energy' },
-  { label: 'Senolytic', href: '/coleccion/senolytic' },
-]
-
-const brandLinks = [
-  { label: 'Sobre nosotros', href: '/sobre' },
-  { label: 'Dall\'Ó Nutri', href: '/coleccion/nutri' },
-  { label: 'Dall\'Ó Skin', href: '/coleccion/skin' },
-  { label: 'Mi cuenta', href: '/cuenta' },
-  { label: 'Mis pedidos', href: '/cuenta/pedidos' },
-]
 
 export default function Footer() {
   return (
-    <footer className="w-full bg-white border-t border-sand-300">
+    <footer className="w-full bg-promo text-promo-ink">
+      {/* Main grid */}
+      <div className="max-w-[1600px] mx-auto px-[6vw] py-[80px] grid grid-cols-1 md:grid-cols-[1.3fr_1fr_1fr_1fr_1fr] gap-12 md:gap-8">
 
-      {/* Newsletter + links */}
-      <div className="max-w-screen-xl mx-auto px-8 py-20 grid grid-cols-1 md:grid-cols-3 gap-16">
-
-        {/* Newsletter */}
-        <div>
-          <h3 className="font-cormorant text-2xl font-light text-cocoa-900 mb-2 leading-snug">
-            Únete a la comunidad Dall'Ó
-          </h3>
-          <p className="text-xs text-text-muted mb-8 leading-relaxed">
-            Novedades, lanzamientos y contenido exclusivo.
+        {/* Col 1: Wordmark + brand text */}
+        <div className="flex flex-col gap-[22px]">
+          <span className="font-cormorant text-[26px] font-light text-promo-ink tracking-wide">
+            DALL<span className="italic">&apos;</span>Ó
+          </span>
+          <p className="text-[13px] leading-[1.6] max-w-[280px] m-0" style={{ color: '#b39c80' }}>
+            Skin Longevity Science.<br />
+            Formulado en Barcelona — atendido en consulta — enviado al mundo.
           </p>
-          <form onSubmit={(e) => e.preventDefault()} className="flex">
-            <input
-              type="email"
-              placeholder="Tu correo electrónico"
-              className="flex-1 border border-sand-400 bg-transparent px-4 py-3 text-xs text-text placeholder:text-text-muted focus:outline-none focus:border-cocoa-900 transition-colors"
-            />
-            <button
-              type="submit"
-              className="bg-cocoa-900 text-white text-[10px] tracking-[0.2em] uppercase px-5 py-3 hover:bg-cocoa-800 transition-colors"
-            >
-              Enviar
-            </button>
-          </form>
         </div>
 
-        {/* Nutri links */}
+        {/* Col 2: Tienda */}
         <div>
-          <p className="text-[10px] tracking-[0.25em] uppercase text-text-muted mb-6">Líneas</p>
-          <ul className="space-y-3">
-            {nutriLinks.map((link) => (
-              <li key={link.href}>
-                <Link href={link.href} className="text-xs tracking-[0.1em] uppercase text-text-muted hover:text-cocoa-900 transition-colors">
-                  {link.label}
+          <h5 className="text-[11px] tracking-[0.28em] uppercase text-promo-ink mb-5 font-[400]">Tienda</h5>
+          <ul className="flex flex-col gap-3 list-none p-0 m-0">
+            {[
+              { label: 'Dallo Skin', href: '/coleccion/skin' },
+              { label: 'Dallo Nutri', href: '/coleccion/nutri' },
+              { label: 'Todos los productos', href: '/productos' },
+            ].map(({ label, href }) => (
+              <li key={href}>
+                <Link href={href} className="text-[13px] transition-colors duration-250"
+                  style={{ color: '#d8c5ad' }}
+                  onMouseEnter={e => (e.currentTarget.style.color = '#faf6ed')}
+                  onMouseLeave={e => (e.currentTarget.style.color = '#d8c5ad')}>
+                  {label}
                 </Link>
               </li>
             ))}
           </ul>
         </div>
 
-        {/* Brand links */}
+        {/* Col 3: Clínica */}
         <div>
-          <p className="text-[10px] tracking-[0.25em] uppercase text-text-muted mb-6">Información</p>
-          <ul className="space-y-3">
-            {brandLinks.map((link) => (
-              <li key={link.href}>
-                <Link href={link.href} className="text-xs tracking-[0.1em] uppercase text-text-muted hover:text-cocoa-900 transition-colors">
-                  {link.label}
+          <h5 className="text-[11px] tracking-[0.28em] uppercase text-promo-ink mb-5 font-[400]">Clínica</h5>
+          <ul className="flex flex-col gap-3 list-none p-0 m-0">
+            {[
+              { label: 'Quevi Wellness', href: '/sobre' },
+              { label: 'Reservar consulta', href: '/sobre' },
+              { label: 'Protocolos', href: '/sobre' },
+            ].map(({ label, href }) => (
+              <li key={label}>
+                <Link href={href} className="text-[13px] transition-colors duration-250"
+                  style={{ color: '#d8c5ad' }}
+                  onMouseEnter={e => (e.currentTarget.style.color = '#faf6ed')}
+                  onMouseLeave={e => (e.currentTarget.style.color = '#d8c5ad')}>
+                  {label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Col 4: Atención */}
+        <div>
+          <h5 className="text-[11px] tracking-[0.28em] uppercase text-promo-ink mb-5 font-[400]">Atención</h5>
+          <ul className="flex flex-col gap-3 list-none p-0 m-0">
+            {[
+              { label: 'Envíos', href: '/sobre' },
+              { label: 'Devoluciones', href: '/sobre' },
+              { label: 'Preguntas frecuentes', href: '/sobre' },
+              { label: 'Contacto', href: '/sobre' },
+            ].map(({ label, href }) => (
+              <li key={label}>
+                <Link href={href} className="text-[13px] transition-colors duration-250"
+                  style={{ color: '#d8c5ad' }}
+                  onMouseEnter={e => (e.currentTarget.style.color = '#faf6ed')}
+                  onMouseLeave={e => (e.currentTarget.style.color = '#d8c5ad')}>
+                  {label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Col 5: Compañía */}
+        <div>
+          <h5 className="text-[11px] tracking-[0.28em] uppercase text-promo-ink mb-5 font-[400]">Compañía</h5>
+          <ul className="flex flex-col gap-3 list-none p-0 m-0">
+            {[
+              { label: 'Sobre DALL\'Ó', href: '/sobre' },
+              { label: 'Mi cuenta', href: '/cuenta' },
+              { label: 'Mis pedidos', href: '/cuenta/pedidos' },
+              { label: 'Instagram', href: 'https://instagram.com' },
+            ].map(({ label, href }) => (
+              <li key={label}>
+                <Link href={href} className="text-[13px] transition-colors duration-250"
+                  style={{ color: '#d8c5ad' }}
+                  onMouseEnter={e => (e.currentTarget.style.color = '#faf6ed')}
+                  onMouseLeave={e => (e.currentTarget.style.color = '#d8c5ad')}>
+                  {label}
                 </Link>
               </li>
             ))}
@@ -81,24 +107,10 @@ export default function Footer() {
       </div>
 
       {/* Bottom bar */}
-      <div className="border-t border-sand-300 max-w-screen-xl mx-auto px-8 py-5 flex items-center justify-between">
-        <p className="text-[10px] text-text-muted tracking-wide">
-          © {new Date().getFullYear()} DALL'Ó SELFCARE. Todos los derechos reservados.
-        </p>
-        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-text-muted hover:text-cocoa-900 transition-colors">
-          <Instagram size={15} strokeWidth={1.5} />
-        </a>
-      </div>
-
-      {/* Giant logo */}
-      <div className="w-full bg-cocoa-900 overflow-hidden py-14 flex items-center justify-center">
-        <Image
-          src="https://niuaflxfiyafckvseruu.supabase.co/storage/v1/object/public/assets/logo-nova-dallo-dark.webp"
-          alt="Dall'Ó Selfcare"
-          width={400}
-          height={120}
-          className="w-[40vw] max-w-sm h-auto opacity-90"
-        />
+      <div className="max-w-[1600px] mx-auto px-[6vw] py-5 border-t flex items-center justify-between text-[12px]"
+        style={{ borderColor: '#5a4030', color: '#b39c80' }}>
+        <span>© {new Date().getFullYear()} DALL&apos;Ó SELFCARE · Skin Longevity Science</span>
+        <span className="hidden md:block">BARCELONA · BUENOS AIRES</span>
       </div>
     </footer>
   )

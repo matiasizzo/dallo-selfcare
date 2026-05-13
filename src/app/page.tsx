@@ -12,9 +12,9 @@ export const metadata: Metadata = {
 
 import Navbar from '@/components/Navbar'
 import Hero from '@/components/Hero'
-import Editorial from '@/components/Editorial'
-import ProductGrid from '@/components/ProductGrid'
+import Values from '@/components/Values'
 import Collections from '@/components/Collections'
+import ProductGrid from '@/components/ProductGrid'
 import Footer from '@/components/Footer'
 import { getProducts } from '@/lib/products'
 
@@ -27,9 +27,14 @@ export default async function HomePage() {
       <Navbar />
       <main>
         <Hero />
-        <Editorial />
-        <ProductGrid products={products} />
+        <Values />
         <Collections />
+        <ProductGrid
+          products={products}
+          eyebrow="Formulaciones activas"
+          title='Todos los <em>productos</em>.'
+          showViewAll={false}
+        />
       </main>
       <Footer />
     </>

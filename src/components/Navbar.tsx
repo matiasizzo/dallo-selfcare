@@ -10,49 +10,51 @@ export default function Navbar() {
   const count = totalItems()
 
   return (
-    <nav className="w-full bg-white border-b border-sand-300 px-6 py-5 sticky top-0 z-50">
-      <div className="max-w-screen-xl mx-auto flex items-center justify-between">
+    <nav className="w-full sticky top-0 z-50 border-b border-line-soft" style={{ background: 'rgba(239,232,219,0.92)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}>
+      <div className="max-w-[1600px] mx-auto px-10 py-[22px] grid grid-cols-[1fr_auto_1fr] items-center">
 
         {/* Left nav */}
-        <div className="hidden md:flex items-center gap-8">
-          <Link href="/productos" className="text-[11px] tracking-[0.2em] uppercase text-text-muted hover:text-cocoa-900 transition-colors">
-            Todos los productos
-          </Link>
-          <Link href="/coleccion/nutri" className="text-[11px] tracking-[0.2em] uppercase text-text-muted hover:text-cocoa-900 transition-colors">
-            Dall'Ó Nutri
-          </Link>
-          <Link href="/coleccion/skin" className="text-[11px] tracking-[0.2em] uppercase text-text-muted hover:text-cocoa-900 transition-colors">
-            Dall'Ó Skin
-          </Link>
+        <div className="hidden md:flex items-center gap-9">
+          {[
+            { label: 'Tienda', href: '/productos' },
+            { label: 'Dallo Skin', href: '/coleccion/skin' },
+            { label: 'Dallo Nutri', href: '/coleccion/nutri' },
+            { label: 'Filosofía', href: '/sobre' },
+          ].map(({ label, href }) => (
+            <Link key={href} href={href} className="relative text-[13px] tracking-[0.04em] text-ink py-1.5 group">
+              {label}
+              <span className="absolute left-0 right-0 bottom-0 h-px bg-accent scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100" />
+            </Link>
+          ))}
         </div>
 
         {/* Center logo */}
-        <Link href="/" className="absolute left-1/2 -translate-x-1/2">
+        <Link href="/" className="justify-self-center">
           <Image
             src="https://niuaflxfiyafckvseruu.supabase.co/storage/v1/object/public/assets/logo-nova-dallo-black.svg"
             alt="Dall'Ó Selfcare"
-            width={120}
-            height={40}
+            width={110}
+            height={36}
             className="h-8 w-auto"
             priority
           />
         </Link>
 
-        {/* Right icons */}
-        <div className="flex items-center gap-5 ml-auto">
-          <button className="text-text-muted hover:text-cocoa-900 transition-colors" aria-label="Buscar">
-            <Search size={17} strokeWidth={1.5} />
+        {/* Right */}
+        <div className="flex items-center gap-[26px] justify-end text-[13px]">
+          <button className="text-ink hover:text-accent transition-colors" aria-label="Buscar">
+            <Search size={18} strokeWidth={1.2} />
           </button>
-          <Link href="/cuenta" className="text-text-muted hover:text-cocoa-900 transition-colors" aria-label="Mi cuenta">
-            <User size={17} strokeWidth={1.5} />
+          <Link href="/cuenta" className="text-ink hover:text-accent transition-colors" aria-label="Mi cuenta">
+            <User size={18} strokeWidth={1.2} />
           </Link>
-          <button onClick={openCart} className="text-text-muted hover:text-cocoa-900 transition-colors relative" aria-label="Carrito">
-            <ShoppingBag size={17} strokeWidth={1.5} />
-            {count > 0 && (
-              <span className="absolute -top-1.5 -right-1.5 bg-cocoa-900 text-white text-[9px] rounded-full w-4 h-4 flex items-center justify-center leading-none">
-                {count > 9 ? '9+' : count}
-              </span>
-            )}
+          <button
+            onClick={openCart}
+            className="inline-flex items-center gap-2 border border-ink rounded-full px-[14px] py-2 text-[13px] tracking-[0.02em] text-ink hover:bg-ink hover:text-paper transition-all duration-300"
+            aria-label="Carrito"
+          >
+            <ShoppingBag size={16} strokeWidth={1.2} />
+            Bolsa · {count}
           </button>
         </div>
       </div>
