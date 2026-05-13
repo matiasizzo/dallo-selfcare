@@ -1,16 +1,27 @@
+import Image from 'next/image'
+
 interface ToneStripProps {
   tagline: string
   sub: string
-  imgGradient: string
+  imgSrc?: string
+  imgAlt?: string
+  imgGradient?: string
   reverse?: boolean
 }
 
-export default function ToneStrip({ tagline, sub, imgGradient, reverse = false }: ToneStripProps) {
+export default function ToneStrip({
+  tagline,
+  sub,
+  imgSrc,
+  imgAlt = '',
+  imgGradient,
+  reverse = false,
+}: ToneStripProps) {
   const textCell = (
     <div
       key="text"
-      className="flex flex-col items-center justify-center text-center px-10 py-[40px] min-h-[280px]"
-      style={{ background: 'var(--color-bg-soft, #f0e7dc)' }}
+      className="flex flex-col items-center justify-center text-center px-10 py-[60px] min-h-[300px]"
+      style={{ background: '#f0e7dc' }}
     >
       <h3
         className="font-cormorant font-[400] text-ink tracking-[-0.005em] m-0 mb-3"
@@ -25,9 +36,19 @@ export default function ToneStrip({ tagline, sub, imgGradient, reverse = false }
   const imgCell = (
     <div
       key="img"
-      className="relative min-h-[280px] overflow-hidden"
-      style={{ background: imgGradient }}
+      className="relative min-h-[300px] overflow-hidden"
+      style={{ background: imgGradient ?? '#c9b394' }}
     >
+      {imgSrc && (
+        <Image
+          src={imgSrc}
+          alt={imgAlt}
+          fill
+          className="object-cover object-center"
+          sizes="(max-width: 768px) 100vw, 50vw"
+        />
+      )}
+      {/* Grain overlay */}
       <div
         className="absolute inset-0 pointer-events-none opacity-[0.15] mix-blend-overlay"
         style={{

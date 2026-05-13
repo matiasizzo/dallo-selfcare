@@ -3,7 +3,7 @@ import AnnouncementBar from '@/components/AnnouncementBar'
 import Navbar from '@/components/Navbar'
 import Hero from '@/components/Hero'
 import ToneStrip from '@/components/ToneStrip'
-import ProductGrid from '@/components/ProductGrid'
+import ProductCarousel from '@/components/ProductCarousel'
 import LineasGallery from '@/components/LineasGallery'
 import Footer from '@/components/Footer'
 import { getProducts } from '@/lib/products'
@@ -16,8 +16,13 @@ export const metadata: Metadata = {
   alternates: { canonical: '/' },
 }
 
+const NUTRI_SLUGS = ['balance', 'energy', 'metabolism', 'protection', 'senolytic']
+
 export default async function HomePage() {
   const products = await getProducts()
+
+  const skinProducts = products.filter(p => p.categories?.slug === 'skin')
+  const nutriProducts = products.filter(p => NUTRI_SLUGS.includes(p.categories?.slug ?? ''))
 
   return (
     <>
@@ -28,23 +33,40 @@ export default async function HomePage() {
 
         <ToneStrip
           tagline="Longevidad es salud"
-          sub="Nuestro compromiso con la excelencia se refleja en cada detalle."
-          imgGradient="radial-gradient(at 30% 40%, #f6d77e 0%, transparent 55%), radial-gradient(at 70% 60%, #c9985f 0%, transparent 50%), linear-gradient(135deg, #e8c785 0%, #a07440 100%)"
+          sub="Fórmulas magistrales elaboradas bajo pedido para reprogramar la biología de tu piel desde el primer gesto."
+          imgSrc="https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=900&q=85"
+          imgAlt="Ritual de skincare Dall'Ó"
         />
 
         <ToneStrip
           tagline="Alchemy and Longevity"
-          sub="Supplementing with science."
-          imgGradient="radial-gradient(at 40% 30%, #d9b394 0%, transparent 55%), linear-gradient(160deg, #b08868 0%, #5d3a23 100%)"
+          sub="Suplementación de precisión, formulada en cápsulas de liberación retardada para soportar tu ciclo biológico."
+          imgSrc="https://images.unsplash.com/photo-1471864190281-a93a3070b6de?w=900&q=85"
+          imgAlt="Suplementos Dall'Ó Nutri"
           reverse
         />
 
-        <ProductGrid
-          products={products}
-          title="Todos os Produtos"
-          showViewAll
-          anchor="tienda"
-        />
+        {/* Carrusel Dallo Skin */}
+        <div className="border-t border-line-soft">
+          <ProductCarousel
+            products={skinProducts}
+            eyebrow="Línea I · Topical"
+            title="Dallo Skin"
+            viewAllHref="/coleccion/skin"
+            viewAllLabel="Ver Dallo Skin"
+          />
+        </div>
+
+        {/* Carrusel Dallo Nutri */}
+        <div className="border-t border-line-soft">
+          <ProductCarousel
+            products={nutriProducts}
+            eyebrow="Línea II · Internal"
+            title="Dallo Nutri"
+            viewAllHref="/coleccion/nutri"
+            viewAllLabel="Ver Dallo Nutri"
+          />
+        </div>
 
         <LineasGallery />
       </main>
