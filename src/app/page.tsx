@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import AnnouncementBar from '@/components/AnnouncementBar'
 
+export const revalidate = 60
+
 export const metadata: Metadata = {
   title: "Dall'Ó Selfcare — Longevidad en salud",
   description: "Suplementación de precisión y cosmética de alto rendimiento para quienes entienden la ciencia del bienestar.",

@@ -5,6 +5,8 @@ import Footer from '@/components/Footer'
 import ProductGrid from '@/components/ProductGrid'
 import { getProducts } from '@/lib/products'
 
+export const revalidate = 60
+
 export const metadata: Metadata = {
   title: "Todos los productos",
   description: "Descubre la línea completa de suplementos y cosmética de Dall'Ó Selfcare. Ciencia aplicada al bienestar y la longevidad.",
