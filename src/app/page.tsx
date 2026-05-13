@@ -4,7 +4,7 @@ import Navbar from '@/components/Navbar'
 import Hero from '@/components/Hero'
 import ToneStrip from '@/components/ToneStrip'
 import dynamic from 'next/dynamic'
-const ProductCarousel = dynamic(() => import('@/components/ProductCarousel'))
+const ProductCarousel = dynamic(() => import('@/components/ProductCarousel'), { ssr: false })
 import LineasGallery from '@/components/LineasGallery'
 import Footer from '@/components/Footer'
 import { getProducts } from '@/lib/products'
