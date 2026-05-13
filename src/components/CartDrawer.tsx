@@ -16,7 +16,7 @@ export default function CartDrawer() {
         <>
           <motion.div
             className="fixed inset-0 z-40"
-            style={{ background: 'rgba(44,33,24,0.4)', backdropFilter: 'blur(4px)' }}
+            style={{ background: 'rgba(43,32,23,0.35)', backdropFilter: 'blur(4px)' }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -24,10 +24,9 @@ export default function CartDrawer() {
           />
 
           <motion.aside
-            className="fixed right-0 top-0 h-full z-50 flex flex-col"
+            className="fixed right-0 top-0 h-full z-50 flex flex-col bg-bg"
             style={{
               width: 'min(440px, 95vw)',
-              background: '#faf6ed',
               boxShadow: '-20px 0 60px rgba(0,0,0,0.15)',
             }}
             initial={{ x: '100%' }}
@@ -36,34 +35,44 @@ export default function CartDrawer() {
             transition={{ type: 'tween', duration: 0.28 }}
           >
             {/* Header */}
-            <div className="flex items-center justify-between px-8 py-7 border-b border-line">
-              <h3 className="font-cormorant font-light text-[28px] text-ink m-0">
+            <div className="flex items-center justify-between px-7 py-6 border-b border-line-soft">
+              <h3 className="font-cormorant font-[400] text-[24px] text-ink m-0">
                 Tu bolsa
-                {totalItems() > 0 && (
-                  <span className="ml-2 text-[14px] text-ink-mute font-[400] font-sans">({totalItems()})</span>
-                )}
               </h3>
               <button
                 onClick={closeCart}
-                className="text-[12px] tracking-[0.2em] uppercase text-ink-soft hover:text-ink transition-colors flex items-center gap-2"
+                className="text-ink-soft hover:text-ink transition-colors"
                 aria-label="Cerrar carrito"
               >
-                Cerrar <X size={14} strokeWidth={1.5} />
+                <X size={20} strokeWidth={1.4} />
               </button>
             </div>
 
             {/* Items */}
-            <div className="flex-1 overflow-y-auto px-8 py-3">
+            <div className="flex-1 overflow-y-auto px-7 py-2">
               {items.length === 0 ? (
-                <p className="font-cormorant text-[18px] italic text-ink-soft text-center py-[60px] leading-relaxed">
-                  Tu bolsa está vacía.<br />Las fórmulas frescas te esperan.
-                </p>
+                <div className="text-center py-[80px]">
+                  <h4 className="font-cormorant font-[400] text-[22px] text-ink m-0 mb-3">Tu carrito está vacío</h4>
+                  <p className="text-[13px] text-ink-soft m-0 mb-6">
+                    ¿Tienes una cuenta?{' '}
+                    <Link href="/cuenta/login" onClick={closeCart} className="underline underline-offset-2 hover:text-ink transition-colors">
+                      Inicia sesión
+                    </Link>{' '}
+                    para pagar más rápido.
+                  </p>
+                  <button
+                    onClick={closeCart}
+                    className="inline-flex items-center justify-center px-8 py-3 text-[13px] border border-brown bg-brown text-bg rounded-full hover:bg-brown-deep hover:border-brown-deep transition-all duration-300"
+                  >
+                    Seguir comprando
+                  </button>
+                </div>
               ) : (
                 <ul className="list-none p-0 m-0">
                   {items.map((item) => (
-                    <li key={item.variantId} className="grid gap-4 py-[18px] border-b border-line-soft last:border-0"
-                      style={{ gridTemplateColumns: '70px 1fr auto', alignItems: 'center' }}>
-                      <div className="relative w-[70px] h-[70px] bg-bg-card flex-shrink-0 rounded-sm overflow-hidden">
+                    <li key={item.variantId} className="grid gap-4 py-4 border-b border-line-soft last:border-0"
+                      style={{ gridTemplateColumns: '64px 1fr auto', alignItems: 'center' }}>
+                      <div className="w-16 h-16 bg-bg-gray flex-shrink-0 overflow-hidden relative">
                         {item.imageUrl ? (
                           <Image src={item.imageUrl} alt={item.name} fill className="object-cover" />
                         ) : (
@@ -72,35 +81,24 @@ export default function CartDrawer() {
                       </div>
 
                       <div className="min-w-0">
-                        <p className="font-cormorant text-[18px] text-ink leading-tight m-0 mb-1">{item.name}</p>
-                        <p className="text-[11px] tracking-[0.18em] uppercase text-ink-mute">
-                          {item.variantName && item.variantName !== 'Default' ? item.variantName : ''} ×{item.quantity}
-                        </p>
-                        <div className="flex items-center border border-line rounded-full overflow-hidden mt-3 w-fit">
-                          <button
-                            onClick={() => updateQuantity(item.variantId, item.quantity - 1)}
-                            className="px-3 py-1.5 text-ink-mute hover:text-ink transition-colors"
-                            aria-label="Reducir"
-                          >
+                        <p className="text-[13px] font-[500] text-ink m-0 mb-[2px] truncate">{item.name}</p>
+                        {item.variantName && item.variantName !== 'Default' && (
+                          <p className="text-[11px] text-ink-mute m-0">{item.variantName}</p>
+                        )}
+                        <div className="flex items-center border border-line-soft rounded-full overflow-hidden mt-2 w-fit">
+                          <button onClick={() => updateQuantity(item.variantId, item.quantity - 1)} className="px-3 py-1.5 text-ink-mute hover:text-ink transition-colors" aria-label="Reducir">
                             <Minus size={11} />
                           </button>
                           <span className="px-2 text-xs text-ink min-w-[1.5rem] text-center">{item.quantity}</span>
-                          <button
-                            onClick={() => updateQuantity(item.variantId, item.quantity + 1)}
-                            className="px-3 py-1.5 text-ink-mute hover:text-ink transition-colors"
-                            aria-label="Aumentar"
-                          >
+                          <button onClick={() => updateQuantity(item.variantId, item.quantity + 1)} className="px-3 py-1.5 text-ink-mute hover:text-ink transition-colors" aria-label="Aumentar">
                             <Plus size={11} />
                           </button>
                         </div>
                       </div>
 
                       <div className="text-right">
-                        <p className="text-[14px] text-ink mb-1">{formatPrice(item.priceCents * item.quantity)}</p>
-                        <button
-                          onClick={() => removeItem(item.variantId)}
-                          className="text-[11px] text-ink-mute underline underline-offset-2 hover:text-ink transition-colors"
-                        >
+                        <p className="text-[13px] text-ink m-0 mb-1">{formatPrice(item.priceCents * item.quantity)}</p>
+                        <button onClick={() => removeItem(item.variantId)} className="text-[11px] text-ink-mute underline underline-offset-2 hover:text-ink transition-colors">
                           Quitar
                         </button>
                       </div>
@@ -112,24 +110,18 @@ export default function CartDrawer() {
 
             {/* Footer */}
             {items.length > 0 && (
-              <div className="px-8 py-6 border-t border-line space-y-5">
-                <div className="flex justify-between items-center">
+              <div className="px-7 py-6 border-t border-line-soft space-y-4">
+                <div className="flex justify-between items-baseline">
                   <span className="text-[13px] text-ink-soft">Subtotal</span>
-                  <span className="font-cormorant text-[22px] font-light text-ink">{formatPrice(totalCents())}</span>
+                  <span className="font-cormorant text-[20px] font-[400] text-ink">{formatPrice(totalCents())}</span>
                 </div>
                 <Link
                   href="/checkout"
                   onClick={closeCart}
-                  className="flex items-center justify-center gap-[10px] w-full py-[14px] text-[13px] tracking-[0.12em] uppercase border border-ink bg-ink text-paper rounded-full hover:bg-accent-deep hover:border-accent-deep transition-all duration-300"
+                  className="flex items-center justify-center w-full py-[14px] text-[13px] font-[500] tracking-[0.02em] bg-brown text-bg border border-brown rounded-full hover:bg-brown-deep hover:border-brown-deep transition-all duration-300"
                 >
                   Tramitar pedido
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                    <path d="M5 12h14M13 6l6 6-6 6" />
-                  </svg>
                 </Link>
-                <p className="text-[11px] text-ink-mute text-center tracking-[0.06em]">
-                  Pago seguro · Envío fresco refrigerado · Tu fórmula firmada por el Dr. Dall&apos;Ó
-                </p>
               </div>
             )}
           </motion.aside>

@@ -2,55 +2,65 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { type Product, formatPrice, getDefaultVariant } from '@/lib/products'
+import { Plus } from 'lucide-react'
+import { type Product, formatPrice, getDefaultVariant, LINE_COLORS } from '@/lib/products'
+import { useCart } from '@/store/cart'
 
 function ProductCard({ product }: { product: Product }) {
-  const category = product.categories
+  const { addItem } = useCart()
   const variant = getDefaultVariant(product)
+  const lineColor = LINE_COLORS[product.categories?.slug ?? ''] ?? '#553b2e'
+
+  const handleAdd = (e: React.MouseEvent) => {
+    e.preventDefault()
+    if (!variant) return
+    addItem({
+      variantId: variant.id,
+      productId: product.id,
+      name: product.name,
+      variantName: variant.name,
+      priceCents: variant.price_cents,
+      imageUrl: product.image_url ?? null,
+      lineColor,
+    })
+  }
 
   return (
-    <Link
-      href={`/productos/${product.slug}`}
-      className="group flex flex-col bg-bg-card hover:bg-paper transition-colors duration-300"
-    >
-      {/* Image */}
-      <div className="relative aspect-[4/5] overflow-hidden flex items-center justify-center">
+    <Link href={`/productos/${product.slug}`} className="group block cursor-pointer">
+      {/* Square image */}
+      <div
+        className="relative aspect-square overflow-hidden flex items-center justify-center transition-colors duration-300"
+        style={{ background: 'var(--color-bg-gray, #ebe7e0)' }}
+      >
         {product.image_url ? (
           <Image
             src={product.image_url}
             alt={product.name}
             fill
-            className="object-cover object-center transition-transform duration-500 group-hover:-translate-y-[6px] group-hover:-rotate-1"
+            className="object-contain object-center w-[78%] transition-transform duration-500 group-hover:-translate-y-1"
             sizes="(max-width: 768px) 50vw, 25vw"
           />
         ) : (
-          <div className="w-full h-full bg-bg-card flex items-center justify-center">
-            <span className="text-ink-mute text-xs">Sin imagen</span>
-          </div>
+          <div className="w-full h-full" />
         )}
+
+        {/* Hover add button */}
+        <button
+          onClick={handleAdd}
+          className="absolute bottom-4 left-4 right-4 bg-paper text-ink border border-line-soft rounded-full py-[11px] px-4 text-[12px] font-[500] tracking-[0.02em] flex items-center justify-center gap-2 opacity-0 translate-y-[10px] group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-[350ms] hover:bg-ink hover:text-bg hover:border-ink"
+          aria-label={`Añadir ${product.name}`}
+        >
+          <Plus size={14} strokeWidth={1.5} />
+          Añadir
+        </button>
       </div>
 
-      {/* Body */}
-      <div className="flex flex-col gap-1 px-7 pt-6 pb-[30px] border-t border-line-soft">
-        {category && (
-          <p className="text-[10px] tracking-[0.28em] uppercase text-ink-mute mb-2">{category.name}</p>
+      {/* Card body */}
+      <div className="px-1 pt-4 pb-2 flex flex-col gap-[2px]">
+        <h3 className="text-[14px] font-[500] tracking-[0.02em] text-ink m-0">{product.name}</h3>
+        {variant && (
+          <p className="text-[13px] text-ink-soft mt-[2px]">{formatPrice(variant.price_cents)}</p>
         )}
-        <h3 className="font-cormorant font-[400] text-[22px] leading-[1.15] text-ink tracking-[0.005em] m-0">
-          {product.name}
-        </h3>
-        {product.tagline && (
-          <p className="font-cormorant font-[400] text-[13px] italic text-ink-soft leading-[1.4] mt-1 mb-[14px]">
-            {product.tagline}
-          </p>
-        )}
-        <div className="flex items-center justify-between mt-auto pt-[6px]">
-          {variant && (
-            <span className="text-[14px] text-ink">{formatPrice(variant.price_cents)}</span>
-          )}
-          <span className="text-[12px] tracking-[0.12em] uppercase text-ink border-b border-ink pb-px transition-[padding] duration-300 group-hover:pr-1">
-            Añadir →
-          </span>
-        </div>
       </div>
     </Link>
   )
@@ -59,21 +69,19 @@ function ProductCard({ product }: { product: Product }) {
 interface ProductGridProps {
   products: Product[]
   title?: string
-  eyebrow?: string
   showViewAll?: boolean
   anchor?: string
 }
 
 export default function ProductGrid({
   products,
-  title = 'Todos los productos',
-  eyebrow,
+  title = 'Todos os Produtos',
   showViewAll = true,
   anchor,
 }: ProductGridProps) {
   if (products.length === 0) {
     return (
-      <section className="w-full py-24 px-[6vw]">
+      <section className="w-full py-16 px-8">
         <div className="max-w-[1600px] mx-auto text-center">
           <p className="text-ink-mute text-sm">No hay productos disponibles.</p>
         </div>
@@ -82,33 +90,28 @@ export default function ProductGrid({
   }
 
   return (
-    <section className="w-full py-[110px] px-[6vw]" id={anchor}>
+    <section className="w-full py-[70px] px-8" id={anchor}>
       <div className="max-w-[1600px] mx-auto">
         {/* Section header */}
-        <div className="flex items-end justify-between gap-10 mb-14 pb-6 border-b border-line">
-          <div>
-            {eyebrow && (
-              <p className="text-[11px] tracking-[0.3em] uppercase text-ink-mute mb-3">{eyebrow}</p>
-            )}
-            <h2
-              className="font-cormorant font-light leading-[1] tracking-[-0.01em] text-ink m-0"
-              style={{ fontSize: 'clamp(34px, 4.2vw, 56px)' }}
-              dangerouslySetInnerHTML={{ __html: title.replace(/<em>/g, '<em style="font-style:italic;color:#6b3722">') }}
-            />
-          </div>
+        <div className="flex items-end justify-between gap-10 mb-8">
+          <h2
+            className="font-cormorant font-[400] text-ink m-0 tracking-[-0.005em]"
+            style={{ fontSize: 'clamp(26px, 2.6vw, 34px)', lineHeight: 1.1 }}
+          >
+            {title}
+          </h2>
           {showViewAll && (
-            <div className="text-[13px] text-ink-soft text-right hidden md:block">
-              {products.length} fórmulas activas. Cada unidad se elabora en el momento de tu pedido.
-              <br />
-              <Link href="/productos" className="text-ink border-b border-ink pb-px whitespace-nowrap hover:text-accent transition-colors">
-                Ver todos los productos →
-              </Link>
-            </div>
+            <Link
+              href="/productos"
+              className="text-[13px] text-ink border-b border-ink pb-[2px] whitespace-nowrap hover:text-brown hover:border-brown transition-colors"
+            >
+              Ver todo
+            </Link>
           )}
         </div>
 
-        {/* Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-line border border-line">
+        {/* Grid: 4-col with 12px gaps */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
           {products.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}

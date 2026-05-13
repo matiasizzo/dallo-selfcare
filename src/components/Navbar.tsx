@@ -10,20 +10,22 @@ export default function Navbar() {
   const count = totalItems()
 
   return (
-    <nav className="w-full sticky top-0 z-50 border-b border-line-soft" style={{ background: 'rgba(239,232,219,0.92)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}>
-      <div className="max-w-[1600px] mx-auto px-10 py-[22px] grid grid-cols-[1fr_auto_1fr] items-center">
+    <nav className="w-full sticky top-0 z-50 bg-bg border-b border-transparent transition-[border-color] duration-300">
+      <div className="max-w-[1600px] mx-auto px-8 py-5 grid grid-cols-[1fr_auto_1fr] items-center">
 
         {/* Left nav */}
-        <div className="hidden md:flex items-center gap-9">
+        <div className="hidden md:flex items-center gap-7">
           {[
-            { label: 'Tienda', href: '/productos' },
-            { label: 'Dallo Skin', href: '/coleccion/skin' },
+            { label: 'Todos los productos', href: '/productos' },
             { label: 'Dallo Nutri', href: '/coleccion/nutri' },
-            { label: 'Filosofía', href: '/sobre' },
+            { label: 'Dallo Skin', href: '/coleccion/skin' },
           ].map(({ label, href }) => (
-            <Link key={href} href={href} className="relative text-[13px] tracking-[0.04em] text-ink py-1.5 group">
+            <Link
+              key={href}
+              href={href}
+              className="text-[13px] tracking-[0.01em] text-ink hover:text-brown transition-colors duration-250"
+            >
               {label}
-              <span className="absolute left-0 right-0 bottom-0 h-px bg-accent scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100" />
             </Link>
           ))}
         </div>
@@ -41,20 +43,30 @@ export default function Navbar() {
         </Link>
 
         {/* Right */}
-        <div className="flex items-center gap-[26px] justify-end text-[13px]">
-          <button className="text-ink hover:text-accent transition-colors" aria-label="Buscar">
-            <Search size={18} strokeWidth={1.2} />
+        <div className="flex items-center gap-[22px] justify-end">
+          <span className="hidden md:flex items-center gap-1 text-[13px] text-ink cursor-pointer select-none">
+            EUR
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
+              <path d="m6 9 6 6 6-6"/>
+            </svg>
+          </span>
+          <button className="text-ink hover:text-brown transition-colors" aria-label="Buscar">
+            <Search size={18} strokeWidth={1.3} />
           </button>
-          <Link href="/cuenta" className="text-ink hover:text-accent transition-colors" aria-label="Mi cuenta">
-            <User size={18} strokeWidth={1.2} />
+          <Link href="/cuenta" className="text-ink hover:text-brown transition-colors" aria-label="Mi cuenta">
+            <User size={18} strokeWidth={1.3} />
           </Link>
           <button
             onClick={openCart}
-            className="inline-flex items-center gap-2 border border-ink rounded-full px-[14px] py-2 text-[13px] tracking-[0.02em] text-ink hover:bg-ink hover:text-paper transition-all duration-300"
-            aria-label="Carrito"
+            className="relative text-ink hover:text-brown transition-colors"
+            aria-label="Bolsa"
           >
-            <ShoppingBag size={16} strokeWidth={1.2} />
-            Bolsa · {count}
+            <ShoppingBag size={18} strokeWidth={1.3} />
+            {count > 0 && (
+              <span className="absolute -top-1.5 -right-2 bg-brown text-bg rounded-full text-[10px] font-[600] min-w-[16px] h-4 flex items-center justify-center px-1 leading-none">
+                {count}
+              </span>
+            )}
           </button>
         </div>
       </div>
