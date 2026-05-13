@@ -3,8 +3,7 @@ import AnnouncementBar from '@/components/AnnouncementBar'
 import Navbar from '@/components/Navbar'
 import Hero from '@/components/Hero'
 import ToneStrip from '@/components/ToneStrip'
-import dynamic from 'next/dynamic'
-const ProductCarousel = dynamic(() => import('@/components/ProductCarousel'), { ssr: false })
+import ProductCarousels from '@/components/ProductCarousels'
 import LineasGallery from '@/components/LineasGallery'
 import Footer from '@/components/Footer'
 import { getProducts } from '@/lib/products'
@@ -47,27 +46,7 @@ export default async function HomePage() {
           reverse
         />
 
-        {/* Carrusel Dallo Skin */}
-        <div className="border-t border-line-soft">
-          <ProductCarousel
-            products={skinProducts}
-            eyebrow="Línea I · Topical"
-            title="Dallo Skin"
-            viewAllHref="/coleccion/skin"
-            viewAllLabel="Ver Dallo Skin"
-          />
-        </div>
-
-        {/* Carrusel Dallo Nutri */}
-        <div className="border-t border-line-soft">
-          <ProductCarousel
-            products={nutriProducts}
-            eyebrow="Línea II · Internal"
-            title="Dallo Nutri"
-            viewAllHref="/coleccion/nutri"
-            viewAllLabel="Ver Dallo Nutri"
-          />
-        </div>
+        <ProductCarousels skinProducts={skinProducts} nutriProducts={nutriProducts} />
 
         <LineasGallery />
       </main>
