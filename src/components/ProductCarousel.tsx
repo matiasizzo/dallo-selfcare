@@ -34,7 +34,7 @@ function CarouselCard({ product }: { product: Product }) {
       {/* Square image */}
       <div
         className="relative aspect-square overflow-hidden flex items-center justify-center transition-colors duration-300 mb-0"
-        style={{ background: '#ebe7e0' }}
+        style={{ background: '#f6eee6' }}
       >
         {product.image_url ? (
           <Image
