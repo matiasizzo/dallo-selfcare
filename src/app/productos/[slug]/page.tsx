@@ -9,6 +9,8 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import ProductActions from '@/components/ProductActions'
 import ProductGrid from '@/components/ProductGrid'
+import ProductAccordion from '@/components/ProductAccordion'
+import type { AccordionItem } from '@/components/ProductAccordion'
 import { getProductBySlug, getProducts, formatPrice, getDefaultVariant } from '@/lib/products'
 
 interface Props {
@@ -48,6 +50,8 @@ export async function generateStaticParams() {
   return products.map((p) => ({ slug: p.slug }))
 }
 
+const SKIN_SLUGS = ['skin']
+
 export default async function ProductPage({ params }: Props) {
   const { slug } = await params
   const [product, allProducts] = await Promise.all([
@@ -60,17 +64,24 @@ export default async function ProductPage({ params }: Props) {
   const defaultVariant = getDefaultVariant(product)
   if (!defaultVariant) notFound()
 
+  const isSkin = SKIN_SLUGS.includes(product.categories?.slug ?? '')
+
+  // Related: same category, exclude current
   const related = allProducts
-    .filter((p) =>
-      p.id !== product.id &&
-      p.categories?.slug === product.categories?.slug
-    )
+    .filter((p) => p.id !== product.id && p.categories?.slug === product.categories?.slug)
     .slice(0, 4)
 
-  const sectionTitle = product.categories?.slug === 'skin'
-    ? 'Otros Dallo Skin'
-    : 'Otros Dallo Nutri'
+  // Cross-sell: one product from the opposite line
+  const crossSell = allProducts.find((p) =>
+    p.id !== product.id &&
+    getDefaultVariant(p) !== undefined &&
+    (getDefaultVariant(p)?.price_cents ?? 0) > 0 &&
+    (isSkin
+      ? p.categories?.slug !== 'skin'
+      : p.categories?.slug === 'skin')
+  ) ?? null
 
+  const sectionTitle = isSkin ? 'Otros Dallo Skin' : 'Otros Dallo Nutri'
   const priceFormatted = formatPrice(defaultVariant.price_cents)
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? ''
 
@@ -93,8 +104,34 @@ export default async function ProductPage({ params }: Props) {
     },
   }
 
+  // Build accordion items — only sections with actual content
+  const accordionItems: AccordionItem[] = []
+  if (product.description) {
+    accordionItems.push({ label: 'Descripción & Beneficios', content: product.description })
+  }
+  if (product.ingredients) {
+    accordionItems.push({ label: 'Ingredientes INCI', content: product.ingredients })
+  }
+  const usageParts = [product.usage_instructions, product.dosage, product.frequency].filter(Boolean) as string[]
+  if (usageParts.length > 0) {
+    accordionItems.push({ label: 'Modo de uso', content: usageParts.join('\n') })
+  }
   const nutritional = product.nutritional_info
   const hasNutritional = nutritional?.items && nutritional.items.length > 0
+  if (hasNutritional) {
+    const rows = nutritional!.items!.map(r => `${r.name}: ${r.amount}${r.nrv ? ` (${r.nrv}%VRN)` : ''}`).join('\n')
+    const nutText = nutritional!.serving ? `Servicio: ${nutritional!.serving}\n${rows}` : rows
+    accordionItems.push({ label: 'Información nutricional', content: nutText })
+  }
+  const storageParts = [
+    product.storage,
+    product.shelf_life_months ? `Caducidad: ${product.shelf_life_months} meses tras apertura` : null,
+  ].filter(Boolean) as string[]
+  if (storageParts.length > 0) {
+    accordionItems.push({ label: 'Conservación', content: storageParts.join('\n') })
+  }
+
+  const crossSellVariant = crossSell ? getDefaultVariant(crossSell) : null
 
   return (
     <>
@@ -107,11 +144,31 @@ export default async function ProductPage({ params }: Props) {
 
       <main className="min-h-screen bg-cream">
 
-        {/* ── Product hero: full-bleed 2-col ── */}
-        <section className="grid grid-cols-1 md:grid-cols-2 min-h-[90vh]">
+        {/* ── PDP: imagen izquierda sticky / info derecha ── */}
+        <section className="flex flex-col md:flex-row">
 
-          {/* LEFT: info */}
-          <div className="flex flex-col justify-center px-10 py-16 lg:px-20 xl:px-24 bg-cream order-2 md:order-1">
+          {/* IMAGEN — arriba en móvil, columna izquierda sticky en desktop */}
+          <div className="md:w-1/2 md:sticky md:top-16 md:self-start">
+            <div className="relative w-full aspect-square bg-sand-100">
+              {product.image_url ? (
+                <Image
+                  src={product.image_url}
+                  alt={product.name}
+                  fill
+                  className="object-contain p-10 md:p-16"
+                  priority
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center">
+                  <span className="text-text-muted text-sm">Sin imagen</span>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* INFO — debajo en móvil, columna derecha en desktop */}
+          <div className="md:w-1/2 flex flex-col px-8 py-12 lg:px-14 xl:px-20 bg-cream">
 
             {/* Breadcrumb */}
             {product.categories && (
@@ -129,19 +186,26 @@ export default async function ProductPage({ params }: Props) {
               </nav>
             )}
 
-            {/* Name */}
-            <h1 className="font-cormorant text-5xl md:text-6xl lg:text-7xl font-light text-cocoa-900 leading-none tracking-wide mb-4">
+            {/* Nombre */}
+            <h1 className="font-cormorant text-4xl md:text-5xl lg:text-6xl font-light text-cocoa-900 leading-none tracking-wide mb-4">
               {product.name}
             </h1>
 
             {/* Tagline */}
             {product.tagline && (
-              <p className="text-xs tracking-[0.15em] uppercase text-text-muted mb-6 max-w-xs leading-relaxed">
+              <p className="text-xs tracking-[0.15em] uppercase text-text-muted mb-4 leading-relaxed">
                 {product.tagline}
               </p>
             )}
 
-            {/* Price */}
+            {/* Peso / Volumen */}
+            {(product.net_weight ?? product.volume_ml) && (
+              <p className="text-[11px] text-text-muted tracking-wide mb-4">
+                {product.net_weight ?? `${product.volume_ml} ml`}
+              </p>
+            )}
+
+            {/* Precio */}
             <div className="flex items-baseline gap-3 mb-1">
               <span className="text-xl text-cocoa-900">{priceFormatted}</span>
               {defaultVariant.compare_at_cents &&
@@ -155,95 +219,58 @@ export default async function ProductPage({ params }: Props) {
               Envío calculado en el pago
             </p>
 
-            {/* Variant selector + qty + add to cart */}
-            <div className="max-w-sm">
-              <ProductActions product={product} defaultVariant={defaultVariant} />
-            </div>
+            {/* Variante + cantidad + añadir al carrito */}
+            <ProductActions product={product} defaultVariant={defaultVariant} />
 
-            {/* Description */}
-            {product.description && (
-              <div className="mt-10 border-t border-sand-300 pt-8 max-w-sm">
-                <p className="text-sm text-text leading-relaxed whitespace-pre-line">
-                  {product.description}
-                </p>
+            {/* Acordeones de detalle */}
+            {accordionItems.length > 0 && (
+              <div className="mt-10">
+                <ProductAccordion items={accordionItems} />
               </div>
             )}
 
-            {/* Details grid */}
-            <div className="mt-8 space-y-5 max-w-sm">
-              {product.ingredients && (
-                <div>
-                  <p className="text-[10px] tracking-[0.25em] uppercase text-text-muted mb-1">Ingredientes</p>
-                  <p className="text-xs text-text leading-relaxed">{product.ingredients}</p>
-                </div>
-              )}
-              {product.usage_instructions && (
-                <div>
-                  <p className="text-[10px] tracking-[0.25em] uppercase text-text-muted mb-1">Modo de uso</p>
-                  <p className="text-xs text-text leading-relaxed">{product.usage_instructions}</p>
-                </div>
-              )}
-              {(product.net_weight ?? product.volume_ml) && (
-                <div>
-                  <p className="text-[10px] tracking-[0.25em] uppercase text-text-muted mb-1">Peso neto</p>
-                  <p className="text-xs text-text">
-                    {product.net_weight ?? `${product.volume_ml} ml`}
-                  </p>
-                </div>
-              )}
-            </div>
-
-            {/* Nutritional table */}
-            {hasNutritional && (
-              <div className="mt-10 border border-sand-400 max-w-sm">
-                <div className="grid grid-cols-3 bg-cocoa-900 text-sand-100 text-[9px] tracking-[0.12em] uppercase px-3 py-2 gap-2">
-                  <span>Información nutricional</span>
-                  <span className="text-center">Por toma / Perserving</span>
-                  <span className="text-right">%VRN* NRV*</span>
-                </div>
-                {nutritional!.serving && (
-                  <div className="px-3 py-2 border-b border-sand-300">
-                    <span className="text-[11px] text-text">Servicio/Serving: {nutritional!.serving}</span>
+            {/* ── Cross-sell: Completa tu ritual ── */}
+            {crossSell && crossSellVariant && (
+              <div className="mt-10 bg-cocoa-900 p-6">
+                <p className="text-[10px] tracking-[0.25em] uppercase text-gold mb-5">
+                  ✦ Completa tu ritual {isSkin ? 'senolítico' : ''}
+                </p>
+                <div className="flex items-stretch gap-3">
+                  {/* Producto actual */}
+                  <div className="flex-1 border border-sand-600 p-4 text-center">
+                    <p className="text-[9px] tracking-[0.15em] uppercase text-sand-400 mb-2">
+                      Este producto
+                    </p>
+                    <p className="font-cormorant text-lg font-light text-sand-100 leading-tight">
+                      {product.name}
+                    </p>
                   </div>
-                )}
-                {nutritional!.items!.map((row, i) => (
-                  <div
-                    key={i}
-                    className="grid grid-cols-3 px-3 py-2 border-b border-sand-300 last:border-0 text-xs text-text gap-2"
+
+                  {/* Separador */}
+                  <div className="flex items-center text-gold text-xl font-light">+</div>
+
+                  {/* Producto complementario */}
+                  <Link
+                    href={`/productos/${crossSell.slug}`}
+                    className="flex-1 border border-sand-700 hover:border-gold p-4 text-center transition-colors group"
                   >
-                    <span>{row.name}</span>
-                    <span className="text-center">{row.amount}</span>
-                    <span className="text-right">{row.nrv ?? '—'}</span>
-                  </div>
-                ))}
-                <p className="px-3 py-2 text-[10px] text-text-muted">
-                  *VRN=Valor de referencia de nutrientes / NRV=Nutrient reference value
-                </p>
-              </div>
-            )}
-          </div>
-
-          {/* RIGHT: image — full-bleed, no padding */}
-          <div className="relative min-h-[60vw] md:min-h-0 bg-sand-200 order-1 md:order-2">
-            {product.image_url ? (
-              <Image
-                src={product.image_url}
-                alt={product.name}
-                fill
-                className="object-cover object-center"
-                priority
-                sizes="(max-width: 768px) 100vw, 50vw"
-              />
-            ) : (
-              <div className="w-full h-full flex items-center justify-center">
-                <span className="text-text-muted text-sm">Sin imagen</span>
+                    <p className="text-[9px] tracking-[0.15em] uppercase text-sand-400 mb-2">
+                      {isSkin ? 'Suplemento' : 'Cosmética'}
+                    </p>
+                    <p className="font-cormorant text-lg font-light text-sand-100 leading-tight group-hover:text-gold transition-colors">
+                      {crossSell.name}
+                    </p>
+                    <p className="text-[11px] text-sand-400 mt-1">
+                      {formatPrice(crossSellVariant.price_cents)}
+                    </p>
+                  </Link>
+                </div>
               </div>
             )}
           </div>
         </section>
 
-
-        {/* ── Related products ── */}
+        {/* ── Productos relacionados ── */}
         {related.length > 0 && (
           <div className="bg-sand-50">
             <ProductGrid products={related} title={sectionTitle} showViewAll={false} />
