@@ -3,10 +3,10 @@ import AnnouncementBar from '@/components/AnnouncementBar'
 import Navbar from '@/components/Navbar'
 import Hero from '@/components/Hero'
 import BrandManifesto from '@/components/BrandManifesto'
-import ObjectiveFilter from '@/components/ObjectiveFilter'
+import ProductCarousels from '@/components/ProductCarousels'
 import LineasGallery from '@/components/LineasGallery'
 import Footer from '@/components/Footer'
-import { getProducts } from '@/lib/products'
+import { getProducts, getProductsByCategory } from '@/lib/products'
 
 export const revalidate = 60
 
@@ -16,8 +16,22 @@ export const metadata: Metadata = {
   alternates: { canonical: '/' },
 }
 
+const NUTRI_SLUGS = ['balance', 'energy', 'metabolism', 'protection', 'senolytic']
+
 export default async function HomePage() {
-  const products = await getProducts()
+  const [products, skinProducts, nutriByCategory] = await Promise.all([
+    getProducts(),
+    getProductsByCategory('skin'),
+    getProductsByCategory('nutri'),
+  ])
+
+  const resolvedSkin = skinProducts.length > 0
+    ? skinProducts
+    : products.filter(p => p.categories?.slug === 'skin')
+
+  const resolvedNutri = nutriByCategory.length > 0
+    ? nutriByCategory
+    : products.filter(p => NUTRI_SLUGS.includes(p.categories?.slug ?? ''))
 
   return (
     <>
@@ -26,7 +40,7 @@ export default async function HomePage() {
       <main>
         <Hero />
         <BrandManifesto />
-        <ObjectiveFilter products={products} />
+        <ProductCarousels skinProducts={resolvedSkin} nutriProducts={resolvedNutri} />
         <LineasGallery />
       </main>
       <Footer />
