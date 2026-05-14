@@ -2,39 +2,29 @@
 
 import Link from 'next/link'
 
-function SocialIcon({ d, label }: { d: string; label: string }) {
-  return (
-    <a href="#" aria-label={label} className="opacity-70 hover:opacity-100 transition-opacity">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
-        <path d={d} />
-      </svg>
-    </a>
-  )
-}
-
 export default function Footer() {
   return (
     <footer className="w-full bg-brown text-bg mt-[60px]">
 
       {/* Top: newsletter + link cols */}
-      <div className="max-w-[1600px] mx-auto px-8 py-[70px] grid grid-cols-1 md:grid-cols-[1.6fr_1fr_1fr] gap-[60px]">
+      <div className="max-w-[1600px] mx-auto px-6 md:px-8 pt-[60px] pb-[50px] grid grid-cols-1 md:grid-cols-[1.8fr_1fr_1fr_1fr] gap-10 md:gap-[50px]">
 
         {/* Newsletter */}
         <div>
-          <h4 className="text-[15px] font-[500] text-bg m-0 mb-[6px]">Faça parte da comunidade Dall&apos;Ó</h4>
+          <h4 className="text-[15px] font-[500] text-bg m-0 mb-[6px]">Sé parte de la comunidad Dall&apos;Ó</h4>
           <p className="text-[13px] m-0 mb-5" style={{ color: 'rgba(246,238,230,0.7)' }}>
-            Fique por dentro das novidades e lançamentos.
+            Enterate de novedades y lanzamientos.
           </p>
           <form onSubmit={e => e.preventDefault()} className="flex gap-2 max-w-[460px]">
             <input
               type="email"
               required
-              placeholder="Dirección de correo electrónico"
-              className="flex-1 bg-transparent border border-[rgba(246,238,230,0.4)] rounded-full px-[22px] py-3 text-[13px] text-bg placeholder:text-[rgba(246,238,230,0.45)] outline-none focus:border-bg transition-colors"
+              placeholder="Tu dirección de correo"
+              className="flex-1 min-w-0 bg-transparent border border-[rgba(246,238,230,0.4)] rounded-full px-5 py-3 text-[13px] text-bg placeholder:text-[rgba(246,238,230,0.45)] outline-none focus:border-bg transition-colors"
             />
             <button
               type="submit"
-              className="bg-bg text-brown border border-bg rounded-full px-[26px] py-3 text-[13px] font-[500] hover:bg-transparent hover:text-bg transition-all duration-250 whitespace-nowrap"
+              className="bg-bg text-brown border border-bg rounded-full px-5 py-3 text-[13px] font-[500] hover:bg-transparent hover:text-bg transition-all duration-200 whitespace-nowrap flex-shrink-0"
             >
               Enviar
             </button>
@@ -43,15 +33,20 @@ export default function Footer() {
 
         {/* Dallo Nutri */}
         <div>
-          <h5 className="text-[14px] font-[500] text-bg m-0 mb-4">Dallo Nutri</h5>
+          <h5 className="text-[13px] font-[500] text-bg m-0 mb-4 tracking-[0.05em] uppercase">Dallo Nutri</h5>
           <ul className="list-none p-0 m-0 flex flex-col gap-[10px]">
-            {['Metabolism', 'Balance', 'Protection', 'Energy', 'Senolytic'].map(label => (
+            {[
+              { label: 'Ver colección', href: '/coleccion/nutri' },
+              { label: 'Metabolism', href: '/coleccion/nutri' },
+              { label: 'Balance', href: '/coleccion/nutri' },
+              { label: 'Energy', href: '/coleccion/nutri' },
+              { label: 'Protection', href: '/coleccion/nutri' },
+            ].map(({ label, href }) => (
               <li key={label}>
-                <Link href={`/coleccion/${label.toLowerCase()}`}
-                  className="text-[13px] transition-colors duration-250"
-                  style={{ color: 'rgba(246,238,230,0.78)' }}
-                  onMouseEnter={e => (e.currentTarget.style.color = '#f6eee6')}
-                  onMouseLeave={e => (e.currentTarget.style.color = 'rgba(246,238,230,0.78)')}
+                <Link
+                  href={href}
+                  className="text-[13px] transition-colors duration-200 hover:text-bg"
+                  style={{ color: 'rgba(246,238,230,0.72)' }}
                 >
                   {label}
                 </Link>
@@ -60,23 +55,40 @@ export default function Footer() {
           </ul>
         </div>
 
-        {/* Sobre */}
+        {/* Dallo Skin */}
         <div>
-          <h5 className="text-[14px] font-[500] text-bg m-0 mb-4">Sobre</h5>
+          <h5 className="text-[13px] font-[500] text-bg m-0 mb-4 tracking-[0.05em] uppercase">Dallo Skin</h5>
           <ul className="list-none p-0 m-0 flex flex-col gap-[10px]">
             {[
-              { label: 'Home', href: '/' },
-              { label: 'Universo', href: '/sobre' },
-              { label: "Dall'Ó Nutri", href: '/coleccion/nutri' },
-              { label: "Dall'Ó Skin", href: '/coleccion/skin' },
+              { label: 'Ver colección', href: '/coleccion/skin' },
+              { label: 'Todos los productos', href: '/productos' },
+            ].map(({ label, href }) => (
+              <li key={label}>
+                <Link
+                  href={href}
+                  className="text-[13px] transition-colors duration-200 hover:text-bg"
+                  style={{ color: 'rgba(246,238,230,0.72)' }}
+                >
+                  {label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Sobre nosotros */}
+        <div>
+          <h5 className="text-[13px] font-[500] text-bg m-0 mb-4 tracking-[0.05em] uppercase">Nosotros</h5>
+          <ul className="list-none p-0 m-0 flex flex-col gap-[10px]">
+            {[
+              { label: 'Filosofía', href: '/sobre' },
               { label: 'Mi cuenta', href: '/cuenta' },
             ].map(({ label, href }) => (
               <li key={label}>
-                <Link href={href}
-                  className="text-[13px] transition-colors duration-250"
-                  style={{ color: 'rgba(246,238,230,0.78)' }}
-                  onMouseEnter={e => (e.currentTarget.style.color = '#f6eee6')}
-                  onMouseLeave={e => (e.currentTarget.style.color = 'rgba(246,238,230,0.78)')}
+                <Link
+                  href={href}
+                  className="text-[13px] transition-colors duration-200 hover:text-bg"
+                  style={{ color: 'rgba(246,238,230,0.72)' }}
                 >
                   {label}
                 </Link>
@@ -87,26 +99,22 @@ export default function Footer() {
       </div>
 
       {/* Giant wordmark */}
-      <div className="max-w-[1600px] mx-auto overflow-hidden flex items-end justify-center pt-8 select-none">
+      <div className="w-full overflow-hidden flex items-end justify-center pt-6 select-none px-4">
         <span
-          className="font-cormorant font-[500] text-bg leading-[0.85] tracking-[0.04em]"
-          style={{ fontSize: 'clamp(150px, 25vw, 400px)' }}
+          className="font-cormorant font-[500] text-bg leading-[0.85] tracking-[0.04em] whitespace-nowrap"
+          style={{ fontSize: 'clamp(52px, 18vw, 380px)' }}
         >
           DALL<span className="italic text-[0.7em] relative" style={{ top: '-0.08em' }}>&apos;</span>Ó
         </span>
       </div>
 
       {/* Bottom bar */}
-      <div className="max-w-[1600px] mx-auto px-8 py-6 border-t flex items-center justify-between text-[11px] tracking-[0.02em]"
-        style={{ borderColor: 'rgba(246,238,230,0.15)', color: 'rgba(246,238,230,0.55)' }}>
+      <div
+        className="max-w-[1600px] mx-auto px-6 md:px-8 py-5 border-t flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] tracking-[0.02em]"
+        style={{ borderColor: 'rgba(246,238,230,0.15)', color: 'rgba(246,238,230,0.55)' }}
+      >
         <span>© {new Date().getFullYear()} DALL&apos;Ó SELFCARE · Skin Longevity Science</span>
         <div className="flex gap-[14px] text-bg">
-          {/* Facebook */}
-          <a href="#" aria-label="Facebook" className="opacity-70 hover:opacity-100 transition-opacity">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M14 9h3V6h-3a3 3 0 0 0-3 3v3H8v3h3v6h3v-6h3l1-3h-4V9z"/>
-            </svg>
-          </a>
           {/* Instagram */}
           <a href="#" aria-label="Instagram" className="opacity-70 hover:opacity-100 transition-opacity">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
