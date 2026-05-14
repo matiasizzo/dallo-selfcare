@@ -2,11 +2,11 @@ import type { Metadata } from 'next'
 import AnnouncementBar from '@/components/AnnouncementBar'
 import Navbar from '@/components/Navbar'
 import Hero from '@/components/Hero'
-import ToneStrip from '@/components/ToneStrip'
-import ProductCarousels from '@/components/ProductCarousels'
+import BrandManifesto from '@/components/BrandManifesto'
+import ObjectiveFilter from '@/components/ObjectiveFilter'
 import LineasGallery from '@/components/LineasGallery'
 import Footer from '@/components/Footer'
-import { getProducts, getProductsByCategory } from '@/lib/products'
+import { getProducts } from '@/lib/products'
 
 export const revalidate = 60
 
@@ -16,23 +16,8 @@ export const metadata: Metadata = {
   alternates: { canonical: '/' },
 }
 
-const NUTRI_SLUGS = ['balance', 'energy', 'metabolism', 'protection', 'senolytic']
-
 export default async function HomePage() {
-  const [products, skinProducts, nutriByCategory] = await Promise.all([
-    getProducts(),
-    getProductsByCategory('skin'),
-    getProductsByCategory('nutri'),
-  ])
-
-  // Fallback: if getProductsByCategory returns empty, filter from getProducts
-  const resolvedSkin = skinProducts.length > 0
-    ? skinProducts
-    : products.filter(p => p.categories?.slug === 'skin')
-
-  const resolvedNutri = nutriByCategory.length > 0
-    ? nutriByCategory
-    : products.filter(p => NUTRI_SLUGS.includes(p.categories?.slug ?? ''))
+  const products = await getProducts()
 
   return (
     <>
@@ -40,24 +25,8 @@ export default async function HomePage() {
       <Navbar />
       <main>
         <Hero />
-
-        <ToneStrip
-          tagline="Longevidad es salud"
-          sub="Fórmulas magistrales elaboradas bajo pedido para reprogramar la biología de tu piel desde el primer gesto."
-          imgSrc="https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=900&q=85"
-          imgAlt="Ritual de skincare Dall'Ó"
-        />
-
-        <ToneStrip
-          tagline="Alchemy and Longevity"
-          sub="Suplementación de precisión, formulada en cápsulas de liberación retardada para soportar tu ciclo biológico."
-          imgSrc="https://images.unsplash.com/photo-1471864190281-a93a3070b6de?w=900&q=85"
-          imgAlt="Suplementos Dall'Ó Nutri"
-          reverse
-        />
-
-        <ProductCarousels skinProducts={resolvedSkin} nutriProducts={resolvedNutri} />
-
+        <BrandManifesto />
+        <ObjectiveFilter products={products} />
         <LineasGallery />
       </main>
       <Footer />
