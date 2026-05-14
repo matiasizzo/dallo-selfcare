@@ -1,32 +1,33 @@
 import Link from 'next/link'
+import Image from 'next/image'
 
 const GOALS = [
   {
     id: 'anti',
     label: 'Anti-aging',
     sub: 'NMN · péptidos · longevidad celular',
-    gradient: 'linear-gradient(160deg, #d4a987 0%, #6b3722 100%)',
+    image: 'https://niuaflxfiyafckvseruu.supabase.co/storage/v1/object/public/assets/linea_aniage.webp',
     href: '/coleccion/skin',
   },
   {
     id: 'energia',
     label: 'Energía',
     sub: 'Complejo B · soporte mitocondrial',
-    gradient: 'linear-gradient(160deg, #e6c376 0%, #8a5a20 100%)',
+    image: 'https://niuaflxfiyafckvseruu.supabase.co/storage/v1/object/public/assets/Linea_balance.webp',
     href: '/productos',
   },
   {
     id: 'meta',
     label: 'Metabolismo',
     sub: 'Tiroides · composición corporal',
-    gradient: 'linear-gradient(160deg, #c98a6e 0%, #5e3a23 100%)',
+    image: 'https://niuaflxfiyafckvseruu.supabase.co/storage/v1/object/public/assets/linea_detox.webp',
     href: '/productos',
   },
   {
     id: 'detox',
     label: 'Detox',
     sub: 'Hepático · glutatión · NAC',
-    gradient: 'linear-gradient(160deg, #b7a07a 0%, #4a3220 100%)',
+    image: 'https://niuaflxfiyafckvseruu.supabase.co/storage/v1/object/public/assets/linea_salud.webp',
     href: '/productos',
   },
 ]
@@ -64,11 +65,16 @@ export default function ObjectiveFilter() {
             className="group relative overflow-hidden flex flex-col justify-end p-7 text-[#f6eee6]"
             style={{ aspectRatio: '3/4' }}
           >
-            {/* Gradient background (scales on hover) */}
-            <div
-              className="absolute inset-0 transition-transform duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.06]"
-              style={{ background: g.gradient }}
-            />
+            {/* Image background (scales on hover) */}
+            <div className="absolute inset-0 transition-transform duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.06]">
+              <Image
+                src={g.image}
+                alt={g.label}
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 50vw, 25vw"
+              />
+            </div>
 
             {/* Grain overlay */}
             <div
