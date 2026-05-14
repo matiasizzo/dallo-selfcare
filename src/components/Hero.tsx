@@ -46,7 +46,7 @@ export default function Hero() {
             linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.45)),
             url(${HERO_MOBILE})
           `,
-          backgroundSize: 'cover',
+          backgroundSize: '110%',
           backgroundPosition: '75% center',
         }}
       >
@@ -54,14 +54,14 @@ export default function Hero() {
           className="font-cormorant font-[400] leading-[1.05] text-white m-0 mb-4"
           style={{ fontSize: 'clamp(38px, 11vw, 58px)' }}
         >
-          Alchemy and<br />Longevity
+          Alquimia y<br />Longevidad
         </h1>
         <p className="text-[15px] text-white/80 mb-10">
-          Supplementing with science.
+          Suplementación con ciencia.
         </p>
         <Link
           href="/productos"
-          className="inline-flex items-center justify-center px-[30px] py-3.5 text-[13px] tracking-[0.02em] border border-white text-white rounded-full hover:bg-white hover:text-cocoa-900 transition-all duration-300"
+          className="inline-flex items-center justify-center px-[30px] py-3.5 text-[13px] tracking-[0.02em] border border-white text-white rounded-full bg-white/10 hover:bg-white hover:text-cocoa-900 transition-all duration-300"
         >
           Comprar ahora
         </Link>
