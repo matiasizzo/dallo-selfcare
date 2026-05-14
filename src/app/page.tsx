@@ -41,7 +41,7 @@ export default async function HomePage() {
       <main>
         <Hero />
         <BrandManifesto />
-        <ObjectiveFilter products={products} />
+        <ObjectiveFilter />
         <ProductCarousels skinProducts={resolvedSkin} nutriProducts={resolvedNutri} />
         <LineasGallery />
       </main>
