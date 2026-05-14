@@ -5,6 +5,7 @@ import Hero from '@/components/Hero'
 import BrandManifesto from '@/components/BrandManifesto'
 import ObjectiveFilter from '@/components/ObjectiveFilter'
 import ProductCarousels from '@/components/ProductCarousels'
+import EditorialQuote from '@/components/EditorialQuote'
 import Footer from '@/components/Footer'
 import { getProducts, getProductsByCategory } from '@/lib/products'
 
@@ -42,6 +43,7 @@ export default async function HomePage() {
         <BrandManifesto />
         <ObjectiveFilter />
         <ProductCarousels skinProducts={resolvedSkin} nutriProducts={resolvedNutri} />
+        <EditorialQuote />
       </main>
       <Footer />
     </>
