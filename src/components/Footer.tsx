@@ -35,23 +35,11 @@ export default function Footer() {
         <div>
           <h5 className="text-[13px] font-[500] text-bg m-0 mb-4 tracking-[0.05em] uppercase">Dallo Nutri</h5>
           <ul className="list-none p-0 m-0 flex flex-col gap-[10px]">
-            {[
-              { label: 'Ver colección', href: '/coleccion/nutri' },
-              { label: 'Metabolism', href: '/coleccion/nutri' },
-              { label: 'Balance', href: '/coleccion/nutri' },
-              { label: 'Energy', href: '/coleccion/nutri' },
-              { label: 'Protection', href: '/coleccion/nutri' },
-            ].map(({ label, href }) => (
-              <li key={label}>
-                <Link
-                  href={href}
-                  className="text-[13px] transition-colors duration-200 hover:text-bg"
-                  style={{ color: 'rgba(246,238,230,0.72)' }}
-                >
-                  {label}
-                </Link>
-              </li>
-            ))}
+            <li>
+              <Link href="/coleccion/nutri" className="text-[13px] transition-colors duration-200 hover:text-bg" style={{ color: 'rgba(246,238,230,0.72)' }}>
+                Ver colección
+              </Link>
+            </li>
           </ul>
         </div>
 
@@ -59,20 +47,11 @@ export default function Footer() {
         <div>
           <h5 className="text-[13px] font-[500] text-bg m-0 mb-4 tracking-[0.05em] uppercase">Dallo Skin</h5>
           <ul className="list-none p-0 m-0 flex flex-col gap-[10px]">
-            {[
-              { label: 'Ver colección', href: '/coleccion/skin' },
-              { label: 'Todos los productos', href: '/productos' },
-            ].map(({ label, href }) => (
-              <li key={label}>
-                <Link
-                  href={href}
-                  className="text-[13px] transition-colors duration-200 hover:text-bg"
-                  style={{ color: 'rgba(246,238,230,0.72)' }}
-                >
-                  {label}
-                </Link>
-              </li>
-            ))}
+            <li>
+              <Link href="/coleccion/skin" className="text-[13px] transition-colors duration-200 hover:text-bg" style={{ color: 'rgba(246,238,230,0.72)' }}>
+                Ver colección
+              </Link>
+            </li>
           </ul>
         </div>
 
@@ -80,20 +59,11 @@ export default function Footer() {
         <div>
           <h5 className="text-[13px] font-[500] text-bg m-0 mb-4 tracking-[0.05em] uppercase">Nosotros</h5>
           <ul className="list-none p-0 m-0 flex flex-col gap-[10px]">
-            {[
-              { label: 'Filosofía', href: '/sobre' },
-              { label: 'Mi cuenta', href: '/cuenta' },
-            ].map(({ label, href }) => (
-              <li key={label}>
-                <Link
-                  href={href}
-                  className="text-[13px] transition-colors duration-200 hover:text-bg"
-                  style={{ color: 'rgba(246,238,230,0.72)' }}
-                >
-                  {label}
-                </Link>
-              </li>
-            ))}
+            <li>
+              <Link href="/sobre" className="text-[13px] transition-colors duration-200 hover:text-bg" style={{ color: 'rgba(246,238,230,0.72)' }}>
+                Filosofía
+              </Link>
+            </li>
           </ul>
         </div>
       </div>
