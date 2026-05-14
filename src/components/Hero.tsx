@@ -23,10 +23,10 @@ export default function Hero() {
             className="font-cormorant font-[400] leading-[1.05] tracking-[-0.005em] text-ink m-0"
             style={{ fontSize: 'clamp(40px, 4.6vw, 64px)' }}
           >
-            Alchemy and<br />Longevity
+            Alquimia y<br />Longevidad
           </h1>
           <p className="text-[15px] text-ink-soft m-0">
-            Supplementing with science.
+            Suplementación con ciencia.
           </p>
           <Link
             href="/productos"
@@ -46,8 +46,7 @@ export default function Hero() {
             linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.45)),
             url(${HERO_MOBILE})
           `,
-          backgroundSize: '110%',
-          backgroundRepeat: 'no-repeat',
+          backgroundSize: 'cover',
           backgroundPosition: '75% center',
         }}
       >
