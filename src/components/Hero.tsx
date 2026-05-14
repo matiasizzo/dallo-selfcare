@@ -47,7 +47,7 @@ export default function Hero() {
             url(${HERO_MOBILE})
           `,
           backgroundSize: 'cover',
-          backgroundPosition: 'center center',
+          backgroundPosition: 'right center',
         }}
       >
         <h1
