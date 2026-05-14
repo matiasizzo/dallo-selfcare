@@ -6,17 +6,24 @@ import Link from 'next/link'
 const HERO_DESKTOP = 'https://niuaflxfiyafckvseruu.supabase.co/storage/v1/object/public/assets/hero-desktop.webp'
 const HERO_MOBILE  = 'https://niuaflxfiyafckvseruu.supabase.co/storage/v1/object/public/assets/hero-mobile.webp'
 
+const TAN = '#c4b49a'
+
 export default function Hero() {
   return (
-    <section className="w-full relative">
+    <section className="w-full overflow-hidden">
 
-      {/* ── DESKTOP: split layout, imagen derecha ── */}
+      {/* ── DESKTOP / TABLET GRANDE: split layout ──
+          Texto en columna izquierda con fondo sólido, imagen en columna derecha.
+          Activado desde lg (1024px) para evitar el overlap en pantallas medias. */}
       <div
-        className="hidden md:grid grid-cols-[1fr_1.25fr] min-h-[540px]"
-        style={{ background: '#b29d7e' }}
+        className="hidden lg:flex min-h-[540px]"
+        style={{ background: TAN }}
       >
-        {/* Texto izquierda */}
-        <div className="flex flex-col justify-center gap-6 px-[60px] py-[70px] text-ink relative z-10">
+        {/* Columna texto — fondo sólido explícito, no puede verse la imagen detrás */}
+        <div
+          className="flex flex-col justify-center gap-6 px-[60px] py-[70px] text-ink shrink-0"
+          style={{ width: '45%', background: TAN }}
+        >
           <h1
             className="font-cormorant font-[400] leading-[1.05] tracking-[-0.005em] text-ink m-0"
             style={{ fontSize: 'clamp(40px, 4.6vw, 64px)' }}
@@ -34,21 +41,22 @@ export default function Hero() {
           </Link>
         </div>
 
-        {/* Imagen derecha — desktop */}
-        <div className="relative overflow-hidden">
+        {/* Columna imagen — ocupa el resto, imagen contenida sin overflow */}
+        <div className="relative flex-1 overflow-hidden">
           <Image
             src={HERO_DESKTOP}
             alt="Dall'Ó Selfcare"
             fill
             className="object-cover object-center"
             priority
-            sizes="(max-width: 1280px) 60vw, 800px"
+            sizes="55vw"
           />
         </div>
       </div>
 
-      {/* ── MÓVIL: imagen full-screen con texto encima ── */}
-      <div className="md:hidden relative min-h-[100svh]">
+      {/* ── MÓVIL / TABLET PEQUEÑO: imagen full-screen con texto encima ──
+          Visible hasta lg exclusive. */}
+      <div className="lg:hidden relative" style={{ minHeight: '100svh' }}>
         <Image
           src={HERO_MOBILE}
           alt="Dall'Ó Selfcare"
@@ -57,13 +65,12 @@ export default function Hero() {
           priority
           sizes="100vw"
         />
-        {/* Overlay oscuro suave para legibilidad */}
-        <div className="absolute inset-0 bg-black/25" />
+        {/* Overlay para legibilidad */}
+        <div className="absolute inset-0 bg-black/30" />
 
-        {/* Texto centrado sobre la imagen */}
         <div className="absolute inset-0 flex flex-col items-center justify-end pb-16 px-8 text-center">
           <h1
-            className="font-cormorant font-[400] leading-[1.05] tracking-[-0.005em] text-white m-0 mb-3"
+            className="font-cormorant font-[400] leading-[1.05] text-white m-0 mb-3"
             style={{ fontSize: 'clamp(36px, 10vw, 56px)' }}
           >
             Alchemy and<br />Longevity
@@ -73,7 +80,7 @@ export default function Hero() {
           </p>
           <Link
             href="/productos"
-            className="inline-flex items-center justify-center px-[26px] py-3 text-[13px] tracking-[0.02em] border border-white text-white rounded-full bg-transparent hover:bg-white hover:text-cocoa-900 transition-all duration-300"
+            className="inline-flex items-center justify-center px-[26px] py-3 text-[13px] tracking-[0.02em] border border-white text-white rounded-full hover:bg-white hover:text-cocoa-900 transition-all duration-300"
           >
             Shop now
           </Link>
