@@ -60,7 +60,17 @@ export default async function ProductPage({ params }: Props) {
   const defaultVariant = getDefaultVariant(product)
   if (!defaultVariant) notFound()
 
-  const related = allProducts.filter((p) => p.id !== product.id).slice(0, 4)
+  const related = allProducts
+    .filter((p) =>
+      p.id !== product.id &&
+      p.categories?.slug === product.categories?.slug
+    )
+    .slice(0, 4)
+
+  const sectionTitle = product.categories?.slug === 'skin'
+    ? 'Otros Dallo Skin'
+    : 'Otros Dallo Nutri'
+
   const priceFormatted = formatPrice(defaultVariant.price_cents)
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? ''
 
@@ -232,62 +242,13 @@ export default async function ProductPage({ params }: Props) {
           </div>
         </section>
 
-        {/* ── Editorial strip ── */}
-        <section className="flex flex-col md:flex-row border-t border-sand-300" style={{ minHeight: '440px' }}>
-          <div className="flex-1 relative min-h-[320px] md:min-h-0 overflow-hidden">
-            <Image
-              src="https://images.unsplash.com/photo-1611078489935-0cb964de46d6?w=900&q=80"
-              alt="Dall'Ó lifestyle"
-              fill
-              className="object-cover object-center"
-              sizes="(max-width: 768px) 100vw, 50vw"
-            />
-          </div>
-          <div className="flex-1 flex flex-col justify-center items-start px-12 py-16 lg:px-20 bg-cream">
-            <p className="font-cormorant text-3xl md:text-4xl font-light text-cocoa-900 leading-snug max-w-xs italic">
-              Cuida tu cuerpo, realza tu belleza, siéntete increíble cada día.
-            </p>
-          </div>
-        </section>
-
-        {/* ── Ticker marquee ── */}
-        <div className="w-full bg-cocoa-900 py-3.5 overflow-hidden">
-          <div
-            className="flex whitespace-nowrap"
-            style={{ animation: 'marquee 24s linear infinite' }}
-          >
-            {[0, 1].map((i) => (
-              <span key={i} className="flex items-center">
-                {['Alchemy and longevity', 'Longevidad en salud', 'Supplementing with science'].map(
-                  (text, j) => (
-                    <span key={j} className="flex items-center">
-                      <span className="text-sand-100 text-[11px] tracking-[0.3em] uppercase mx-10">
-                        {text}
-                      </span>
-                      <span className="text-gold text-xs opacity-60">·</span>
-                    </span>
-                  )
-                )}
-              </span>
-            ))}
-          </div>
-        </div>
-
-        {/* ── Full-width editorial image ── */}
-        <div className="relative w-full overflow-hidden" style={{ height: 'min(58vw, 680px)' }}>
-          <Image
-            src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=1800&q=80"
-            alt="Dall'Ó — ciencia y longevidad"
-            fill
-            className="object-cover object-[center_30%]"
-            sizes="100vw"
-          />
-        </div>
 
         {/* ── Related products ── */}
-        <div className="bg-sand-50">
-          <ProductGrid products={related} title="Todos los productos" showViewAll />
-        </div>
+        {related.length > 0 && (
+          <div className="bg-sand-50">
+            <ProductGrid products={related} title={sectionTitle} showViewAll={false} />
+          </div>
+        )}
       </main>
 
       <Footer />
