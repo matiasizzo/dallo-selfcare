@@ -3,6 +3,7 @@ import AnnouncementBar from '@/components/AnnouncementBar'
 import Navbar from '@/components/Navbar'
 import Hero from '@/components/Hero'
 import BrandManifesto from '@/components/BrandManifesto'
+import ObjectiveFilter from '@/components/ObjectiveFilter'
 import ProductCarousels from '@/components/ProductCarousels'
 import LineasGallery from '@/components/LineasGallery'
 import Footer from '@/components/Footer'
@@ -40,6 +41,7 @@ export default async function HomePage() {
       <main>
         <Hero />
         <BrandManifesto />
+        <ObjectiveFilter products={products} />
         <ProductCarousels skinProducts={resolvedSkin} nutriProducts={resolvedNutri} />
         <LineasGallery />
       </main>

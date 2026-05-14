@@ -23,12 +23,12 @@ export default function ObjectiveFilter({ products }: Props) {
         const obj = OBJECTIVES.find(o => o.label === active)
         return obj?.slugs.includes(p.categories?.slug ?? '')
       })
-    : products
+    : []
 
   return (
-    <section className="bg-cream pt-14 pb-2">
+    <section className="bg-cream pt-12 pb-4">
       {/* Filter bar */}
-      <div className="px-6 mb-10">
+      <div className="px-6 mb-6">
         <p className="text-[10px] tracking-[0.25em] uppercase text-text-muted mb-4">
           Encuentra tu objetivo →
         </p>
@@ -49,12 +49,14 @@ export default function ObjectiveFilter({ products }: Props) {
         </div>
       </div>
 
-      {/* Products */}
-      <ProductGrid
-        products={filtered}
-        title="Más vendidos"
-        showViewAll={false}
-      />
+      {/* Products — only visible when a filter is active */}
+      {active && filtered.length > 0 && (
+        <ProductGrid
+          products={filtered}
+          title={active}
+          showViewAll={false}
+        />
+      )}
     </section>
   )
 }
