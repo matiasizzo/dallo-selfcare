@@ -113,7 +113,7 @@ export default async function ProductPage({ params }: Props) {
     accordionItems.push({ label: 'Indicaciones', content: product.dosage })
   }
   if (product.ingredients) {
-    accordionItems.push({ label: 'Ingredientes INCI', content: product.ingredients })
+    accordionItems.push({ label: 'Ingredientes', content: product.ingredients })
   }
   if (isSkin) {
     if (product.usage_instructions) {
