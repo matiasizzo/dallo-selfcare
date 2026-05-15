@@ -109,12 +109,21 @@ export default async function ProductPage({ params }: Props) {
   if (product.description) {
     accordionItems.push({ label: 'Descripción & Beneficios', content: product.description })
   }
+  if (isSkin && product.dosage) {
+    accordionItems.push({ label: 'Indicaciones', content: product.dosage })
+  }
   if (product.ingredients) {
     accordionItems.push({ label: 'Ingredientes INCI', content: product.ingredients })
   }
-  const usageParts = [product.usage_instructions, product.dosage, product.frequency].filter(Boolean) as string[]
-  if (usageParts.length > 0) {
-    accordionItems.push({ label: 'Modo de uso', content: usageParts.join('\n') })
+  if (isSkin) {
+    if (product.usage_instructions) {
+      accordionItems.push({ label: 'Modo de uso', content: product.usage_instructions })
+    }
+  } else {
+    const usageParts = [product.usage_instructions, product.dosage, product.frequency].filter(Boolean) as string[]
+    if (usageParts.length > 0) {
+      accordionItems.push({ label: 'Modo de uso', content: usageParts.join('\n') })
+    }
   }
   const nutritional = product.nutritional_info
   const hasNutritional = nutritional?.items && nutritional.items.length > 0
@@ -128,7 +137,10 @@ export default async function ProductPage({ params }: Props) {
     product.shelf_life_months ? `Caducidad: ${product.shelf_life_months} meses tras apertura` : null,
   ].filter(Boolean) as string[]
   if (storageParts.length > 0) {
-    accordionItems.push({ label: 'Conservación', content: storageParts.join('\n') })
+    accordionItems.push({ label: 'Conservación & Caducidad', content: storageParts.join('\n') })
+  }
+  if (isSkin && product.frequency) {
+    accordionItems.push({ label: 'Precauciones', content: product.frequency })
   }
 
   const crossSellVariant = crossSell ? getDefaultVariant(crossSell) : null
