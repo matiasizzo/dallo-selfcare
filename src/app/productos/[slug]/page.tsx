@@ -10,6 +10,7 @@ import Footer from '@/components/Footer'
 import ProductActions from '@/components/ProductActions'
 import ProductGrid from '@/components/ProductGrid'
 import ProductAccordion from '@/components/ProductAccordion'
+import CrossSellBox from '@/components/CrossSellBox'
 import type { AccordionItem } from '@/components/ProductAccordion'
 import { getProductBySlug, getProducts, formatPrice, getDefaultVariant } from '@/lib/products'
 
@@ -243,41 +244,12 @@ export default async function ProductPage({ params }: Props) {
 
             {/* ── Cross-sell: Completa tu ritual ── */}
             {crossSell && crossSellVariant && (
-              <div className="mt-10 bg-cocoa-900 p-6">
-                <p className="text-[10px] tracking-[0.25em] uppercase text-gold mb-5">
-                  ✦ Completa tu ritual {isSkin ? 'senolítico' : ''}
-                </p>
-                <div className="flex items-stretch gap-3">
-                  {/* Producto actual */}
-                  <div className="flex-1 border border-sand-600 p-4 text-center">
-                    <p className="text-[9px] tracking-[0.15em] uppercase text-sand-400 mb-2">
-                      Este producto
-                    </p>
-                    <p className="font-cormorant text-lg font-light text-sand-100 leading-tight">
-                      {product.name}
-                    </p>
-                  </div>
-
-                  {/* Separador */}
-                  <div className="flex items-center text-gold text-xl font-light">+</div>
-
-                  {/* Producto complementario */}
-                  <Link
-                    href={`/productos/${crossSell.slug}`}
-                    className="flex-1 border border-sand-700 hover:border-gold p-4 text-center transition-colors group"
-                  >
-                    <p className="text-[9px] tracking-[0.15em] uppercase text-sand-400 mb-2">
-                      {isSkin ? 'Suplemento' : 'Cosmética'}
-                    </p>
-                    <p className="font-cormorant text-lg font-light text-sand-100 leading-tight group-hover:text-gold transition-colors">
-                      {crossSell.name}
-                    </p>
-                    <p className="text-[11px] text-sand-400 mt-1">
-                      {formatPrice(crossSellVariant.price_cents)}
-                    </p>
-                  </Link>
-                </div>
-              </div>
+              <CrossSellBox
+                currentProduct={product}
+                crossSell={crossSell}
+                crossSellVariant={crossSellVariant}
+                isSkin={isSkin}
+              />
             )}
           </div>
         </section>
