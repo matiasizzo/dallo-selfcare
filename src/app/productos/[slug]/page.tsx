@@ -188,7 +188,7 @@ export default async function ProductPage({ params }: Props) {
                 <Link href="/productos" className="hover:text-cocoa-900 transition-colors">
                   Todos los productos
                 </Link>
-                <span className="opacity-40">|</span>
+                <span className="opacity-40">/</span>
                 <Link
                   href={`/coleccion/${product.categories.slug}`}
                   className="hover:text-cocoa-900 transition-colors"

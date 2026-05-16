@@ -40,7 +40,7 @@ export default function ProductActions({ product, defaultVariant }: Props) {
 
   return (
     <div>
-      {/* Variant selector */}
+      {/* Variant selector — rounded pills */}
       {activeVariants.length > 1 && (
         <div className="mb-6">
           <p className="text-[10px] tracking-[0.2em] uppercase text-text-muted font-sans mb-3">Formato</p>
@@ -49,10 +49,10 @@ export default function ProductActions({ product, defaultVariant }: Props) {
               <button
                 key={v.id}
                 onClick={() => setSelected(v)}
-                className={`border px-4 py-2.5 text-xs font-sans transition-all duration-200 ${
+                className={`rounded-full border px-5 py-2 text-xs font-sans transition-all duration-200 active:scale-[0.96] ${
                   selected.id === v.id
-                    ? 'border-cocoa-900 bg-cocoa-900 text-sand-100 shadow-md'
-                    : 'border-sand-400 text-text hover:border-cocoa-900 hover:bg-sand-50'
+                    ? 'border-cocoa-900 bg-cocoa-900 text-sand-100'
+                    : 'border-sand-400 text-text hover:border-cocoa-900'
                 }`}
               >
                 {v.name}
@@ -68,7 +68,7 @@ export default function ProductActions({ product, defaultVariant }: Props) {
         <div className="flex items-center border border-sand-400 transition-colors duration-200 hover:border-cocoa-900">
           <button
             onClick={() => setQty((q) => Math.max(1, q - 1))}
-            className="px-3 py-3 text-text hover:text-cocoa-900 transition-colors duration-200"
+            className="px-3 py-3 text-text hover:text-cocoa-900 transition-colors duration-200 active:scale-[0.85]"
             aria-label="Reducir cantidad"
           >
             <Minus size={14} strokeWidth={1.5} />
@@ -76,19 +76,27 @@ export default function ProductActions({ product, defaultVariant }: Props) {
           <span className="px-4 text-sm font-sans text-text min-w-[2rem] text-center">{qty}</span>
           <button
             onClick={() => setQty((q) => q + 1)}
-            className="px-3 py-3 text-text hover:text-cocoa-900 transition-colors duration-200"
+            className="px-3 py-3 text-text hover:text-cocoa-900 transition-colors duration-200 active:scale-[0.85]"
             aria-label="Aumentar cantidad"
           >
             <Plus size={14} strokeWidth={1.5} />
           </button>
         </div>
 
+        {/* Main CTA with nested-arrow icon */}
         <button
           onClick={handleAdd}
           disabled={outOfStock}
-          className="flex-1 bg-cocoa-900 text-sand-100 text-xs tracking-[0.2em] uppercase py-3 font-sans hover:bg-cocoa-800 transition-all duration-200 hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+          className="group flex-1 flex items-center justify-center gap-2 bg-cocoa-900 text-sand-100 text-xs tracking-[0.2em] uppercase py-3 px-5 font-sans hover:bg-cocoa-800 transition-all duration-200 active:scale-[0.97] disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {outOfStock ? 'Agotado' : added ? '✓ Añadido' : 'Agregar'}
+          <span>{outOfStock ? 'Agotado' : added ? '✓ Añadido' : 'Agregar'}</span>
+          {!outOfStock && !added && (
+            <span className="w-6 h-6 rounded-full bg-[rgba(246,238,230,0.12)] group-hover:bg-[rgba(246,238,230,0.2)] flex items-center justify-center transition-colors duration-200">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:translate-x-[1px] transition-transform duration-150">
+                <path d="M5 12h14M13 6l6 6-6 6"/>
+              </svg>
+            </span>
+          )}
         </button>
       </div>
     </div>
