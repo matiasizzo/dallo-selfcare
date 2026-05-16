@@ -43,7 +43,7 @@ export default function Hero() {
         style={{
           minHeight: '100svh',
           backgroundImage: `
-            linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.45)),
+            linear-gradient(rgba(0,0,0,0.18), rgba(0,0,0,0.32)),
             url(${HERO_MOBILE})
           `,
           backgroundSize: 'cover',

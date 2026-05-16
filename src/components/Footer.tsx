@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 export default function Footer() {
   return (
-    <footer className="w-full bg-brown text-bg mt-[60px]">
+    <footer className="w-full bg-brown text-bg">
 
       {/* Top: newsletter + link cols */}
       <div className="max-w-[1600px] mx-auto px-6 md:px-8 pt-[60px] pb-[50px] grid grid-cols-1 md:grid-cols-[1.8fr_1fr_1fr_1fr] gap-10 md:gap-[50px]">
@@ -20,13 +20,19 @@ export default function Footer() {
               type="email"
               required
               placeholder="Tu dirección de correo"
-              className="flex-1 min-w-0 bg-transparent border border-[rgba(246,238,230,0.4)] rounded-full px-5 py-3 text-[13px] text-bg placeholder:text-[rgba(246,238,230,0.45)] outline-none focus:border-bg transition-colors"
+              className="flex-1 min-w-0 bg-transparent border border-[rgba(246,238,230,0.4)] rounded-full px-5 py-3 text-[13px] text-bg placeholder:text-[rgba(246,238,230,0.45)] outline-none focus:border-bg transition-colors duration-200"
             />
+            {/* Nested-arrow CTA button */}
             <button
               type="submit"
-              className="bg-bg text-brown border border-bg rounded-full px-5 py-3 text-[13px] font-[500] hover:bg-transparent hover:text-bg transition-all duration-200 whitespace-nowrap flex-shrink-0"
+              className="group flex items-center gap-2 bg-bg text-brown border border-bg rounded-full pl-5 pr-2 py-2 text-[13px] font-[500] hover:bg-transparent hover:text-bg hover:border-[rgba(246,238,230,0.6)] transition-all duration-300 whitespace-nowrap flex-shrink-0 active:scale-[0.97]"
             >
               Enviar
+              <span className="w-7 h-7 rounded-full bg-brown/10 group-hover:bg-[rgba(246,238,230,0.15)] flex items-center justify-center transition-colors duration-300">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" className="group-hover:translate-x-[1px] group-hover:-translate-y-[1px] transition-transform duration-200">
+                  <path d="M5 12h14M13 6l6 6-6 6"/>
+                </svg>
+              </span>
             </button>
           </form>
         </div>
@@ -85,22 +91,19 @@ export default function Footer() {
       >
         <span>© {new Date().getFullYear()} DALL&apos;Ó SELFCARE · Skin Longevity Science</span>
         <div className="flex gap-[14px] text-bg">
-          {/* Instagram */}
-          <a href="#" aria-label="Instagram" className="opacity-70 hover:opacity-100 transition-opacity">
+          <a href="#" aria-label="Instagram" className="opacity-70 hover:opacity-100 transition-opacity duration-200">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
               <rect x="3" y="3" width="18" height="18" rx="5"/>
               <circle cx="12" cy="12" r="4"/>
               <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor"/>
             </svg>
           </a>
-          {/* TikTok */}
-          <a href="#" aria-label="TikTok" className="opacity-70 hover:opacity-100 transition-opacity">
+          <a href="#" aria-label="TikTok" className="opacity-70 hover:opacity-100 transition-opacity duration-200">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
               <path d="M16 4c0 3 2 5 5 5v3a8 8 0 0 1-5-2v7a6 6 0 1 1-6-6v3a3 3 0 1 0 3 3V4h3z"/>
             </svg>
           </a>
-          {/* YouTube */}
-          <a href="#" aria-label="YouTube" className="opacity-70 hover:opacity-100 transition-opacity">
+          <a href="#" aria-label="YouTube" className="opacity-70 hover:opacity-100 transition-opacity duration-200">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
               <rect x="3" y="6" width="18" height="12" rx="3"/>
               <path d="m10 9 5 3-5 3z" fill="currentColor"/>
