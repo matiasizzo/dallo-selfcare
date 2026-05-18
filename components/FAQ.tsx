@@ -1,9 +1,11 @@
+'use client'
+
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Plus, Minus } from 'lucide-react'
-import { FAQS } from '../content'
-import { fadeUp, staggerContainer } from '../lib/animations'
-import { useScrollAnimation } from '../hooks/useScrollAnimation'
+import { FAQS } from '@/content'
+import { fadeUp, staggerContainer } from '@/lib/animations'
+import { useScrollAnimation } from '@/lib/useScrollAnimation'
 
 function FAQItem({
   item, isOpen, onToggle,
