@@ -2,23 +2,19 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import QueviLogo from '@/components/QueviLogo'
 
 export default function Footer() {
   const [email, setEmail] = useState('')
 
   return (
     <footer className="bg-carbon-900 text-cream-100 pt-20 pb-0">
-      <div className="max-w-[1600px] mx-auto px-9">
+      <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-9">
         {/* Top grid */}
-        <div
-          className="grid gap-[60px] pb-[60px]"
-          style={{ gridTemplateColumns: '1.6fr 1fr 1fr 1fr' }}
-        >
+        <div className="grid gap-10 sm:gap-[40px] lg:gap-[60px] pb-[60px] grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr_1fr]">
           {/* Newsletter col */}
           <div>
-            <h4 className="font-serif font-normal italic text-[22px] m-0 mb-2 text-cream-100">
-              QUEVI Wellness Clinic
-            </h4>
+            <QueviLogo variant="light" width={170} height={60} className="mb-3 -ml-1" />
             <p className="text-[13px] mb-[22px] max-w-[380px] leading-[1.6]" style={{ color: 'rgba(245,242,236,0.65)' }}>
               Una vez al mes, un texto largo. Sin descuentos, sin urgencia. Solo ciencia que se entiende y rituales que se sostienen.
             </p>
@@ -113,8 +109,8 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Large QUEVI watermark */}
-      <div className="max-w-[1600px] mx-auto mt-[30px] flex items-end justify-center overflow-hidden select-none relative">
+      {/* Large QUEVI watermark — hidden on small mobile to avoid overflow */}
+      <div className="hidden sm:flex max-w-[1600px] mx-auto mt-[30px] items-end justify-center overflow-hidden select-none relative">
         <span
           className="font-serif font-normal text-brand-700 leading-[0.82] tracking-[0.02em]"
           style={{ fontSize: 'clamp(160px, 26vw, 420px)' }}
@@ -130,9 +126,9 @@ export default function Footer() {
       </div>
 
       {/* Bottom bar */}
-      <div className="max-w-[1600px] mx-auto px-9">
+      <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-9">
         <div
-          className="flex justify-between items-center py-[26px] flex-wrap gap-6"
+          className="flex flex-col sm:flex-row justify-between items-center py-[26px] gap-4 sm:gap-6"
           style={{ borderTop: '1px solid rgba(245,242,236,0.12)' }}
         >
           <span className="text-[11px] tracking-[0.02em]" style={{ color: 'rgba(245,242,236,0.55)' }}>

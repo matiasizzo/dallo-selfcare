@@ -11,10 +11,7 @@ export default function About() {
   return (
     <>
       {/* Tone strip — two-cell grid */}
-      <section
-        className="grid gap-4 p-4 bg-cream-200"
-        style={{ gridTemplateColumns: '1fr 1fr' }}
-      >
+      <section className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 bg-cream-200">
         {/* Cream text cell */}
         <div
           className="min-h-[320px] bg-cream-100 border border-cream-400 flex flex-col items-center justify-center text-center gap-4 px-14 py-14"
@@ -69,8 +66,7 @@ export default function About() {
             variants={staggerContainer}
             initial="hidden"
             animate={isInView ? 'visible' : 'hidden'}
-            className="grid gap-[60px] items-end mb-[50px]"
-            style={{ gridTemplateColumns: '1fr 1fr' }}
+            className="grid gap-[30px] lg:gap-[60px] items-end mb-[50px] grid-cols-1 lg:grid-cols-2"
           >
             <div>
               <motion.span variants={fadeUp} className="text-[11px] tracking-[0.32em] uppercase text-carbon-400 block mb-4">
@@ -94,8 +90,7 @@ export default function About() {
             variants={staggerContainer}
             initial="hidden"
             animate={isInView ? 'visible' : 'hidden'}
-            className="grid gap-[14px]"
-            style={{ gridTemplateColumns: 'repeat(4, 1fr)' }}
+            className="grid gap-[14px] grid-cols-2 lg:grid-cols-4"
           >
             {[
               {

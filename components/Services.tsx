@@ -82,18 +82,19 @@ export default function Services() {
 
         <motion.ul
           variants={staggerContainer}
-          className="list-none m-0 p-0 grid border-t border-cream-400"
-          style={{ gridTemplateColumns: 'repeat(4, 1fr)' }}
+          className="list-none m-0 p-0 grid grid-cols-2 lg:grid-cols-4 border-t border-cream-400"
         >
           {PILLARS.map((p, i) => (
             <motion.li
               key={p.label}
               variants={fadeUp}
-              className="py-10 px-[22px] pb-6 flex flex-col items-center gap-[18px] relative text-center group transition-all duration-200 hover:bg-cream-100 will-change-transform"
-              style={{
-                ...(i > 0 ? { borderLeft: '1px solid #ddd8cc' } : undefined),
-                transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)',
-              }}
+              className={[
+                'py-8 sm:py-10 px-4 sm:px-[22px] pb-6 flex flex-col items-center gap-[18px] relative text-center group transition-all duration-200 hover:bg-cream-100 will-change-transform',
+                i % 2 !== 0 ? 'border-l border-cream-400' : '',
+                i >= 2 ? 'border-t border-cream-400 lg:border-t-0' : '',
+                i === 2 ? 'lg:border-l border-cream-400' : '',
+              ].filter(Boolean).join(' ')}
+              style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}
             >
               <span className="transition-transform duration-200 group-hover:-translate-y-0.5 will-change-transform" style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}>
                 {p.icon}

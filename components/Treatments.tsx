@@ -24,8 +24,7 @@ export default function Treatments() {
     <>
       {/* Lineas gallery */}
       <section
-        className="grid gap-[14px] p-[14px] bg-cream-200"
-        style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}
+        className="grid gap-[10px] sm:gap-[14px] p-[10px] sm:p-[14px] bg-cream-200 grid-cols-2 lg:grid-cols-3"
         id="treatments"
       >
         {LINEAS.map((l) => (
