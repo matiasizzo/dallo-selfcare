@@ -16,10 +16,10 @@ function FAQItem({
 }) {
   return (
     <div
-      className={`rounded-2xl border transition-all duration-200 overflow-hidden ${
+      className={`rounded-3xl border transition-all duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] overflow-hidden will-change-transform ${
         isOpen
-          ? 'border-brand-300 bg-brand-50/60 shadow-sm'
-          : 'border-cream-400 bg-cream-200 hover:border-brand-200'
+          ? 'border-brand-300 bg-cream-100 shadow-sm shadow-brand-100/30'
+          : 'border-cream-400 bg-cream-100 hover:border-brand-300 hover:-translate-y-0.5 hover:shadow-md hover:shadow-brand-100/30'
       }`}
     >
       <button
@@ -106,10 +106,10 @@ export default function FAQ() {
             </motion.span>
             <motion.h2
               variants={fadeUp}
-              className="text-4xl sm:text-5xl font-bold text-carbon-900"
+              className="font-serif font-normal text-4xl sm:text-5xl leading-[1.05] tracking-tight text-carbon-900"
             >
               ¿Tienes alguna{' '}
-              <span className="text-brand-600">duda?</span>
+              <em className="italic font-normal text-brand-600">duda?</em>
             </motion.h2>
             <motion.p variants={fadeUp} className="text-carbon-500 text-lg leading-relaxed">
               Respondemos las preguntas más habituales de nuestros pacientes. Si no encuentras lo que buscas, contáctanos sin compromiso.
@@ -117,9 +117,12 @@ export default function FAQ() {
             <motion.a
               variants={fadeUp}
               href="#booking"
-              className="inline-flex items-center gap-2 px-5 py-3 bg-brand-600 hover:bg-brand-700 text-cream-50 text-sm font-medium rounded-full transition-colors w-fit mt-2"
+              className="group inline-flex items-center gap-2 px-6 py-3 bg-brand-600 hover:bg-brand-700 text-cream-50 text-sm font-medium rounded-full transition-all duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 active:scale-[0.97] shadow-brand w-fit mt-2 will-change-transform"
             >
               Pregúntanos directamente
+              <svg className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
+              </svg>
             </motion.a>
           </motion.div>
 

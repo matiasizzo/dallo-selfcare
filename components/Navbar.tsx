@@ -43,21 +43,23 @@ export default function Navbar() {
         }}
       >
         <div
-          className="grid items-center px-9 py-[22px] max-w-[1600px] mx-auto"
-          style={{ gridTemplateColumns: '1fr auto 1fr' }}
+          className={`grid items-center px-9 max-w-[1600px] mx-auto transition-all duration-[200ms] ${
+            scrolled ? 'py-3' : 'py-[22px]'
+          }`}
+          style={{ gridTemplateColumns: '1fr auto 1fr', transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}
         >
           {/* Left nav links */}
           <nav className="hidden md:flex gap-[30px] text-[13px]">
-            <Link href="/" className="relative py-1.5 text-carbon-900 hover:text-brand-600 transition-colors duration-[250ms] tracking-[0.01em]">
+            <Link href="/" className="relative py-1.5 text-carbon-700 hover:text-brand-600 transition-colors duration-200 tracking-[0.01em] will-change-[color]" style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}>
               Inicio
             </Link>
-            <Link href="/shop" className="relative py-1.5 text-carbon-900 hover:text-brand-600 transition-colors duration-[250ms] tracking-[0.01em]">
+            <Link href="/shop" className="relative py-1.5 text-carbon-700 hover:text-brand-600 transition-colors duration-200 tracking-[0.01em] will-change-[color]" style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}>
               Tienda
             </Link>
-            <a href="#pilares" className="relative py-1.5 text-carbon-900 hover:text-brand-600 transition-colors duration-[250ms] tracking-[0.01em]">
+            <a href="#pilares" className="relative py-1.5 text-carbon-700 hover:text-brand-600 transition-colors duration-200 tracking-[0.01em] will-change-[color]" style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}>
               Pilares
             </a>
-            <a href="#diagnostico" className="relative py-1.5 text-carbon-900 hover:text-brand-600 transition-colors duration-[250ms] tracking-[0.01em]">
+            <a href="#diagnostico" className="relative py-1.5 text-carbon-700 hover:text-brand-600 transition-colors duration-200 tracking-[0.01em] will-change-[color]" style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}>
               Diagnóstico
             </a>
           </nav>

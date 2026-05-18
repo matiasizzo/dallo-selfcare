@@ -48,13 +48,13 @@ export default function Services() {
   const { ref, isInView } = useScrollAnimation()
 
   return (
-    <section id="pilares" className="bg-cream-200 py-[110px] px-9 border-b border-cream-400">
+    <section id="pilares" className="bg-cream-200 py-28 border-b border-cream-400">
       <motion.div
         ref={ref}
         variants={staggerContainer}
         initial="hidden"
         animate={isInView ? 'visible' : 'hidden'}
-        className="max-w-[1100px] mx-auto text-center"
+        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center"
       >
         <motion.span
           variants={fadeUp}
@@ -89,12 +89,15 @@ export default function Services() {
             <motion.li
               key={p.label}
               variants={fadeUp}
-              className="py-10 px-[22px] pb-2 flex flex-col items-center gap-[18px] relative text-center"
-              style={i > 0 ? {
-                borderLeft: '1px solid #ddd8cc',
-              } : undefined}
+              className="py-10 px-[22px] pb-6 flex flex-col items-center gap-[18px] relative text-center group transition-all duration-200 hover:bg-cream-100 will-change-transform"
+              style={{
+                ...(i > 0 ? { borderLeft: '1px solid #ddd8cc' } : undefined),
+                transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)',
+              }}
             >
-              {p.icon}
+              <span className="transition-transform duration-200 group-hover:-translate-y-0.5 will-change-transform" style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}>
+                {p.icon}
+              </span>
               <span className="text-[12px] tracking-[0.2em] uppercase text-carbon-900 font-medium leading-[1.5] max-w-[16ch]">
                 {p.label}
               </span>

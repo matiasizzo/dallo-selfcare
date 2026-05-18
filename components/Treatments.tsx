@@ -77,9 +77,9 @@ export default function Treatments() {
             >
               Áreas de especialización
             </motion.span>
-            <motion.h2 variants={fadeUp} className="text-4xl sm:text-5xl font-bold text-carbon-900 mb-4">
+            <motion.h2 variants={fadeUp} className="font-serif font-normal text-4xl sm:text-5xl leading-[1.05] tracking-tight text-carbon-900 mb-4">
               Tratamientos para{' '}
-              <span className="text-brand-600">cada condición</span>
+              <em className="italic font-normal text-brand-600">cada condición</em>
             </motion.h2>
             <motion.p variants={fadeUp} className="text-carbon-500 text-lg max-w-lg mx-auto">
               Abordamos tanto condiciones médicas como estéticas con el mismo nivel de excelencia y personalización.
@@ -97,9 +97,9 @@ export default function Treatments() {
                   initial="hidden"
                   animate={isInView ? 'visible' : 'hidden'}
                   transition={{ delay: gi * 0.1 }}
-                  className="rounded-3xl border border-cream-400 bg-cream-300 p-8"
+                  className="rounded-3xl border border-cream-400 bg-cream-100 p-8 transition-all duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] hover:border-brand-300 hover:shadow-lg hover:shadow-brand-100/40 hover:-translate-y-1"
                 >
-                  <h3 className="text-xl font-bold text-carbon-900 mb-6 pb-4 border-b border-cream-400">
+                  <h3 className="font-serif font-semibold text-xl text-carbon-900 tracking-tight mb-6 pb-4 border-b border-cream-400">
                     {group.category}
                   </h3>
                   <ul className="flex flex-col gap-3">
@@ -122,10 +122,10 @@ function TreatmentItem({ item }: { item: Treatment }) {
   const { detail } = item
 
   return (
-    <li className={`rounded-2xl border transition-all duration-200 overflow-hidden ${
+    <li className={`rounded-xl border transition-all duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] overflow-hidden will-change-transform ${
       open
-        ? 'border-brand-300 bg-cream-100 shadow-sm'
-        : 'border-transparent bg-cream-200 hover:border-brand-200'
+        ? 'border-brand-300 bg-cream-100 shadow-sm shadow-brand-100/30'
+        : 'border-transparent bg-cream-200 hover:border-brand-200 hover:bg-cream-100'
     }`}>
       <button
         onClick={() => setOpen((v) => !v)}
@@ -178,8 +178,8 @@ function TreatmentItem({ item }: { item: Treatment }) {
               <div className="flex flex-wrap gap-2">
                 {detail.duration && <MetaTag icon={<Clock size={10} />} label={detail.duration} />}
                 {detail.sessions && <MetaTag icon={<Repeat2 size={10} />} label={detail.sessions} />}
-                {detail.durability && <MetaTag icon={<span className="text-[10px]">⏳</span>} label={detail.durability} />}
-                {detail.anesthesia && <MetaTag icon={<span className="text-[10px]">💉</span>} label={`Anestesia: ${detail.anesthesia}`} />}
+                {detail.durability && <MetaTag icon={<svg className="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 6v6l4 2"/></svg>} label={detail.durability} />}
+                {detail.anesthesia && <MetaTag icon={<svg className="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="M6 4v6"/><path d="M14 4v6"/><path d="M4 8h8"/><path d="M6 10l4 11"/></svg>} label={`Anestesia: ${detail.anesthesia}`} />}
               </div>
               {detail.requirements && (
                 <p className="text-xs text-carbon-500 leading-relaxed">
@@ -201,9 +201,13 @@ function TreatmentItem({ item }: { item: Treatment }) {
               )}
               <a
                 href="#booking"
-                className="inline-flex items-center justify-center w-full py-2.5 bg-brand-600 hover:bg-brand-700 text-cream-50 text-xs font-medium rounded-full transition-colors duration-200 mt-1"
+                className="group inline-flex items-center justify-center gap-2 w-full py-2.5 bg-brand-600 hover:bg-brand-700 text-cream-50 text-xs font-medium rounded-full transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.97] will-change-transform mt-1"
+                style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}
               >
                 Consultar este tratamiento
+                <svg className="w-3 h-3 transition-transform duration-200 group-hover:translate-x-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
+                </svg>
               </a>
             </div>
           </motion.div>

@@ -48,17 +48,19 @@ export default function Hero() {
         <div className="flex gap-3 flex-wrap">
           <a
             href="#diagnostico"
-            className="inline-flex items-center gap-2 px-7 py-[14px] bg-carbon-900 text-cream-100 rounded-full font-medium text-[13px] tracking-[0.02em] border border-carbon-900 transition-all duration-300 hover:bg-brand-700 hover:border-brand-700 hover:-translate-y-0.5"
+            className="group inline-flex items-center gap-2 px-7 py-3 bg-brand-600 text-cream-50 rounded-full font-medium text-[13px] tracking-[0.02em] shadow-brand transition-all duration-200 hover:bg-brand-700 hover:-translate-y-0.5 active:scale-[0.97] will-change-transform"
+            style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}
           >
             Reservar diagnóstico
-            <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+            <svg className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
               <path d="M5 12h14" />
               <path d="m12 5 7 7-7 7" />
             </svg>
           </a>
           <a
             href="/shop"
-            className="inline-flex items-center gap-2 px-[26px] py-[14px] text-carbon-900 rounded-full font-medium text-[13px] tracking-[0.02em] border border-carbon-900 bg-transparent transition-all duration-300 hover:bg-carbon-900 hover:text-cream-100 hover:-translate-y-0.5"
+            className="inline-flex items-center gap-2 px-[26px] py-3 text-carbon-900 rounded-full font-medium text-[13px] tracking-[0.02em] border border-cream-400 bg-transparent transition-all duration-200 hover:bg-cream-300 hover:-translate-y-0.5 active:scale-[0.97] will-change-transform"
+            style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}
           >
             Ver toda la tienda
           </a>

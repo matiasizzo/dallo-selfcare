@@ -49,14 +49,14 @@ function StatItem({ value, suffix, label, decimal }: { value: number; suffix: st
 
 export default function Stats() {
   return (
-    <section className="py-24 bg-brand-600 relative overflow-hidden">
+    <section className="py-28 bg-brand-600 relative overflow-hidden">
       {/* Soft blobs */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute -top-20 -left-20 w-96 h-96 rounded-full bg-brand-500/40 blur-3xl" />
         <div className="absolute -bottom-20 -right-20 w-96 h-96 rounded-full bg-brand-700/50 blur-3xl" />
       </div>
 
-      <div className="relative max-w-[1600px] mx-auto px-9">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-16">
           {STATS_DATA.map((s) => (
             <StatItem key={s.label} value={s.value} suffix={s.suffix} label={s.label} decimal={s.decimal} />

@@ -65,7 +65,7 @@ export default function Testimonials() {
           >
             Lo que dicen nuestros pacientes
           </motion.span>
-          <motion.h2 variants={fadeUp} className="text-4xl sm:text-5xl font-bold text-carbon-900 mb-4">
+          <motion.h2 variants={fadeUp} className="font-serif font-normal text-4xl sm:text-5xl leading-[1.05] tracking-tight text-carbon-900 mb-4">
             Los rituales que tu piel{' '}
             <em className="italic font-normal text-brand-600">reconoce</em>.
           </motion.h2>
@@ -159,10 +159,10 @@ export default function Testimonials() {
             <button
               key={i}
               onClick={() => { setDirection(i > current ? 1 : -1); setCurrent(i) }}
-              className={`text-left p-4 rounded-2xl border transition-all duration-200 ${
+              className={`text-left p-4 rounded-3xl border transition-all duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] will-change-transform ${
                 i === current
-                  ? 'border-brand-300 bg-brand-50 shadow-sm'
-                  : 'border-cream-400 bg-cream-200 hover:border-brand-200'
+                  ? 'border-brand-300 bg-cream-100 shadow-sm shadow-brand-100/30'
+                  : 'border-cream-400 bg-cream-100 hover:border-brand-300 hover:shadow-lg hover:shadow-brand-100/40 hover:-translate-y-1'
               }`}
             >
               <div className="mb-2">

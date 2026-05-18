@@ -2,8 +2,18 @@
 
 import { useState, useMemo } from 'react'
 import Link from 'next/link'
+import { motion } from 'framer-motion'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 40 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const } },
+}
+const staggerContainer = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.08, delayChildren: 0.05 } },
+}
 
 // ── Product data ──
 const PRODUCTS = [
@@ -384,11 +394,23 @@ export default function ShopPage() {
           )}
         </div>
 
-        <div className="grid gap-[14px]" style={{ gridTemplateColumns: 'repeat(4, 1fr)' }}>
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          animate="visible"
+          className="grid gap-[14px]"
+          style={{ gridTemplateColumns: 'repeat(4, 1fr)' }}
+        >
           {filteredProducts.map((p) => (
-            <article key={p.id} className="group/card flex flex-col cursor-pointer">
+            <motion.article
+              key={p.id}
+              variants={fadeUp}
+              className="group/card flex flex-col cursor-pointer rounded-3xl overflow-hidden border border-cream-400 bg-cream-100 hover:border-brand-300 hover:shadow-lg hover:shadow-brand-100/40 transition-[border-color,box-shadow,transform] duration-200 will-change-transform"
+              style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}
+              whileHover={{ y: -4, transition: { duration: 0.2, ease: [0.22, 1, 0.36, 1] as const } }}
+            >
               <div
-                className="relative overflow-hidden flex items-center justify-center transition-colors duration-300 group-hover/card:bg-cream-400"
+                className="relative overflow-hidden flex items-center justify-center transition-colors duration-300 group-hover/card:bg-cream-300 rounded-t-3xl"
                 style={{ aspectRatio: '1/1', background: '#ede9e0' }}
               >
                 {p.badge && (
@@ -402,7 +424,7 @@ export default function ShopPage() {
                 >
                   {PILLAR_LABELS[p.pillar]}
                 </span>
-                <div className="group-hover/card:-translate-y-1 transition-transform duration-500" style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}>
+                <div className="group-hover/card:-translate-y-1.5 transition-transform duration-500 will-change-transform" style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}>
                   <PackSVG
                     id={p.id}
                     vol={p.vol}
@@ -413,7 +435,8 @@ export default function ShopPage() {
                   />
                 </div>
                 <button
-                  className="absolute bottom-4 left-4 right-4 bg-cream-100 text-carbon-900 border border-cream-400 rounded-full py-3 px-[18px] text-[12px] font-medium tracking-[0.04em] flex items-center justify-center gap-2 opacity-0 translate-y-[10px] group-hover/card:opacity-100 group-hover/card:translate-y-0 transition-all duration-[350ms] hover:bg-brand-600 hover:text-cream-100 hover:border-brand-600"
+                  className="absolute bottom-4 left-4 right-4 bg-cream-100 text-carbon-900 border border-cream-400 rounded-full py-3 px-[18px] text-[12px] font-medium tracking-[0.04em] flex items-center justify-center gap-2 opacity-0 translate-y-[10px] group-hover/card:opacity-100 group-hover/card:translate-y-0 transition-all duration-[350ms] hover:bg-brand-600 hover:text-cream-100 hover:border-brand-600 will-change-transform"
+                  style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}
                 >
                   <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M12 5v14" /><path d="M5 12h14" />
@@ -421,12 +444,12 @@ export default function ShopPage() {
                   Añadir al carrito
                 </button>
               </div>
-              <div className="pt-4 pb-2 px-1 flex flex-col gap-1">
+              <div className="pt-4 pb-4 px-6 flex flex-col gap-1">
                 <span className="text-[10px] tracking-[0.18em] uppercase text-carbon-400 font-medium">
                   {TIPO_LABELS[p.tipo]}
                   <span className="font-serif italic text-brand-700 tracking-[0.04em] font-normal text-[12px] ml-1 normal-case">by Dall&apos;Ó</span>
                 </span>
-                <h3 className="font-serif font-medium text-[17px] tracking-[-0.005em] text-carbon-900 m-0 leading-[1.2]">
+                <h3 className="font-serif font-medium text-[17px] tracking-tight text-carbon-900 m-0 leading-[1.2]">
                   {p.name}
                 </h3>
                 <div className="flex items-baseline justify-between mt-1.5">
@@ -437,9 +460,9 @@ export default function ShopPage() {
                   <span className="text-[11px] text-carbon-400 tracking-[0.04em]">{p.vol}</span>
                 </div>
               </div>
-            </article>
+            </motion.article>
           ))}
-        </div>
+        </motion.div>
       </section>
 
       {/* Editorial quote */}

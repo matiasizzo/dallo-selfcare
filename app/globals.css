@@ -12,7 +12,7 @@
   }
 
   h1, h2, h3, h4 {
-    @apply font-serif;
+    @apply font-serif tracking-tight;
   }
 }
 
@@ -26,3 +26,37 @@
 ::-webkit-scrollbar        { width: 5px; }
 ::-webkit-scrollbar-track  { background: #ede9e0; }
 ::-webkit-scrollbar-thumb  { background: #3d6045; border-radius: 9999px; }
+
+/* Selection */
+::selection { background: #355539; color: #f9f7f3; }
+
+/* Brand easing utility */
+:root {
+  --ease-brand: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* will-change helper */
+.animate-fade-up {
+  will-change: transform, opacity;
+}
+
+/* Focus ring for accessibility */
+:focus-visible {
+  outline: 2px solid #355539;
+  outline-offset: 2px;
+}
+
+/* Smooth image rendering */
+img {
+  image-rendering: -webkit-optimize-contrast;
+}
+
+/* Touch hover guard — only apply hover transforms on pointer devices */
+@media (hover: hover) and (pointer: fine) {
+  .hover-lift:hover {
+    transform: translateY(-4px);
+  }
+  .hover-lift-sm:hover {
+    transform: translateY(-2px);
+  }
+}

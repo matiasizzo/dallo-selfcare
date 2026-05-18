@@ -72,7 +72,8 @@ export default function Blog() {
   return (
     <>
       {/* Best-sellers product section */}
-      <section className="max-w-[1600px] mx-auto px-9 py-[90px]">
+      <section className="py-28 bg-cream-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-end justify-between gap-10 mb-8 flex-wrap">
           <div className="flex flex-col gap-3 max-w-[720px]">
             <span className="flex items-center gap-[10px] text-[11px] tracking-[0.28em] uppercase text-carbon-400">
@@ -137,6 +138,7 @@ export default function Blog() {
             </Link>
           ))}
         </div>
+        </div>
       </section>
 
       {/* Blog section */}
@@ -153,9 +155,9 @@ export default function Blog() {
               <motion.span variants={fadeUp} className="inline-block px-4 py-1.5 rounded-full bg-brand-100 text-brand-700 text-sm font-medium w-fit">
                 Blog & Recursos
               </motion.span>
-              <motion.h2 variants={fadeUp} className="text-4xl sm:text-5xl font-bold text-carbon-900">
+              <motion.h2 variants={fadeUp} className="font-serif font-normal text-4xl sm:text-5xl leading-[1.05] tracking-tight text-carbon-900">
                 Últimas novedades<br />
-                <span className="text-brand-600">sobre tu piel</span>
+                <em className="italic font-normal text-brand-600">sobre tu piel</em>
               </motion.h2>
             </div>
             <motion.a
@@ -189,14 +191,15 @@ function BlogCard({ post }: { post: (typeof BLOG_POSTS)[0] }) {
     <motion.a
       href={post.href}
       variants={{
-        hidden: { opacity: 0, scale: 0.9 },
-        visible: { opacity: 1, scale: 1, transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] as const } },
+        hidden: { opacity: 0, y: 40 },
+        visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const } },
       }}
-      whileHover={{ y: -4, transition: { duration: 0.2 } }}
-      className="group flex flex-col rounded-3xl overflow-hidden border border-cream-400 bg-cream-200 hover:border-brand-200 hover:shadow-xl hover:shadow-brand-100/30 transition-all duration-300"
+      whileHover={{ y: -4, transition: { duration: 0.2, ease: [0.22, 1, 0.36, 1] as const } }}
+      className="group flex flex-col rounded-3xl overflow-hidden border border-cream-400 bg-cream-100 hover:border-brand-300 hover:shadow-lg hover:shadow-brand-100/40 transition-[border-color,box-shadow] duration-200 will-change-transform"
+      style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}
     >
-      <div className="aspect-[16/9] bg-gradient-to-br from-brand-100 to-brand-200 flex items-center justify-center relative overflow-hidden">
-        <div className="text-brand-300">
+      <div className="aspect-[4/3] bg-gradient-to-br from-brand-100 to-brand-200 flex items-center justify-center relative overflow-hidden rounded-t-3xl">
+        <div className="text-brand-300 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.05]">
           <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
             <rect x="3" y="3" width="18" height="18" rx="2" />
             <circle cx="8.5" cy="8.5" r="1.5" />
@@ -207,18 +210,18 @@ function BlogCard({ post }: { post: (typeof BLOG_POSTS)[0] }) {
           {post.category}
         </span>
       </div>
-      <div className="flex flex-col gap-3 p-5 flex-1">
+      <div className="flex flex-col gap-3 p-6 flex-1">
         <div className="flex items-center gap-1.5 text-carbon-400 text-xs">
           <CalendarDays size={12} />
           {post.date}
         </div>
-        <h3 className="text-base font-semibold text-carbon-900 group-hover:text-brand-700 transition-colors leading-snug">
+        <h3 className="text-base font-semibold text-carbon-900 group-hover:text-brand-700 transition-colors duration-200 leading-snug" style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}>
           {post.title}
         </h3>
-        <p className="text-xs text-carbon-500 leading-relaxed line-clamp-2">{post.excerpt}</p>
+        <p className="text-sm text-carbon-500 leading-relaxed line-clamp-2">{post.excerpt}</p>
         <div className="flex items-center gap-1 text-brand-600 text-xs font-medium mt-auto pt-2">
           Leer más
-          <ArrowUpRight size={12} className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          <ArrowUpRight size={12} className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
         </div>
       </div>
     </motion.a>

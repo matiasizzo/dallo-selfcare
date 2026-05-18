@@ -63,18 +63,26 @@ export default {
         serif: ['var(--font-serif)', 'Georgia', 'serif'],
       },
       animation: {
-        'fade-up': 'fadeUp 0.6s ease-out forwards',
+        'fade-up': 'fadeUp 0.6s cubic-bezier(0.22,1,0.36,1) forwards',
         'fade-in': 'fadeIn 0.5s ease-out forwards',
       },
       keyframes: {
         fadeUp: {
-          '0%':   { opacity: '0', transform: 'translateY(30px)' },
+          '0%':   { opacity: '0', transform: 'translateY(40px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
         fadeIn: {
           '0%':   { opacity: '0' },
           '100%': { opacity: '1' },
         },
+      },
+      boxShadow: {
+        'brand': '0 4px 24px -4px rgba(61,96,69,0.22)',
+        'brand-lg': '0 8px 40px -8px rgba(61,96,69,0.28)',
+        'warm': '0 4px 24px -4px rgba(196,135,106,0.18)',
+      },
+      transitionTimingFunction: {
+        'brand': 'cubic-bezier(0.22, 1, 0.36, 1)',
       },
     },
   },

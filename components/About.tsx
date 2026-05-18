@@ -63,8 +63,8 @@ export default function About() {
       </section>
 
       {/* Objective / quick-pick pillars section */}
-      <section id="about" className="bg-cream-200 py-[110px] px-9">
-        <div ref={ref} className="max-w-[1600px] mx-auto">
+      <section id="about" className="bg-cream-200 py-28">
+        <div ref={ref} className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             variants={staggerContainer}
             initial="hidden"
@@ -127,9 +127,9 @@ export default function About() {
                 key={qp.pillar}
                 variants={fadeUp}
                 href={qp.href}
-                className="relative overflow-hidden flex flex-col justify-between p-7 text-cream-100 cursor-pointer text-left border-0 rounded-[2px] group"
-                style={{ aspectRatio: '3/4', transition: 'transform 0.35s cubic-bezier(0.22,1,0.36,1)' }}
-                whileHover={{ y: -4 }}
+                className="relative overflow-hidden flex flex-col justify-between p-7 text-cream-100 cursor-pointer text-left border-0 rounded-[2px] group will-change-transform"
+                style={{ aspectRatio: '3/4', transition: 'transform 0.2s cubic-bezier(0.22,1,0.36,1)' }}
+                whileHover={{ y: -4, transition: { duration: 0.2, ease: [0.22, 1, 0.36, 1] } }}
               >
                 {/* Background */}
                 <div

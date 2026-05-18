@@ -55,52 +55,55 @@ export default function Booking() {
       {/* BIO-SCAN CTA band */}
       <section
         id="diagnostico"
-        className="relative overflow-hidden text-center py-[100px] px-9"
+        className="relative overflow-hidden text-center py-28"
         style={{ background: '#355539', color: '#f9f7f3' }}
       >
         {/* Glow blobs */}
         <div className="absolute pointer-events-none" style={{ top: '-120px', left: '-120px', width: '500px', height: '500px', borderRadius: '50%', background: 'rgba(213,226,214,0.10)', filter: 'blur(80px)' }} />
         <div className="absolute pointer-events-none" style={{ bottom: '-120px', right: '-120px', width: '500px', height: '500px', borderRadius: '50%', background: 'rgba(196,135,106,0.18)', filter: 'blur(80px)' }} />
 
-        <div className="max-w-[720px] mx-auto relative z-[2]">
-          <span
-            className="inline-block px-4 py-1.5 rounded-full text-[11px] tracking-[0.2em] uppercase text-cream-100 mb-[22px]"
-            style={{ background: 'rgba(245,242,236,0.12)', border: '1px solid rgba(245,242,236,0.22)' }}
-          >
-            BIO-SCAN 360°
-          </span>
-          <h3
-            className="font-serif font-normal leading-[1.05] tracking-[-0.015em] m-0 mb-5 text-cream-100 text-balance"
-            style={{ fontSize: 'clamp(34px, 4.2vw, 56px)' }}
-          >
-            ¿No sabes por dónde <em className="italic text-brand-300">empezar</em>?
-          </h3>
-          <p className="text-[16px] text-brand-200 m-0 mx-auto mb-8 max-w-[540px] leading-[1.6]">
-            Reserva un diagnóstico médico gratuito en clínica QUEVI. Cruzamos tu ADN, tu mapa mineral y tu lectura facial 3D — y diseñamos un protocolo DALL&apos;Ó hecho a la medida de tu historia.
-          </p>
-          <div className="inline-flex gap-3 flex-wrap justify-center">
-            <a
-              href="#contact"
-              className="inline-flex items-center gap-2.5 px-7 py-[14px] text-[13px] tracking-[0.02em] font-medium rounded-full bg-cream-100 text-brand-700 border border-cream-100 transition-all duration-300 hover:bg-transparent hover:text-cream-100 hover:-translate-y-0.5"
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-[2]">
+          <div className="max-w-[720px] mx-auto">
+            <span
+              className="inline-block px-4 py-1.5 rounded-full text-[11px] tracking-[0.2em] uppercase text-cream-100 mb-[22px]"
+              style={{ background: 'rgba(245,242,236,0.12)', border: '1px solid rgba(245,242,236,0.22)' }}
             >
-              Reservar diagnóstico — gratis
-              <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
-              </svg>
-            </a>
-            <a
-              href="#contact"
-              className="inline-flex items-center gap-2.5 px-7 py-[14px] text-[13px] tracking-[0.02em] font-medium rounded-full text-cream-100 transition-all duration-300 hover:-translate-y-0.5"
-              style={{ background: 'transparent', border: '1px solid rgba(245,242,236,0.32)' }}
+              BIO-SCAN 360°
+            </span>
+            <h3
+              className="font-serif font-normal leading-[1.05] tracking-tight m-0 mb-5 text-cream-100 text-balance"
+              style={{ fontSize: 'clamp(34px, 4.2vw, 56px)' }}
             >
-              Ver tienda completa
-            </a>
+              ¿No sabes por dónde <em className="italic text-brand-300">empezar</em>?
+            </h3>
+            <p className="text-[16px] text-brand-200 m-0 mx-auto mb-8 max-w-[540px] leading-relaxed">
+              Reserva un diagnóstico médico gratuito en clínica QUEVI. Cruzamos tu ADN, tu mapa mineral y tu lectura facial 3D — y diseñamos un protocolo DALL&apos;Ó hecho a la medida de tu historia.
+            </p>
+            <div className="inline-flex gap-3 flex-wrap justify-center">
+              <a
+                href="#contact"
+                className="group inline-flex items-center gap-2.5 px-7 py-3 text-[13px] tracking-[0.02em] font-medium rounded-full bg-cream-100 text-brand-700 border border-cream-100 transition-all duration-200 hover:bg-transparent hover:text-cream-100 hover:-translate-y-0.5 active:scale-[0.97] will-change-transform"
+                style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}
+              >
+                Reservar diagnóstico — gratis
+                <svg className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
+                </svg>
+              </a>
+              <a
+                href="#contact"
+                className="inline-flex items-center gap-2.5 px-7 py-3 text-[13px] tracking-[0.02em] font-medium rounded-full text-cream-100 transition-all duration-200 hover:-translate-y-0.5 hover:bg-white/10 active:scale-[0.97] will-change-transform"
+                style={{ background: 'transparent', border: '1px solid rgba(245,242,236,0.32)', transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}
+              >
+                Ver tienda completa
+              </a>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Booking form */}
-      <section id="booking" className="py-28 bg-cream-300 overflow-hidden">
+      <section id="booking" className="py-28 bg-cream-200 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <motion.div
@@ -116,8 +119,8 @@ export default function Booking() {
             >
               Consulta gratuita
             </motion.span>
-            <motion.h2 variants={fadeUp} className="text-4xl sm:text-5xl font-bold text-carbon-900 mb-4">
-              Reserva tu cita{' '}<span className="text-brand-600">hoy mismo</span>
+            <motion.h2 variants={fadeUp} className="font-serif font-normal text-4xl sm:text-5xl leading-[1.05] tracking-tight text-carbon-900 mb-4">
+              Reserva tu cita{' '}<em className="italic font-normal text-brand-600">hoy mismo</em>
             </motion.h2>
             <motion.p variants={fadeUp} className="text-carbon-500 text-lg max-w-lg mx-auto">
               Primera consulta orientativa gratuita. Sin compromiso. Respuesta en menos de 24h.
@@ -148,7 +151,7 @@ export default function Booking() {
               </div>
 
               {['Sin esperas largas', 'Respuesta en 24h', 'Primera consulta gratis'].map((p) => (
-                <div key={p} className="flex items-center gap-3 px-5 py-3 rounded-2xl bg-cream-200 border border-cream-400">
+                <div key={p} className="flex items-center gap-3 px-5 py-3.5 rounded-xl bg-cream-100 border border-cream-400 transition-all duration-200 hover:border-brand-300 hover:shadow-sm" style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}>
                   <CheckCircle2 size={16} className="text-brand-500 flex-shrink-0" />
                   <span className="text-sm text-carbon-700 font-medium">{p}</span>
                 </div>
@@ -223,7 +226,7 @@ export default function Booking() {
                   <button
                     type="submit"
                     disabled={loading}
-                    className="group flex items-center justify-center gap-2 w-full py-3.5 bg-brand-600 hover:bg-brand-700 disabled:opacity-60 disabled:cursor-not-allowed text-cream-50 font-medium rounded-full transition-all duration-200 shadow-lg shadow-brand-300/30 hover:-translate-y-0.5 mt-2"
+                    className="group flex items-center justify-center gap-2 w-full py-3.5 bg-brand-600 hover:bg-brand-700 disabled:opacity-60 disabled:cursor-not-allowed text-cream-50 font-medium rounded-full transition-all duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] shadow-brand hover:-translate-y-0.5 active:scale-[0.97] mt-2 will-change-transform"
                   >
                     {loading ? 'Enviando...' : 'Solicitar cita gratuita'}
                     {!loading && <Send size={16} className="transition-transform group-hover:translate-x-1" />}
