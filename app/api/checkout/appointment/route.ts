@@ -1,16 +1,14 @@
 import { NextResponse } from 'next/server'
-import { stripe } from '@/lib/stripe'
+import { getStripe } from '@/lib/stripe'
 import { createClient } from '@supabase/supabase-js'
+
+export const dynamic = 'force-dynamic'
 
 function getSupabaseServiceClient() {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
-
   if (!url || !serviceKey) return null
-
-  return createClient(url, serviceKey, {
-    auth: { persistSession: false },
-  })
+  return createClient(url, serviceKey, { auth: { persistSession: false } })
 }
 
 export async function POST(request: Request) {
@@ -18,7 +16,6 @@ export async function POST(request: Request) {
     const body = await request.json()
     const { name, email, phone, service, date, time, notes } = body
 
-    // Validate required fields
     if (!name || !email || !service || !date || !time) {
       return NextResponse.json(
         { error: 'Faltan campos requeridos: nombre, email, servicio, fecha y hora.' },
@@ -26,12 +23,10 @@ export async function POST(request: Request) {
       )
     }
 
-    // Insert pending appointment in Supabase
     const supabase = getSupabaseServiceClient()
     if (supabase) {
       const { error: dbError } = await supabase.from('appointments').insert({
-        name,
-        email,
+        name, email,
         phone: phone ?? null,
         service,
         appointment_date: date,
@@ -40,46 +35,29 @@ export async function POST(request: Request) {
         amount_cents: 5000,
         status: 'pending',
       })
-      if (dbError) {
-        console.error('[checkout/appointment] Supabase insert error:', dbError)
-      }
-    } else {
-      console.warn('[checkout/appointment] Supabase service client unavailable — skipping DB insert')
+      if (dbError) console.error('[checkout/appointment] Supabase insert error:', dbError)
     }
 
+    const stripe = getStripe()
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'
 
-    if (!stripe) {
-      return NextResponse.json({ error: 'Stripe no configurado' }, { status: 503 })
-    }
-
-    // Create Stripe Checkout Session
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
-      line_items: [
-        {
-          price_data: {
-            currency: 'eur',
-            unit_amount: 5000,
-            product_data: {
-              name: 'Consulta médica QUEVI',
-              description: `${service} — ${date} a las ${time}`,
-            },
+      line_items: [{
+        price_data: {
+          currency: 'eur',
+          unit_amount: 5000,
+          product_data: {
+            name: 'Consulta médica QUEVI',
+            description: `${service} — ${date} a las ${time}`,
           },
-          quantity: 1,
         },
-      ],
+        quantity: 1,
+      }],
       success_url: `${siteUrl}/cita/confirmada?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${siteUrl}/#booking`,
       customer_email: email,
-      metadata: {
-        name,
-        phone: phone ?? '',
-        service,
-        appointment_date: date,
-        appointment_time: time,
-        notes: notes ?? '',
-      },
+      metadata: { name, phone: phone ?? '', service, appointment_date: date, appointment_time: time, notes: notes ?? '' },
     })
 
     return NextResponse.json({ url: session.url })
