@@ -164,6 +164,11 @@ function ProductosTab() {
 
   useEffect(() => {
     async function fetchProducts() {
+      if (!supabase) {
+        setProducts(FALLBACK_PRODUCTS)
+        setLoading(false)
+        return
+      }
       try {
         const { data, error } = await supabase
           .from('products')
