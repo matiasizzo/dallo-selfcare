@@ -9,53 +9,55 @@ export default function QueviLogo({
   width?: number
   height?: number
 }) {
-  const fill = variant === 'dark' ? '#2b4430' : '#f5f2ec'
+  const primary = variant === 'dark' ? '#2b4430' : '#e8e3d6'
+  const sub = variant === 'dark' ? '#2b4430' : '#c8c2b0'
 
   return (
     <svg
       width={width}
       height={height}
-      viewBox="0 0 220 72"
+      viewBox="0 0 240 76"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       className={className}
       aria-label="QUEVI Wellness Clinic"
       role="img"
     >
-      {/* Wordmark */}
+      {/* QUEVI — Cormorant/Garamond-style serif, medium weight */}
       <text
-        x="110"
+        x="120"
         y="46"
-        fontFamily="'Playfair Display', 'Cormorant Garamond', Georgia, 'Times New Roman', serif"
-        fontSize="48"
-        fontWeight="700"
+        fontFamily="var(--font-cormorant), 'Cormorant Garamond', 'Playfair Display', Georgia, serif"
+        fontSize="52"
+        fontWeight="600"
         textAnchor="middle"
-        fill={fill}
-        letterSpacing="3"
+        fill={primary}
+        letterSpacing="4"
       >
         QUEVI
       </text>
 
-      {/* Decorative swash — mirrors the Q tail extended right */}
+      {/* Swash — starts under the Q tail, sweeps right, gentle arc */}
       <path
-        d="M 10 54 C 42 66, 90 68, 120 63 C 152 58, 188 56, 210 54"
-        stroke={fill}
-        strokeWidth="1.15"
+        d="M 28 56 Q 80 70 140 64 Q 190 59 218 56"
+        stroke={primary}
+        strokeWidth="1.2"
         strokeLinecap="round"
-        opacity="0.6"
+        fill="none"
+        opacity="0.55"
       />
 
-      {/* Subtitle */}
+      {/* Wellness Clinic — light weight, tracked */}
       <text
-        x="110"
-        y="66"
-        fontFamily="'Playfair Display', Georgia, serif"
-        fontSize="11.5"
+        x="120"
+        y="72"
+        fontFamily="var(--font-cormorant), 'Cormorant Garamond', 'Playfair Display', Georgia, serif"
+        fontSize="12"
         fontWeight="400"
         textAnchor="middle"
-        fill={fill}
-        letterSpacing="4"
-        opacity="0.75"
+        fill={sub}
+        letterSpacing="5"
+        opacity="0.8"
       >
         Wellness Clinic •
       </text>
