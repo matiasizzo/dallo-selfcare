@@ -49,6 +49,10 @@ export async function POST(request: Request) {
 
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'
 
+    if (!stripe) {
+      return NextResponse.json({ error: 'Stripe no configurado' }, { status: 503 })
+    }
+
     // Create Stripe Checkout Session
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
