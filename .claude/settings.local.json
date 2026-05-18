@@ -15,7 +15,8 @@
       "mcp__0c1a7d90-c419-4857-b690-4c4411be9b45__list_deployments",
       "mcp__0c1a7d90-c419-4857-b690-4c4411be9b45__deploy_to_vercel",
       "mcp__0c1a7d90-c419-4857-b690-4c4411be9b45__get_project",
-      "mcp__0c1a7d90-c419-4857-b690-4c4411be9b45__list_projects"
+      "mcp__0c1a7d90-c419-4857-b690-4c4411be9b45__list_projects",
+      "mcp__0c1a7d90-c419-4857-b690-4c4411be9b45__get_runtime_logs"
     ]
   }
 }
