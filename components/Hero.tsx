@@ -1,7 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import Image from 'next/image'
+import QueviIcon from '@/components/QueviIcon'
 
 const EASE = [0.22, 1, 0.36, 1] as const
 
@@ -84,26 +84,26 @@ export default function Hero() {
         </div>
       </motion.div>
 
-      {/* Image side — fixed height on mobile, fills column on desktop */}
+      {/* Right side — brand icon */}
       <motion.div
-        className="relative overflow-hidden bg-brand-700 h-64 sm:h-80 lg:h-auto"
+        className="relative overflow-hidden flex items-center justify-center h-72 sm:h-96 lg:h-auto"
+        style={{
+          background: 'linear-gradient(145deg, #e8e3da 0%, #dfd8ce 55%, #d5ccbf 100%)',
+        }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8, delay: 0.2, ease: EASE }}
       >
-        <Image
-          src="/images/hero.png"
-          alt="Quevi clinic"
-          fill
-          className="object-cover"
-          style={{ filter: 'saturate(0.92) contrast(1.05)' }}
-          priority
-          sizes="(max-width: 1024px) 100vw, 55vw"
-        />
+        {/* Subtle radial glow behind icon */}
         <div
-          className="absolute inset-0"
-          style={{ background: 'linear-gradient(180deg, transparent 55%, rgba(22,35,26,0.45))' }}
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: 'radial-gradient(circle at 50% 52%, rgba(53,85,57,0.10) 0%, transparent 65%)',
+          }}
         />
+
+        {/* Icon — responsive via CSS, fixed viewBox scales naturally */}
+        <QueviIcon className="relative z-[1] w-[55%] sm:w-[42%] lg:w-[58%] max-w-[340px] drop-shadow-[0_12px_40px_rgba(22,35,26,0.22)]" />
       </motion.div>
     </section>
   )
