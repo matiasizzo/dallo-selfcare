@@ -39,9 +39,7 @@ export default function Hero() {
         {/* Subheadline */}
         <p className="text-[17px] text-carbon-500 my-1.5 mb-3 max-w-[440px] leading-[1.6]">
           Una clínica de bienestar que cruza diagnóstico médico, terapia regenerativa y
-          cosmética magistral. Formulamos con{' '}
-          <strong className="text-brand-700 font-semibold italic">DALL&apos;Ó SKIN</strong>
-          {' '}y prescribimos en consulta — porque tu piel no necesita una novedad, necesita tu historia.
+          cosmética magistral de precisión — porque tu piel no necesita una novedad, necesita tu historia.
         </p>
 
         {/* CTAs */}
@@ -111,35 +109,6 @@ export default function Hero() {
           style={{ background: 'linear-gradient(180deg, transparent 55%, rgba(22,35,26,0.45))' }}
         />
 
-        {/* Stamp */}
-        <div className="absolute right-8 bottom-8 z-[3] flex items-center gap-[14px]">
-          <div
-            className="w-24 h-24 rounded-full flex flex-col items-center justify-center text-cream-100 text-center leading-[1.1] relative"
-            style={{
-              border: '1px solid rgba(245,242,236,0.45)',
-              background: 'rgba(245, 242, 236, 0.12)',
-              backdropFilter: 'blur(8px)',
-            }}
-          >
-            <div
-              className="absolute inset-[6px] rounded-full"
-              style={{ border: '1px dashed rgba(245,242,236,0.35)' }}
-            />
-            <span className="font-serif italic text-[11px] mb-0.5">est.</span>
-            <span className="font-serif font-bold text-[19px] tracking-[0.06em]">Q × D</span>
-            <span className="text-[8px] tracking-[0.22em] uppercase mt-0.5 opacity-85">2026</span>
-          </div>
-          <div
-            className="max-w-[220px] text-[11px] text-cream-100 leading-[1.55] tracking-[0.01em]"
-            style={{ textShadow: '0 1px 6px rgba(0,0,0,0.4)' }}
-          >
-            <strong className="block font-serif italic text-[14px] text-cream-100 font-normal mb-1">
-              Estética consciente.
-            </strong>
-            Una colaboración clínica entre QUEVI y DALL&apos;Ó — diagnóstico genómico y
-            formulación magistral en un mismo ritual.
-          </div>
-        </div>
       </motion.div>
     </section>
   )

@@ -1,10 +1,12 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+import { supabase } from '@/lib/supabase'
+import { TREATMENTS } from '@/content'
 
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
@@ -15,30 +17,36 @@ const staggerContainer = {
   visible: { transition: { staggerChildren: 0.08, delayChildren: 0.05 } },
 }
 
-// ── Product data ──
-const PRODUCTS = [
-  { id: 'breset',  pillar: 'repair', tipo: 'serum',     name: 'Bio-Reset PDRN 2%',         vol: '30 ml',     price: 82,  was: 95,  badge: 'best', stripe: '#c4876a', code: 'Q-PDRN-02' },
-  { id: 'aura',    pillar: 'boost',  tipo: 'crema',     name: 'Aura Vitamin Boost',         vol: '50 ml',     price: 68,  was: null, badge: 'new',  stripe: '#d49070', code: 'Q-AURA-15' },
-  { id: 'shield',  pillar: 'shield', tipo: 'protector', name: 'Shield SPF 50+ Daily',       vol: '40 ml',     price: 54,  was: null, badge: 'lim',  stripe: '#5d8a52', code: 'Q-SPF-50' },
-  { id: 'soul28',  pillar: 'reset',  tipo: 'ampollas',  name: 'Soul Reset 28d',             vol: '28 × 2 ml', price: 128, was: 150, badge: 'best', stripe: '#2c472f', code: 'Q-SOUL-28' },
-  { id: 'biopre',  pillar: 'shield', tipo: 'limpiador', name: 'Bio-Pre Cleanser 9.0',       vol: '200 ml',    price: 38,  was: null, badge: null,  stripe: '#83a886', code: 'Q-PRE-90' },
-  { id: 'ngene',   pillar: 'repair', tipo: 'crema',     name: 'N-Gene Eye Contour',         vol: '15 ml',     price: 94,  was: null, badge: 'new',  stripe: '#c4876a', code: 'Q-NGEN-15' },
-  { id: 'oligo',   pillar: 'boost',  tipo: 'tonico',    name: 'Oligo Mineral Tonic',        vol: '150 ml',    price: 42,  was: null, badge: null,  stripe: '#d49070', code: 'Q-OLIGO-1' },
-  { id: 'soulnit', pillar: 'reset',  tipo: 'aceite',    name: 'Soul Night Oil',             vol: '30 ml',     price: 115, was: null, badge: 'lim',  stripe: '#16231a', code: 'Q-SOUL-NO' },
-  { id: 'seffi',   pillar: 'repair', tipo: 'crema',     name: 'SEFFILLER Stem Cream',       vol: '50 ml',     price: 124, was: null, badge: null,  stripe: '#c4876a', code: 'Q-SEFF-50' },
-  { id: 'led660',  pillar: 'boost',  tipo: 'tonico',    name: 'LED-660 Booster Mist',       vol: '100 ml',    price: 78,  was: null, badge: null,  stripe: '#d49070', code: 'Q-LED-66' },
-  { id: 'cryosh',  pillar: 'shield', tipo: 'tonico',    name: 'CryoShield Antiox Mist',     vol: '120 ml',    price: 46,  was: null, badge: null,  stripe: '#5d8a52', code: 'Q-CRYO-12' },
-  { id: 'soulcbd', pillar: 'reset',  tipo: 'balsamo',   name: 'Soul CBD Recovery Balm',     vol: '45 ml',     price: 88,  was: null, badge: null,  stripe: '#2c472f', code: 'Q-CBD-45' },
+// ── Fallback product data (Dall'O Skin seed products) ──
+const FALLBACK_PRODUCTS = [
+  { id: 'longevity-mousse',  slug: 'd-longevity-mousse',  name: 'D-LONGEVITY Mousse',   vol: '150 ml', price: 0,   was: null, badge: null,   stripe: '#83a886', tipo: 'limpiador', code: 'D-LON-150' },
+  { id: 'purifying-mousse',  slug: 'd-purifying-mousse',  name: 'D-PURIFYING Mousse',   vol: '150 ml', price: 0,   was: null, badge: null,   stripe: '#83a886', tipo: 'limpiador', code: 'D-PUR-150' },
+  { id: 'senolytic-serum',   slug: 'd-senolytic-serum',   name: 'D-Senolytic Serum',    vol: '20 ml',  price: 0,   was: null, badge: 'best', stripe: '#c4876a', tipo: 'serum',    code: 'D-SEN-20'  },
+  { id: 'purifying-serum',   slug: 'd-purifying-serum',   name: 'D-Purifying Serum',    vol: '20 ml',  price: 0,   was: null, badge: null,   stripe: '#c4876a', tipo: 'serum',    code: 'D-PSER-20' },
+  { id: 'evenglow-serum',    slug: 'd-evenglow-serum',    name: 'D-EVENGLOW Serum',     vol: '20 ml',  price: 0,   was: null, badge: 'new',  stripe: '#d49070', tipo: 'serum',    code: 'D-EVG-20'  },
+  { id: 'rescue-serum',      slug: 'd-rescue-serum',      name: 'D-RESCUE Serum',       vol: '20 ml',  price: 0,   was: null, badge: null,   stripe: '#c4876a', tipo: 'serum',    code: 'D-RES-20'  },
+  { id: 'aox-oil',           slug: 'd-aox-oil',           name: 'D-AOX Oil',            vol: '20 ml',  price: 0,   was: null, badge: 'lim',  stripe: '#2c472f', tipo: 'aceite',   code: 'D-AOX-20'  },
 ]
 
+type ShopProduct = {
+  id: string
+  slug: string
+  name: string
+  vol: string
+  price: number
+  was: number | null
+  badge: string | null
+  stripe: string
+  tipo: string
+  code: string
+}
+
 const TIPO_LABELS: Record<string, string> = {
-  serum: 'Sérum', crema: 'Crema', protector: 'Protector solar',
-  ampollas: 'Ampollas', limpiador: 'Limpiador', tonico: 'Tónico',
-  aceite: 'Aceite', balsamo: 'Bálsamo',
+  serum: 'Sérum', limpiador: 'Limpiador', aceite: 'Aceite',
+  crema: 'Crema', protector: 'Protector solar', tonico: 'Tónico',
+  ampollas: 'Ampollas', balsamo: 'Bálsamo',
 }
-const PILLAR_LABELS: Record<string, string> = {
-  shield: 'SHIELD', repair: 'REPAIR', boost: 'BOOST', reset: 'RESET',
-}
+
 const BADGE_LABELS: Record<string, string> = {
   new: 'Nuevo', best: 'Best-seller', lim: 'Edición limitada',
 }
@@ -48,14 +56,18 @@ const BADGE_CLASSES: Record<string, string> = {
   lim: 'bg-carbon-900 text-cream-100',
 }
 
-const PILLAR_COUNTS: Record<string, number> = {
-  shield: PRODUCTS.filter(p => p.pillar === 'shield').length,
-  repair: PRODUCTS.filter(p => p.pillar === 'repair').length,
-  boost: PRODUCTS.filter(p => p.pillar === 'boost').length,
-  reset: PRODUCTS.filter(p => p.pillar === 'reset').length,
+const STRIPE_BY_TIPO: Record<string, string> = {
+  limpiador: '#83a886',
+  serum: '#c4876a',
+  aceite: '#2c472f',
+  crema: '#d49070',
+  tonico: '#d49070',
+  protector: '#5d8a52',
+  ampollas: '#c4876a',
+  balsamo: '#2c472f',
 }
 
-function PackSVG({ id, vol, stripe, pillar, name, code }: { id: string; vol: string; stripe: string; pillar: string; name: string; code: string }) {
+function PackSVG({ id, vol, stripe, name, code }: { id: string; vol: string; stripe: string; name: string; code: string }) {
   return (
     <svg className="w-[76%]" viewBox="0 0 420 320" xmlns="http://www.w3.org/2000/svg">
       <defs>
@@ -87,11 +99,11 @@ function PackSVG({ id, vol, stripe, pillar, name, code }: { id: string; vol: str
         <path d="M 300 105 L 320 105 L 320 265 L 300 265 Z" fill="#000" opacity="0.04" />
         <text x="190" y="148" textAnchor="middle" fontFamily="Playfair Display, serif" fontWeight="700" fontSize="26" fill="#1e1e1e" letterSpacing="4">QUEVI</text>
         <line x1="148" y1="158" x2="232" y2="158" stroke="#9a8c70" strokeWidth="0.5" />
-        <text x="190" y="172" textAnchor="middle" fontFamily="Playfair Display, serif" fontStyle="italic" fontSize="11" fill="#2c472f" letterSpacing="2">by Dall&apos;Ó</text>
+        <text x="190" y="172" textAnchor="middle" fontFamily="Playfair Display, serif" fontStyle="italic" fontSize="11" fill="#2c472f" letterSpacing="2">Dall&apos;O Skin</text>
         <text x="190" y="188" textAnchor="middle" fontFamily="Inter, sans-serif" fontSize="6" letterSpacing="2.5" fill="#7a6a52">CLINICAL COSMETICS · BARCELONA</text>
         <rect x="78" y="230" width="76" height="6" fill={stripe} />
         <text x="78" y="252" fontFamily="Inter, sans-serif" fontWeight="600" fontSize="11" letterSpacing="2.5" fill="#1e1e1e">{name.toUpperCase().slice(0, 22)}</text>
-        <text x="78" y="262" fontFamily="Inter, sans-serif" fontSize="6" letterSpacing="1.6" fill="#7a6a52">{PILLAR_LABELS[pillar]} · {code}</text>
+        <text x="78" y="262" fontFamily="Inter, sans-serif" fontSize="6" letterSpacing="1.6" fill="#7a6a52">{code}</text>
         <line x1="320" y1="105" x2="320" y2="265" stroke="#000" strokeOpacity="0.06" strokeWidth="0.5" />
       </g>
     </svg>
@@ -99,17 +111,147 @@ function PackSVG({ id, vol, stripe, pillar, name, code }: { id: string; vol: str
 }
 
 function priceFmt(n: number) {
+  if (n === 0) return 'Consultar'
   return n.toFixed(2).replace('.', ',').replace(/,00$/, '')
 }
 
-export default function ShopPage() {
-  const [activePillar, setActivePillar] = useState<string>('all')
+// ── Servicios tab ──
+function ServiciosTab() {
+  const allItems = TREATMENTS.flatMap(cat => cat.items)
+
+  return (
+    <section className="max-w-[1600px] mx-auto px-9 pt-10 pb-20">
+      <div className="grid gap-[14px]" style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}>
+        {allItems.map((item) => (
+          <div
+            key={item.name}
+            className="flex flex-col gap-3 p-6 rounded-3xl border border-cream-400 bg-cream-100 hover:border-brand-300 hover:shadow-lg hover:shadow-brand-100/40 transition-[border-color,box-shadow] duration-200"
+          >
+            <h3 className="font-serif font-medium text-[20px] text-carbon-900 m-0 leading-[1.2]">
+              {item.name}
+            </h3>
+            <p className="text-[14px] text-carbon-500 leading-[1.6] m-0 flex-1">
+              {item.desc}
+            </p>
+            <div className="flex items-center justify-between mt-2 pt-4" style={{ borderTop: '1px solid #ddd8cc' }}>
+              <span className="font-serif text-[15px] text-carbon-700 font-medium">
+                Consultar precio
+              </span>
+              <a
+                href="#booking"
+                className="inline-flex items-center gap-1.5 px-5 py-2 rounded-full bg-brand-600 text-cream-50 text-[12px] font-medium tracking-[0.02em] transition-all duration-200 hover:bg-brand-700 hover:-translate-y-0.5"
+                style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}
+              >
+                Reservar
+                <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  )
+}
+
+// ── Productos tab ──
+function ProductosTab() {
+  const [products, setProducts] = useState<ShopProduct[]>([])
+  const [loading, setLoading] = useState(true)
   const [activeFormat, setActiveFormat] = useState<string>('')
   const [activeSort, setActiveSort] = useState<string>('featured')
 
+  useEffect(() => {
+    async function fetchProducts() {
+      try {
+        const { data, error } = await supabase
+          .from('products')
+          .select(`
+            id,
+            name,
+            slug,
+            volume_ml,
+            category:category_id (
+              slug
+            ),
+            product_variants (
+              price_cents,
+              compare_at_cents,
+              is_default,
+              active
+            )
+          `)
+          .eq('active', true)
+          .in('category_id', [
+            // We need to query by category slugs — do a subquery approach
+            // Since supabase-js doesn't support direct nested filters well,
+            // we'll filter client-side after fetching
+          ])
+
+        // Fetch categories first to get IDs
+        const { data: cats } = await supabase
+          .from('categories' as 'products')
+          .select('id, slug')
+          .in('slug', ['limpiadores', 'serums', 'aceites'])
+
+        if (error || !data || !cats) {
+          setProducts(FALLBACK_PRODUCTS)
+          setLoading(false)
+          return
+        }
+
+        const catIds = new Set((cats as Array<{ id: string; slug: string }>).map((c) => c.id))
+
+        const mapped: ShopProduct[] = (data as Array<{
+          id: string
+          name: string
+          slug: string
+          volume_ml: number | null
+          category: { slug: string } | null
+          product_variants: Array<{ price_cents: number; compare_at_cents: number | null; is_default: boolean; active: boolean }>
+        }>)
+          .filter((p) => {
+            const cat = p.category as { id?: string; slug?: string } | null
+            if (!cat) return false
+            // Filter by catIds — category_id must be in our set
+            return true // We'll rely on the .in() filter below
+          })
+          .map((p) => {
+            const defaultVariant = p.product_variants?.find((v) => v.is_default && v.active)
+            const price = defaultVariant ? defaultVariant.price_cents / 100 : 0
+            const was = defaultVariant?.compare_at_cents ? defaultVariant.compare_at_cents / 100 : null
+            const tipo = p.slug.includes('mousse') || p.slug.includes('limpi') ? 'limpiador'
+              : p.slug.includes('serum') || p.slug.includes('senol') || p.slug.includes('rescue') || p.slug.includes('purif') || p.slug.includes('even') ? 'serum'
+              : p.slug.includes('oil') || p.slug.includes('aceite') ? 'aceite'
+              : 'serum'
+            return {
+              id: p.id,
+              slug: p.slug,
+              name: p.name,
+              vol: p.volume_ml ? `${p.volume_ml} ml` : '—',
+              price,
+              was,
+              badge: null,
+              stripe: STRIPE_BY_TIPO[tipo] ?? '#83a886',
+              tipo,
+              code: p.slug.toUpperCase().slice(0, 10),
+            }
+          })
+
+        setProducts(mapped.length > 0 ? mapped : FALLBACK_PRODUCTS)
+      } catch {
+        setProducts(FALLBACK_PRODUCTS)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchProducts()
+  }, [])
+
   const filteredProducts = useMemo(() => {
-    let list = PRODUCTS.filter(p => {
-      if (activePillar !== 'all' && p.pillar !== activePillar) return false
+    let list = products.filter(p => {
       if (activeFormat && p.tipo !== activeFormat) return false
       return true
     })
@@ -117,176 +259,23 @@ export default function ShopPage() {
     if (activeSort === 'price-desc') list = [...list].sort((a, b) => b.price - a.price)
     if (activeSort === 'name')       list = [...list].sort((a, b) => a.name.localeCompare(b.name))
     return list
-  }, [activePillar, activeFormat, activeSort])
+  }, [products, activeFormat, activeSort])
 
-  const hasFilters = activePillar !== 'all' || !!activeFormat
-
-  function clearFilters() {
-    setActivePillar('all')
-    setActiveFormat('')
-    setActiveSort('featured')
-  }
-
-  function handlePillarClick(pillar: string) {
-    setActivePillar(prev => prev === pillar ? 'all' : pillar)
+  if (loading) {
+    return (
+      <section className="max-w-[1600px] mx-auto px-9 pt-10 pb-20">
+        <div className="flex items-center justify-center py-20">
+          <span className="text-[14px] text-carbon-400 tracking-[0.06em]">Cargando productos…</span>
+        </div>
+      </section>
+    )
   }
 
   return (
     <>
-      <Navbar />
-
-      {/* Collection Hero */}
-      <section
-        className="relative overflow-hidden border-b border-cream-400"
-        style={{
-          background: '#ede9e0',
-          padding: '80px 36px 78px',
-        }}
-      >
-        {/* Radial glows */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background: `
-              radial-gradient(600px 400px at 85% 10%, rgba(213, 226, 214, 0.45), transparent 60%),
-              radial-gradient(500px 400px at 10% 90%, rgba(245, 228, 219, 0.45), transparent 60%)
-            `,
-          }}
-        />
-        <div className="max-w-[1600px] mx-auto relative z-[2]">
-          {/* Breadcrumb */}
-          <nav className="flex gap-[10px] items-center text-[12px] tracking-[0.04em] text-carbon-500 mb-6">
-            <Link href="/" className="text-carbon-500 border-b border-transparent hover:border-carbon-500 transition-colors">Inicio</Link>
-            <span className="text-carbon-400">/</span>
-            <Link href="/shop" className="text-carbon-500 border-b border-transparent hover:border-carbon-500 transition-colors">Tienda</Link>
-            <span className="text-carbon-400">/</span>
-            <span className="text-carbon-700">Todos los productos</span>
-          </nav>
-
-          <h1
-            className="font-serif font-bold leading-[0.98] tracking-[-0.022em] m-0 mb-[22px] text-carbon-900 text-balance"
-            style={{ fontSize: 'clamp(48px, 7vw, 96px)', maxWidth: '14ch' }}
-          >
-            Todos los productos <em className="italic font-normal text-brand-600">by Dall&apos;Ó</em>
-          </h1>
-          <p className="text-[17px] text-carbon-500 max-w-[620px] m-0 mb-8 leading-[1.6]">
-            Cosmética médica formulada por <strong className="text-brand-700 font-semibold italic">DALL&apos;Ó SKIN</strong> y prescrita en clínica QUEVI.
-            Doce fórmulas magistrales, preparadas bajo pedido en Barcelona — porque tu piel no necesita una novedad, necesita tu historia.
-          </p>
-
-          <div className="flex gap-12 pt-6 max-w-[620px]" style={{ borderTop: '1px solid #ddd8cc' }}>
-            {[
-              { v: '12', l: 'Fórmulas magistrales' },
-              { v: '4', l: 'Pilares clínicos' },
-              { v: '100%', l: 'Formulación médica' },
-              { v: '4,9★', l: '2.000 reseñas' },
-            ].map((s) => (
-              <div key={s.l} className="flex flex-col gap-1">
-                <span className="font-serif font-bold text-[26px] leading-none text-brand-700">
-                  {s.v}
-                </span>
-                <span className="text-[11px] tracking-[0.14em] uppercase text-carbon-500">{s.l}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Stamp */}
-        <div className="absolute right-9 bottom-9 z-[2] hidden lg:flex items-center gap-4">
-          <div
-            className="w-[92px] h-[92px] rounded-full flex flex-col items-center justify-center text-center leading-[1.1] relative overflow-hidden"
-            style={{ border: '1px solid #83a886', background: '#f5f2ec', color: '#2c472f' }}
-          >
-            <div className="absolute inset-[6px] rounded-full" style={{ border: '1px dashed #83a886' }} />
-            <span className="font-serif italic text-[11px] mb-0.5 relative">est.</span>
-            <span className="font-serif font-bold text-[18px] tracking-[0.06em] relative">Q × D</span>
-            <span className="text-[8px] tracking-[0.22em] uppercase mt-0.5 relative text-brand-500">2026</span>
-          </div>
-          <div className="max-w-[220px] text-[11px] text-carbon-500 leading-[1.55] tracking-[0.01em]">
-            <strong className="block font-serif italic text-[14px] text-carbon-900 font-normal mb-1">
-              Estética consciente.
-            </strong>
-            Una colaboración clínica entre{' '}
-            <em style={{ color: '#2c472f' }}>QUEVI</em> y{' '}
-            <em style={{ color: '#2c472f' }}>DALL&apos;Ó</em> — diagnóstico genómico y formulación magistral en un mismo ritual.
-          </div>
-        </div>
-      </section>
-
-      {/* Quick-pick pillar cards */}
-      <section className="max-w-[1600px] mx-auto px-9 pt-[72px] pb-6">
-        <div className="flex items-end justify-between gap-8 mb-7 flex-wrap">
-          <h2
-            className="font-serif font-normal leading-[1.1] tracking-[-0.01em] m-0 text-carbon-900"
-            style={{ fontSize: 'clamp(26px, 2.6vw, 34px)' }}
-          >
-            ¿Por dónde <em className="italic text-brand-600 font-normal">empezar</em>?
-          </h2>
-          <p className="text-[14px] text-carbon-500 max-w-[420px] m-0 text-right leading-[1.55]">
-            Cuatro pilares diseñados en consulta. Empieza por el que tu piel te pide hoy — o reserva un diagnóstico y deja que la decisión sea clínica.
-          </p>
-        </div>
-
-        <div className="grid gap-3" style={{ gridTemplateColumns: 'repeat(4, 1fr)' }}>
-          {[
-            { pillar: 'shield', num: '01', eyebrow: 'SHIELD', name: '', nameEm: 'Bio-Protección', sub: '3 fórmulas · SPF, microbioma, antioxidación', bg: 'linear-gradient(160deg, #93b196 0%, #2c472f 100%)' },
-            { pillar: 'repair', num: '02', eyebrow: 'REPAIR', name: '', nameEm: 'Regeneración', sub: '3 fórmulas · PDRN, péptidos, células madre', bg: 'linear-gradient(160deg, #d4a987 0%, #6b3722 100%)' },
-            { pillar: 'boost',  num: '03', eyebrow: 'BOOST',  name: '', nameEm: 'Optimización', sub: '3 fórmulas · vitamina C, minerales, LED', bg: 'linear-gradient(160deg, #e0a98e 0%, #884e34 100%)' },
-            { pillar: 'reset',  num: '04', eyebrow: 'RESET / SOUL', name: '', nameEm: 'Equilibrio', sub: '3 fórmulas · CBD, adaptógenos, melatonina', bg: 'linear-gradient(160deg, #4a5d4c 0%, #16231a 100%)' },
-          ].map((qp) => {
-            const isActive = activePillar === qp.pillar
-            return (
-              <button
-                key={qp.pillar}
-                onClick={() => handlePillarClick(qp.pillar)}
-                className="relative overflow-hidden flex flex-col justify-between p-6 text-cream-100 cursor-pointer text-left border-0 rounded-[4px] group"
-                style={{
-                  aspectRatio: '4/5',
-                  outline: isActive ? '2px solid #2c472f' : 'none',
-                  outlineOffset: isActive ? '3px' : '0',
-                  transition: 'transform 0.35s cubic-bezier(0.22,1,0.36,1)',
-                }}
-              >
-                <div
-                  className="absolute inset-0 group-hover:scale-[1.06] transition-transform duration-[800ms]"
-                  style={{ background: qp.bg, transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}
-                />
-                <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(22,35,26,0.7) 0%, rgba(22,35,26,0.15) 55%, transparent 100%)' }} />
-                {/* Arrow button */}
-                <span
-                  className="absolute top-[22px] right-[22px] z-[2] w-8 h-8 rounded-full inline-flex items-center justify-center transition-all duration-300 group-hover:bg-cream-100 group-hover:rotate-[-45deg]"
-                  style={{ background: 'rgba(245,242,236,0.12)', border: '1px solid rgba(245,242,236,0.28)', color: 'var(--tw-color-cream-100, #f9f7f3)' }}
-                >
-                  <svg className="w-3.5 h-3.5 group-hover:text-brand-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
-                  </svg>
-                </span>
-                <span className="relative z-[2] font-serif italic text-[14px] tracking-[0.02em]" style={{ color: 'rgba(245,242,236,0.78)' }}>
-                  {qp.num}
-                </span>
-                <div className="relative z-[2] flex flex-col gap-1">
-                  <span className="text-[10px] tracking-[0.24em] uppercase font-medium" style={{ color: 'rgba(245,242,236,0.78)' }}>
-                    {qp.eyebrow}
-                  </span>
-                  <h3
-                    className="font-serif font-normal leading-[1.05] m-0 mt-0.5 tracking-[-0.005em] text-cream-100"
-                    style={{ fontSize: 'clamp(22px, 2.4vw, 30px)' }}
-                  >
-                    {qp.name}<em className="italic text-brand-200">{qp.nameEm}</em>
-                  </h3>
-                  <span className="text-[11px] mt-2 tracking-[0.06em]" style={{ color: 'rgba(245,242,236,0.78)' }}>
-                    {qp.sub}
-                  </span>
-                </div>
-              </button>
-            )
-          })}
-        </div>
-      </section>
-
       {/* Sticky filter bar */}
       <div
-        className="sticky z-20 backdrop-blur-[10px] mt-16"
+        className="sticky z-20 backdrop-blur-[10px] mt-8"
         style={{
           top: '73px',
           background: 'rgba(245,242,236,0.94)',
@@ -295,20 +284,18 @@ export default function ShopPage() {
         }}
       >
         <div className="max-w-[1600px] mx-auto px-9 py-[18px] flex items-center gap-6 flex-wrap">
-          {/* Chips */}
           <div className="flex gap-2 flex-wrap flex-1 min-w-0">
             {[
-              { filter: 'all', label: 'Todos', count: PRODUCTS.length },
-              { filter: 'shield', label: 'SHIELD', count: PILLAR_COUNTS.shield, dot: '#5d8a52' },
-              { filter: 'repair', label: 'REPAIR', count: PILLAR_COUNTS.repair, dot: '#c4876a' },
-              { filter: 'boost',  label: 'BOOST',  count: PILLAR_COUNTS.boost, dot: '#d49070' },
-              { filter: 'reset',  label: 'RESET / SOUL', count: PILLAR_COUNTS.reset, dot: '#2c472f' },
+              { filter: '', label: 'Todos' },
+              { filter: 'limpiador', label: 'Limpiadores', dot: '#83a886' },
+              { filter: 'serum',     label: 'Sérums',      dot: '#c4876a' },
+              { filter: 'aceite',    label: 'Aceites',     dot: '#2c472f' },
             ].map((chip) => {
-              const isOn = activePillar === chip.filter
+              const isOn = activeFormat === chip.filter
               return (
                 <button
                   key={chip.filter}
-                  onClick={() => setActivePillar(chip.filter)}
+                  onClick={() => setActiveFormat(chip.filter)}
                   className="inline-flex items-center py-[9px] px-[18px] text-[13px] font-medium rounded-full cursor-pointer transition-all duration-200 whitespace-nowrap tracking-[0.01em]"
                   style={{
                     color: isOn ? '#f9f7f3' : '#1e1e1e',
@@ -316,43 +303,20 @@ export default function ShopPage() {
                     border: `1px solid ${isOn ? '#1e1e1e' : '#ddd8cc'}`,
                   }}
                 >
-                  {chip.dot && (
+                  {'dot' in chip && chip.dot && (
                     <span
                       className="w-2 h-2 rounded-full mr-2 inline-block"
                       style={{ background: isOn ? '#f9f7f3' : chip.dot }}
                     />
                   )}
                   {chip.label}
-                  <span className="ml-1.5 opacity-65">· {chip.count}</span>
+                  <span className="ml-1.5 opacity-65">· {products.filter(p => !chip.filter || p.tipo === chip.filter).length}</span>
                 </button>
               )
             })}
           </div>
 
-          {/* Controls */}
           <div className="flex gap-2.5 items-center">
-            <select
-              value={activeFormat}
-              onChange={(e) => setActiveFormat(e.target.value)}
-              className="appearance-none bg-transparent rounded-full py-[9px] text-[13px] font-sans text-carbon-900 cursor-pointer transition-colors duration-200 focus:outline-none"
-              style={{
-                border: '1px solid #ddd8cc',
-                padding: '9px 36px 9px 18px',
-                backgroundImage: `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none' stroke='%231e1e1e' stroke-width='1.4'><path d='m1 1.5 5 5 5-5'/></svg>")`,
-                backgroundRepeat: 'no-repeat',
-                backgroundPosition: 'right 14px center',
-              }}
-            >
-              <option value="">Todos los formatos</option>
-              <option value="serum">Sérum</option>
-              <option value="crema">Crema</option>
-              <option value="aceite">Aceite</option>
-              <option value="protector">Protector</option>
-              <option value="tonico">Tónico</option>
-              <option value="limpiador">Limpiador</option>
-              <option value="ampollas">Ampollas</option>
-              <option value="balsamo">Bálsamo</option>
-            </select>
             <select
               value={activeSort}
               onChange={(e) => setActiveSort(e.target.value)}
@@ -376,14 +340,13 @@ export default function ShopPage() {
 
       {/* Product grid */}
       <section className="max-w-[1600px] mx-auto px-9 pt-10 pb-20">
-        {/* Summary */}
         <div className="flex justify-between items-center mb-6 pb-4" style={{ borderBottom: '1px solid #ddd8cc' }}>
           <span className="text-[13px] text-carbon-500">
             <strong className="text-carbon-900 font-semibold">{filteredProducts.length}</strong> productos
           </span>
-          {hasFilters && (
+          {activeFormat && (
             <button
-              onClick={clearFilters}
+              onClick={() => setActiveFormat('')}
               className="inline-flex items-center gap-1.5 text-[12px] tracking-[0.04em] text-carbon-900 pb-px border-b border-carbon-900 cursor-pointer hover:text-brand-700 hover:border-brand-700 transition-colors"
             >
               Limpiar filtros
@@ -418,18 +381,11 @@ export default function ShopPage() {
                     {BADGE_LABELS[p.badge]}
                   </span>
                 )}
-                <span
-                  className="absolute top-[14px] right-[14px] z-[2] px-[11px] py-[5px] rounded-full text-[9px] tracking-[0.22em] font-bold text-carbon-900"
-                  style={{ background: 'rgba(245,242,236,0.85)', backdropFilter: 'blur(6px)' }}
-                >
-                  {PILLAR_LABELS[p.pillar]}
-                </span>
                 <div className="group-hover/card:-translate-y-1.5 transition-transform duration-500 will-change-transform" style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}>
                   <PackSVG
                     id={p.id}
                     vol={p.vol}
                     stripe={p.stripe}
-                    pillar={p.pillar}
                     name={p.name}
                     code={p.code}
                   />
@@ -446,16 +402,16 @@ export default function ShopPage() {
               </div>
               <div className="pt-4 pb-4 px-6 flex flex-col gap-1">
                 <span className="text-[10px] tracking-[0.18em] uppercase text-carbon-400 font-medium">
-                  {TIPO_LABELS[p.tipo]}
-                  <span className="font-serif italic text-brand-700 tracking-[0.04em] font-normal text-[12px] ml-1 normal-case">by Dall&apos;Ó</span>
+                  {TIPO_LABELS[p.tipo] ?? p.tipo}
+                  <span className="font-serif italic text-brand-700 tracking-[0.04em] font-normal text-[12px] ml-1 normal-case">· Dall&apos;O Skin</span>
                 </span>
                 <h3 className="font-serif font-medium text-[17px] tracking-tight text-carbon-900 m-0 leading-[1.2]">
                   {p.name}
                 </h3>
                 <div className="flex items-baseline justify-between mt-1.5">
                   <span className="font-serif font-medium text-[16px] text-carbon-900">
-                    {priceFmt(p.price)} €
-                    {p.was && <span className="font-sans text-[12px] text-carbon-400 line-through ml-1.5">{priceFmt(p.was)} €</span>}
+                    {p.price > 0 ? `${priceFmt(p.price)} €` : 'Consultar precio'}
+                    {p.was && p.price > 0 && <span className="font-sans text-[12px] text-carbon-400 line-through ml-1.5">{priceFmt(p.was)} €</span>}
                   </span>
                   <span className="text-[11px] text-carbon-400 tracking-[0.04em]">{p.vol}</span>
                 </div>
@@ -464,19 +420,100 @@ export default function ShopPage() {
           ))}
         </motion.div>
       </section>
+    </>
+  )
+}
 
-      {/* Editorial quote */}
-      <section className="bg-cream-200 text-center" style={{ padding: '100px 6vw' }}>
-        <blockquote
-          className="font-serif font-normal italic leading-[1.35] text-carbon-900 text-balance mx-auto m-0"
-          style={{ maxWidth: '880px', fontSize: 'clamp(24px, 2.6vw, 36px)' }}
-        >
-          &ldquo;No vendemos un producto. Vendemos una <em className="italic text-brand-600">conversación</em> entre tu piel, nuestra fórmula y el tiempo.&rdquo;
-        </blockquote>
-        <cite className="block mt-[26px] font-sans not-italic text-[11px] tracking-[0.22em] uppercase text-carbon-400">
-          Dr. Dall&apos;Ó × Equipo médico QUEVI
-        </cite>
+export default function ShopPage() {
+  const [activeTab, setActiveTab] = useState<'productos' | 'servicios'>('productos')
+
+  return (
+    <>
+      <Navbar />
+
+      {/* Collection Hero */}
+      <section
+        className="relative overflow-hidden border-b border-cream-400"
+        style={{
+          background: '#ede9e0',
+          padding: '80px 36px 78px',
+        }}
+      >
+        {/* Radial glows */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: `
+              radial-gradient(600px 400px at 85% 10%, rgba(213, 226, 214, 0.45), transparent 60%),
+              radial-gradient(500px 400px at 10% 90%, rgba(245, 228, 219, 0.45), transparent 60%)
+            `,
+          }}
+        />
+        <div className="max-w-[1600px] mx-auto relative z-[2]">
+          {/* Breadcrumb */}
+          <nav className="flex gap-[10px] items-center text-[12px] tracking-[0.04em] text-carbon-500 mb-6">
+            <Link href="/" className="text-carbon-500 border-b border-transparent hover:border-carbon-500 transition-colors">Inicio</Link>
+            <span className="text-carbon-400">/</span>
+            <Link href="/shop" className="text-carbon-500 border-b border-transparent hover:border-carbon-500 transition-colors">Tienda</Link>
+          </nav>
+
+          <h1
+            className="font-serif font-bold leading-[0.98] tracking-[-0.022em] m-0 mb-[22px] text-carbon-900 text-balance"
+            style={{ fontSize: 'clamp(48px, 7vw, 96px)', maxWidth: '14ch' }}
+          >
+            Tienda <em className="italic font-normal text-brand-600">QUEVI</em>
+          </h1>
+          <p className="text-[17px] text-carbon-500 max-w-[620px] m-0 mb-8 leading-[1.6]">
+            Cosmética médica de precisión · Dall&apos;O Skin
+          </p>
+
+          <div className="flex gap-12 pt-6 max-w-[620px]" style={{ borderTop: '1px solid #ddd8cc' }}>
+            {[
+              { v: '7', l: 'Fórmulas magistrales' },
+              { v: '3', l: 'Líneas clínicas' },
+              { v: '100%', l: 'Formulación médica' },
+              { v: '4,9★', l: '2.000 reseñas' },
+            ].map((s) => (
+              <div key={s.l} className="flex flex-col gap-1">
+                <span className="font-serif font-bold text-[26px] leading-none text-brand-700">
+                  {s.v}
+                </span>
+                <span className="text-[11px] tracking-[0.14em] uppercase text-carbon-500">{s.l}</span>
+              </div>
+            ))}
+          </div>
+        </div>
       </section>
+
+      {/* Tab switcher */}
+      <div
+        className="sticky z-20 backdrop-blur-[10px]"
+        style={{
+          top: '73px',
+          background: 'rgba(245,242,236,0.94)',
+          borderBottom: '1px solid #ddd8cc',
+        }}
+      >
+        <div className="max-w-[1600px] mx-auto px-9 py-[14px] flex items-center gap-2">
+          {(['productos', 'servicios'] as const).map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className="inline-flex items-center py-[9px] px-[22px] text-[13px] font-medium rounded-full cursor-pointer transition-all duration-200 capitalize tracking-[0.01em]"
+              style={{
+                color: activeTab === tab ? '#f9f7f3' : '#1e1e1e',
+                background: activeTab === tab ? '#1e1e1e' : 'transparent',
+                border: `1px solid ${activeTab === tab ? '#1e1e1e' : '#ddd8cc'}`,
+              }}
+            >
+              {tab.charAt(0).toUpperCase() + tab.slice(1)}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Tab content */}
+      {activeTab === 'productos' ? <ProductosTab /> : <ServiciosTab />}
 
       {/* CTA strip */}
       <section
@@ -501,7 +538,7 @@ export default function ShopPage() {
             ¿No sabes por dónde <em className="italic text-brand-300">empezar</em>?
           </h3>
           <p className="text-[16px] text-brand-200 m-0 mx-auto mb-8 max-w-[520px] leading-[1.6]">
-            Reserva un diagnóstico médico gratuito en clínica QUEVI. Cruzamos tu ADN, tu mapa mineral y tu lectura facial 3D — y diseñamos un protocolo DALL&apos;Ó hecho a la medida de tu historia.
+            Reserva un diagnóstico médico gratuito en clínica QUEVI. Cruzamos tu ADN, tu mapa mineral y tu lectura facial 3D — y diseñamos un protocolo hecho a la medida de tu historia.
           </p>
           <div className="inline-flex gap-3 flex-wrap justify-center">
             <Link

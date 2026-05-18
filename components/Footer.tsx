@@ -17,7 +17,7 @@ export default function Footer() {
           {/* Newsletter col */}
           <div>
             <h4 className="font-serif font-normal italic text-[22px] m-0 mb-2 text-cream-100">
-              Editorial QUEVI × DALL&apos;Ó
+              QUEVI Wellness Clinic
             </h4>
             <p className="text-[13px] mb-[22px] max-w-[380px] leading-[1.6]" style={{ color: 'rgba(245,242,236,0.65)' }}>
               Una vez al mes, un texto largo. Sin descuentos, sin urgencia. Solo ciencia que se entiende y rituales que se sostienen.
@@ -125,7 +125,7 @@ export default function Footer() {
           className="absolute font-serif italic text-brand-300 font-normal tracking-[0.04em]"
           style={{ bottom: '18%', right: '8%', fontSize: 'clamp(20px, 2vw, 32px)' }}
         >
-          by Dall&apos;Ó
+          QUEVI
         </span>
       </div>
 
@@ -136,7 +136,7 @@ export default function Footer() {
           style={{ borderTop: '1px solid rgba(245,242,236,0.12)' }}
         >
           <span className="text-[11px] tracking-[0.02em]" style={{ color: 'rgba(245,242,236,0.55)' }}>
-            © 2026 QUEVI Wellness Clinic · Cosmética médica formulada por DALL&apos;Ó SKIN · Todos los derechos reservados.
+            © 2026 QUEVI Wellness Clinic · Cosmética médica de precisión · Todos los derechos reservados.
           </span>
           <div className="flex gap-2">
             {['VISA', 'MASTERCARD', 'AMEX', 'APPLE PAY', 'BIZUM'].map((p) => (

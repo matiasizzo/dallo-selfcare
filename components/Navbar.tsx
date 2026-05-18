@@ -49,18 +49,15 @@ export default function Navbar() {
           style={{ gridTemplateColumns: '1fr auto 1fr', transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}
         >
           {/* Left nav links */}
-          <nav className="hidden md:flex gap-[30px] text-[13px]">
-            <Link href="/" className="relative py-1.5 text-carbon-700 hover:text-brand-600 transition-colors duration-200 tracking-[0.01em] will-change-[color]" style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}>
-              Inicio
-            </Link>
+          <nav className="hidden md:flex gap-[30px] text-[13px] items-center">
+            <a href="#treatments" className="relative py-1.5 text-carbon-700 hover:text-brand-600 transition-colors duration-200 tracking-[0.01em] will-change-[color]" style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}>
+              Tratamientos
+            </a>
             <Link href="/shop" className="relative py-1.5 text-carbon-700 hover:text-brand-600 transition-colors duration-200 tracking-[0.01em] will-change-[color]" style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}>
               Tienda
             </Link>
-            <a href="#pilares" className="relative py-1.5 text-carbon-700 hover:text-brand-600 transition-colors duration-200 tracking-[0.01em] will-change-[color]" style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}>
-              Pilares
-            </a>
-            <a href="#diagnostico" className="relative py-1.5 text-carbon-700 hover:text-brand-600 transition-colors duration-200 tracking-[0.01em] will-change-[color]" style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}>
-              Diagnóstico
+            <a href="#booking" className="inline-flex items-center px-5 py-2 rounded-full bg-brand-600 text-cream-50 font-medium tracking-[0.02em] transition-all duration-200 hover:bg-brand-700 hover:-translate-y-0.5 active:scale-[0.97] will-change-transform" style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}>
+              Reservar cita
             </a>
           </nav>
 
@@ -74,20 +71,11 @@ export default function Navbar() {
               style={{ borderLeft: '1px solid #ddd8cc' }}
             >
               <span className="text-[9px] tracking-[0.26em] uppercase text-carbon-500">Wellness Clinic</span>
-              <span className="font-serif font-medium italic text-[14px] tracking-[0.06em] text-brand-700">
-                by Dall&apos;Ó
-              </span>
             </span>
           </Link>
 
           {/* Right icons */}
           <div className="hidden md:flex items-center gap-[22px] justify-end text-[13px]">
-            <span className="inline-flex items-center gap-1 cursor-pointer font-medium">
-              EUR
-              <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                <path d="m6 9 6 6 6-6" />
-              </svg>
-            </span>
             <button aria-label="Buscar" className="group">
               <svg className="w-[18px] h-[18px] group-hover:[stroke:#355539] transition-colors" viewBox="0 0 24 24" fill="none" stroke="#1e1e1e" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="11" cy="11" r="7" />
@@ -137,17 +125,14 @@ export default function Navbar() {
             style={{ top: '88px', background: 'rgba(245,242,236,0.98)' }}
           >
             <nav className="max-w-7xl mx-auto px-6 py-6 flex flex-col gap-1">
-              <Link href="/" onClick={() => setMenuOpen(false)} className="px-4 py-3 text-base font-medium text-carbon-700 hover:text-brand-600 hover:bg-cream-300 rounded-xl transition-colors">
-                Inicio
-              </Link>
+              <a href="#treatments" onClick={() => setMenuOpen(false)} className="px-4 py-3 text-base font-medium text-carbon-700 hover:text-brand-600 hover:bg-cream-300 rounded-xl transition-colors">
+                Tratamientos
+              </a>
               <Link href="/shop" onClick={() => setMenuOpen(false)} className="px-4 py-3 text-base font-medium text-carbon-700 hover:text-brand-600 hover:bg-cream-300 rounded-xl transition-colors">
                 Tienda
               </Link>
-              <a href="#pilares" onClick={() => setMenuOpen(false)} className="px-4 py-3 text-base font-medium text-carbon-700 hover:text-brand-600 hover:bg-cream-300 rounded-xl transition-colors">
-                Pilares
-              </a>
-              <a href="#diagnostico" onClick={() => setMenuOpen(false)} className="px-4 py-3 text-base font-medium text-carbon-700 hover:text-brand-600 hover:bg-cream-300 rounded-xl transition-colors">
-                Diagnóstico
+              <a href="#booking" onClick={() => setMenuOpen(false)} className="px-4 py-3 text-base font-medium text-cream-50 bg-brand-600 hover:bg-brand-700 rounded-xl transition-colors text-center">
+                Reservar cita
               </a>
             </nav>
           </motion.div>
