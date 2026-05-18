@@ -1,124 +1,168 @@
 'use client'
-import Image from 'next/image'
 
-import { motion } from 'framer-motion'
-import { Phone, Mail, MapPin, Instagram, Facebook, Linkedin } from 'lucide-react'
-import { SITE, FOOTER_LINKS } from '@/content'
-import { fadeUp, staggerContainer } from '@/lib/animations'
-import { useScrollAnimation } from '@/lib/useScrollAnimation'
-
+import { useState } from 'react'
+import Link from 'next/link'
 
 export default function Footer() {
-  const { ref, isInView } = useScrollAnimation(0.05)
-  const year = new Date().getFullYear()
+  const [email, setEmail] = useState('')
 
   return (
-    <footer className="bg-carbon-900 text-cream-50 pt-20 pb-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <footer className="bg-carbon-900 text-cream-100 pt-20 pb-0">
+      <div className="max-w-[1600px] mx-auto px-9">
         {/* Top grid */}
-        <motion.div
-          ref={ref}
-          variants={staggerContainer}
-          initial="hidden"
-          animate={isInView ? 'visible' : 'hidden'}
-          className="grid sm:grid-cols-2 lg:grid-cols-4 gap-12 pb-14 border-b border-cream-50/10"
+        <div
+          className="grid gap-[60px] pb-[60px]"
+          style={{ gridTemplateColumns: '1.6fr 1fr 1fr 1fr' }}
         >
-          {/* Brand col */}
-          <motion.div variants={fadeUp} className="flex flex-col gap-5 sm:col-span-2 lg:col-span-1">
-            <a href="#hero" className="flex items-center gap-2.5">
-              <Image src="/images/logo.jpeg" width={40} height={40} alt={SITE.name} className="h-10 w-auto object-contain rounded-lg" />
-              <span className="font-serif text-lg font-bold text-cream-50 leading-none">
-                QUEVI<br />
-                <span className="text-xs font-sans font-normal text-carbon-300 tracking-widest uppercase">
-                  Wellness Clinic
-                </span>
-              </span>
-            </a>
-            <p className="text-sm text-carbon-300 leading-relaxed max-w-xs">
-              Medicina estética de precisión. Diagnóstico 360° y protocolos personalizados para escribir tu nueva historia de vida de piel.
+          {/* Newsletter col */}
+          <div>
+            <h4 className="font-serif font-normal italic text-[22px] m-0 mb-2 text-cream-100">
+              Editorial QUEVI × DALL&apos;Ó
+            </h4>
+            <p className="text-[13px] mb-[22px] max-w-[380px] leading-[1.6]" style={{ color: 'rgba(245,242,236,0.65)' }}>
+              Una vez al mes, un texto largo. Sin descuentos, sin urgencia. Solo ciencia que se entiende y rituales que se sostienen.
             </p>
-            <div className="flex gap-3 mt-2">
+            <form onSubmit={(e) => { e.preventDefault(); setEmail('') }} className="flex gap-2 max-w-[460px]">
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="tu@email.com"
+                required
+                className="flex-1 bg-transparent rounded-full px-[22px] py-3 font-sans text-[13px] text-cream-100 outline-none transition-colors duration-200"
+                style={{
+                  border: '1px solid rgba(245,242,236,0.32)',
+                }}
+                onFocus={(e) => { e.target.style.borderColor = '#f9f7f3' }}
+                onBlur={(e) => { e.target.style.borderColor = 'rgba(245,242,236,0.32)' }}
+              />
+              <button
+                type="submit"
+                className="bg-cream-100 text-carbon-900 border border-cream-100 rounded-full px-[26px] py-3 text-[13px] font-medium transition-all duration-[250ms] hover:bg-transparent hover:text-cream-100"
+              >
+                Suscribirme
+              </button>
+            </form>
+          </div>
+
+          {/* Tienda */}
+          <div>
+            <h5 className="font-sans font-medium text-[11px] tracking-[0.22em] uppercase m-0 mb-5 text-cream-100">
+              Tienda
+            </h5>
+            <ul className="list-none p-0 m-0 flex flex-col gap-3">
               {[
-                { icon: <Instagram size={16} />, href: '#' },
-                { icon: <Facebook size={16} />,  href: '#' },
-                { icon: <Linkedin size={16} />,  href: '#' },
-              ].map(({ icon, href }, i) => (
-                <a
-                  key={i}
-                  href={href}
-                  className="w-9 h-9 rounded-full bg-cream-50/10 hover:bg-brand-600 flex items-center justify-center transition-colors"
-                >
-                  {icon}
-                </a>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Services */}
-          <motion.div variants={fadeUp} className="flex flex-col gap-4">
-            <h4 className="text-xs font-semibold text-cream-50 uppercase tracking-widest">Servicios</h4>
-            <ul className="flex flex-col gap-2.5">
-              {FOOTER_LINKS.servicios.map((l) => (
+                { label: 'Todos los productos', href: '/shop' },
+                { label: 'SHIELD · Bio-Protección', href: '/shop#shield' },
+                { label: 'REPAIR · Regeneración', href: '/shop#repair' },
+                { label: 'BOOST · Optimización', href: '/shop#boost' },
+                { label: 'RESET / SOUL · Equilibrio', href: '/shop#reset' },
+              ].map((l) => (
                 <li key={l.label}>
-                  <a href={l.href} className="text-sm text-carbon-300 hover:text-cream-50 transition-colors">
+                  <Link href={l.href} className="text-[13px] transition-colors duration-[250ms] hover:text-cream-100" style={{ color: 'rgba(245,242,236,0.72)' }}>
+                    {l.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Clínica */}
+          <div>
+            <h5 className="font-sans font-medium text-[11px] tracking-[0.22em] uppercase m-0 mb-5 text-cream-100">
+              Clínica
+            </h5>
+            <ul className="list-none p-0 m-0 flex flex-col gap-3">
+              {[
+                { label: 'Diagnóstico BIO-SCAN', href: '#diagnostico' },
+                { label: 'Tratamientos médicos', href: '#treatments' },
+                { label: 'Equipo médico', href: '#about' },
+                { label: 'Editorial · Blog', href: '#blog' },
+                { label: 'FAQ', href: '#faq' },
+              ].map((l) => (
+                <li key={l.label}>
+                  <a href={l.href} className="text-[13px] transition-colors duration-[250ms] hover:text-cream-100" style={{ color: 'rgba(245,242,236,0.72)' }}>
                     {l.label}
                   </a>
                 </li>
               ))}
             </ul>
-          </motion.div>
+          </div>
 
-          {/* Company */}
-          <motion.div variants={fadeUp} className="flex flex-col gap-4">
-            <h4 className="text-xs font-semibold text-cream-50 uppercase tracking-widest">Empresa</h4>
-            <ul className="flex flex-col gap-2.5">
-              {FOOTER_LINKS.empresa.map((l) => (
+          {/* Ayuda */}
+          <div>
+            <h5 className="font-sans font-medium text-[11px] tracking-[0.22em] uppercase m-0 mb-5 text-cream-100">
+              Ayuda
+            </h5>
+            <ul className="list-none p-0 m-0 flex flex-col gap-3">
+              {[
+                { label: 'Envíos y devoluciones', href: '#' },
+                { label: 'Suscripciones', href: '#' },
+                { label: 'Mi cuenta', href: '#' },
+                { label: 'Contacto', href: '#booking' },
+                { label: '+34 900 000 000', href: 'tel:+34900000000' },
+              ].map((l) => (
                 <li key={l.label}>
-                  <a href={l.href} className="text-sm text-carbon-300 hover:text-cream-50 transition-colors">
+                  <a href={l.href} className="text-[13px] transition-colors duration-[250ms] hover:text-cream-100" style={{ color: 'rgba(245,242,236,0.72)' }}>
                     {l.label}
                   </a>
                 </li>
               ))}
             </ul>
-          </motion.div>
+          </div>
+        </div>
+      </div>
 
-          {/* Contact */}
-          <motion.div variants={fadeUp} className="flex flex-col gap-4">
-            <h4 className="text-xs font-semibold text-cream-50 uppercase tracking-widest">Contacto</h4>
-            <ul className="flex flex-col gap-3">
-              <li>
-                <a href={`tel:${SITE.phone}`} className="flex items-start gap-2.5 text-sm text-carbon-300 hover:text-cream-50 transition-colors">
-                  <Phone size={14} className="mt-0.5 text-brand-400 flex-shrink-0" />
-                  {SITE.phone}
-                </a>
-              </li>
-              <li>
-                <a href={`mailto:${SITE.email}`} className="flex items-start gap-2.5 text-sm text-carbon-300 hover:text-cream-50 transition-colors">
-                  <Mail size={14} className="mt-0.5 text-brand-400 flex-shrink-0" />
-                  {SITE.email}
-                </a>
-              </li>
-              <li>
-                <div className="flex items-start gap-2.5 text-sm text-carbon-300">
-                  <MapPin size={14} className="mt-0.5 text-brand-400 flex-shrink-0" />
-                  {SITE.address}
-                </div>
-              </li>
-            </ul>
-          </motion.div>
-        </motion.div>
+      {/* Large QUEVI watermark */}
+      <div className="max-w-[1600px] mx-auto mt-[30px] flex items-end justify-center overflow-hidden select-none relative">
+        <span
+          className="font-serif font-normal text-brand-700 leading-[0.82] tracking-[0.02em]"
+          style={{ fontSize: 'clamp(160px, 26vw, 420px)' }}
+        >
+          QUEVI
+        </span>
+        <span
+          className="absolute font-serif italic text-brand-300 font-normal tracking-[0.04em]"
+          style={{ bottom: '18%', right: '8%', fontSize: 'clamp(20px, 2vw, 32px)' }}
+        >
+          by Dall&apos;Ó
+        </span>
+      </div>
 
-        {/* Bottom bar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-8">
-          <p className="text-xs text-carbon-400">
-            © {year} {SITE.name}. Todos los derechos reservados.
-          </p>
-          <div className="flex gap-5">
-            {FOOTER_LINKS.legal.map((l) => (
-              <a key={l.label} href={l.href} className="text-xs text-carbon-400 hover:text-cream-50 transition-colors">
-                {l.label}
-              </a>
+      {/* Bottom bar */}
+      <div className="max-w-[1600px] mx-auto px-9">
+        <div
+          className="flex justify-between items-center py-[26px] flex-wrap gap-6"
+          style={{ borderTop: '1px solid rgba(245,242,236,0.12)' }}
+        >
+          <span className="text-[11px] tracking-[0.02em]" style={{ color: 'rgba(245,242,236,0.55)' }}>
+            © 2026 QUEVI Wellness Clinic · Cosmética médica formulada por DALL&apos;Ó SKIN · Todos los derechos reservados.
+          </span>
+          <div className="flex gap-2">
+            {['VISA', 'MASTERCARD', 'AMEX', 'APPLE PAY', 'BIZUM'].map((p) => (
+              <span key={p} className="px-[10px] py-1 rounded-[6px] text-[10px] tracking-[0.12em]" style={{ background: 'rgba(245,242,236,0.08)', color: 'rgba(245,242,236,0.65)' }}>
+                {p}
+              </span>
             ))}
+          </div>
+          <div className="flex gap-[14px]">
+            <a href="#" aria-label="Instagram" className="transition-colors duration-200 hover:text-cream-100" style={{ color: 'rgba(245,242,236,0.55)' }}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
+                <rect x="3" y="3" width="18" height="18" rx="5" />
+                <circle cx="12" cy="12" r="4" />
+                <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" />
+              </svg>
+            </a>
+            <a href="#" aria-label="Facebook" className="transition-colors duration-200 hover:text-cream-100" style={{ color: 'rgba(245,242,236,0.55)' }}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
+                <path d="M14 9h3V6h-3a3 3 0 0 0-3 3v3H8v3h3v6h3v-6h3l1-3h-4V9z" />
+              </svg>
+            </a>
+            <a href="#" aria-label="TikTok" className="transition-colors duration-200 hover:text-cream-100" style={{ color: 'rgba(245,242,236,0.55)' }}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
+                <path d="M16 4c0 3 2 5 5 5v3a8 8 0 0 1-5-2v7a6 6 0 1 1-6-6v3a3 3 0 1 0 3 3V4h3z" />
+              </svg>
+            </a>
           </div>
         </div>
       </div>

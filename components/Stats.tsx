@@ -1,9 +1,14 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { motion, useInView } from 'framer-motion'
-import { STATS } from '@/content'
-import { fadeUp, staggerContainer } from '@/lib/animations'
+import { useInView } from 'framer-motion'
+
+const STATS_DATA = [
+  { value: 12,  suffix: '',   label: 'Fórmulas magistrales' },
+  { value: 2000, suffix: '+', label: 'Pacientes activos' },
+  { value: 100, suffix: '%',  label: 'Formulación médica' },
+  { value: 4,   suffix: ',9★', label: 'Reseñas verificadas', decimal: true },
+]
 
 function useCountUp(target: number, isActive: boolean, duration = 1800) {
   const [count, setCount] = useState(0)
@@ -22,51 +27,41 @@ function useCountUp(target: number, isActive: boolean, duration = 1800) {
   return count
 }
 
-function StatItem({ value, suffix, label }: { value: number; suffix: string; label: string }) {
+function StatItem({ value, suffix, label, decimal }: { value: number; suffix: string; label: string; decimal?: boolean }) {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, amount: 0.5 })
   const count = useCountUp(value, isInView)
 
+  // Special display for 4.9★
+  const displayValue = decimal ? `4,${Math.floor((count / value) * 9)}` : count.toLocaleString('es-ES')
+  const displaySuffix = decimal ? '★' : suffix
+
   return (
-    <motion.div
-      ref={ref}
-      variants={fadeUp}
-      className="flex flex-col items-center text-center gap-1"
-    >
-      <span className="text-4xl sm:text-5xl font-bold text-cream-50">
-        {count.toLocaleString('es-ES')}
-        <span className="text-brand-300">{suffix}</span>
+    <div ref={ref} className="flex flex-col items-center text-center gap-1">
+      <span className="font-serif font-bold leading-none text-cream-100" style={{ fontSize: 'clamp(40px, 5vw, 64px)' }}>
+        {displayValue}
+        <span className="text-brand-300">{displaySuffix}</span>
       </span>
-      <span className="text-brand-200 text-sm font-medium">{label}</span>
-    </motion.div>
+      <span className="text-brand-200 text-[13px] font-medium tracking-[0.06em]">{label}</span>
+    </div>
   )
 }
 
 export default function Stats() {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, amount: 0.3 })
-
   return (
     <section className="py-24 bg-brand-600 relative overflow-hidden">
-      {/* Decorative blobs */}
+      {/* Soft blobs */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute -top-20 -left-20 w-96 h-96 rounded-full bg-brand-500/50 blur-3xl" />
-        <div className="absolute -bottom-20 -right-20 w-96 h-96 rounded-full bg-brand-700/60 blur-3xl" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-40 rounded-full bg-terra-400/10 blur-3xl" />
+        <div className="absolute -top-20 -left-20 w-96 h-96 rounded-full bg-brand-500/40 blur-3xl" />
+        <div className="absolute -bottom-20 -right-20 w-96 h-96 rounded-full bg-brand-700/50 blur-3xl" />
       </div>
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          ref={ref}
-          variants={staggerContainer}
-          initial="hidden"
-          animate={isInView ? 'visible' : 'hidden'}
-          className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12"
-        >
-          {STATS.map((s) => (
-            <StatItem key={s.label} value={s.value} suffix={s.suffix} label={s.label} />
+      <div className="relative max-w-[1600px] mx-auto px-9">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-16">
+          {STATS_DATA.map((s) => (
+            <StatItem key={s.label} value={s.value} suffix={s.suffix} label={s.label} decimal={s.decimal} />
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   )

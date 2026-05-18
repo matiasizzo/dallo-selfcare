@@ -2,10 +2,22 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Star, ChevronLeft, ChevronRight, Quote } from 'lucide-react'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { TESTIMONIALS } from '@/content'
 import { fadeUp, staggerContainer } from '@/lib/animations'
 import { useScrollAnimation } from '@/lib/useScrollAnimation'
+
+function StarRating({ count = 5, size = 14 }: { count?: number; size?: number }) {
+  return (
+    <div className="flex gap-0.5">
+      {[...Array(count)].map((_, i) => (
+        <svg key={i} width={size} height={size} viewBox="0 0 24 24" fill="#c4876a" stroke="#c4876a" strokeWidth="1">
+          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+        </svg>
+      ))}
+    </div>
+  )
+}
 
 export default function Testimonials() {
   const { ref, isInView } = useScrollAnimation()
@@ -37,7 +49,7 @@ export default function Testimonials() {
   const t = TESTIMONIALS[current]
 
   return (
-    <section id="testimonials" className="py-28 bg-gradient-to-b from-cream-200 to-cream-300">
+    <section id="testimonials" className="py-28 bg-cream-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
@@ -53,21 +65,13 @@ export default function Testimonials() {
           >
             Lo que dicen nuestros pacientes
           </motion.span>
-          <motion.h2
-            variants={fadeUp}
-            className="text-4xl sm:text-5xl font-bold text-carbon-900 mb-4"
-          >
-            Más de{' '}
-            <span className="text-brand-600">2.000 pacientes</span>
-            <br />confían en nosotros
+          <motion.h2 variants={fadeUp} className="text-4xl sm:text-5xl font-bold text-carbon-900 mb-4">
+            Los rituales que tu piel{' '}
+            <em className="italic font-normal text-brand-600">reconoce</em>.
           </motion.h2>
           <motion.div variants={fadeUp} className="flex items-center justify-center gap-2 mt-4">
-            <div className="flex">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} size={20} className="fill-terra-500 text-terra-500" />
-              ))}
-            </div>
-            <span className="text-2xl font-bold text-carbon-900">4.9</span>
+            <StarRating count={5} size={20} />
+            <span className="text-2xl font-bold text-carbon-900 ml-2">4,9</span>
             <span className="text-carbon-400 text-sm">de 5 estrellas</span>
           </motion.div>
         </motion.div>
@@ -90,20 +94,22 @@ export default function Testimonials() {
                 exit="exit"
                 className="p-10 sm:p-14 w-full"
               >
-                <Quote size={36} className="text-brand-200 mb-6" />
+                {/* Quote mark */}
+                <div className="mb-6">
+                  <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#adc5af" strokeWidth="1.2">
+                    <path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z" />
+                    <path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z" />
+                  </svg>
+                </div>
                 <p className="text-xl sm:text-2xl text-carbon-700 font-medium leading-relaxed mb-8">
-                  "{t.text}"
+                  &ldquo;{t.text}&rdquo;
                 </p>
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="font-semibold text-carbon-900">{t.name}</p>
                     <p className="text-sm text-carbon-400 mt-0.5">{t.role}</p>
                   </div>
-                  <div className="flex gap-0.5">
-                    {[...Array(t.rating)].map((_, i) => (
-                      <Star key={i} size={14} className="fill-terra-500 text-terra-500" />
-                    ))}
-                  </div>
+                  <StarRating count={t.rating} size={14} />
                 </div>
               </motion.div>
             </AnimatePresence>
@@ -159,10 +165,8 @@ export default function Testimonials() {
                   : 'border-cream-400 bg-cream-200 hover:border-brand-200'
               }`}
             >
-              <div className="flex gap-0.5 mb-2">
-                {[...Array(t.rating)].map((_, j) => (
-                  <Star key={j} size={11} className="fill-terra-500 text-terra-500" />
-                ))}
+              <div className="mb-2">
+                <StarRating count={t.rating} size={11} />
               </div>
               <p className="text-xs text-carbon-600 line-clamp-2">{t.text}</p>
               <p className="text-xs font-semibold text-carbon-800 mt-2">{t.name}</p>
