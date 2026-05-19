@@ -5,6 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useCart } from '@/store/cart'
 import { formatPrice } from '@/lib/products'
+import { getShippingCents, getDiscountCents } from '@/lib/shipping'
 import type { ShippingDetails } from '@/app/checkout/page'
 
 interface Props {
@@ -14,8 +15,11 @@ interface Props {
 }
 
 export default function ShippingForm({ onConfirmed, loading, error }: Props) {
-  const { items, totalCents } = useCart()
-  const total = totalCents()
+  const { items, totalCents, coupon } = useCart()
+  const subtotal = totalCents()
+  const shippingCents = getShippingCents(subtotal)
+  const discountCents = coupon ? getDiscountCents(subtotal, coupon.discountPercent) : 0
+  const total = subtotal + shippingCents - discountCents
 
   const [form, setForm] = useState<ShippingDetails>({
     name: '', email: '', phone: '', address: '', city: '', postalCode: '', country: 'ES',
@@ -125,10 +129,17 @@ export default function ShippingForm({ onConfirmed, loading, error }: Props) {
 
         <div className="mt-8 pt-6 border-t border-sand-300 space-y-3">
           <div className="flex justify-between text-sm text-text-muted">
-            <span>Subtotal</span><span>{formatPrice(total)}</span>
+            <span>Subtotal</span><span>{formatPrice(subtotal)}</span>
           </div>
+          {coupon && (
+            <div className="flex justify-between text-sm text-green-700">
+              <span>{coupon.code} (-{coupon.discountPercent}%)</span>
+              <span>-{formatPrice(discountCents)}</span>
+            </div>
+          )}
           <div className="flex justify-between text-sm text-text-muted">
-            <span>Envío</span><span>Calculado al pagar</span>
+            <span>Envío</span>
+            <span>{shippingCents === 0 ? <span className="text-green-700">Gratis</span> : formatPrice(shippingCents)}</span>
           </div>
           <div className="flex justify-between text-base text-cocoa-900 pt-3 border-t border-sand-300 font-medium">
             <span>Total</span>

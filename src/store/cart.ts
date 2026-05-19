@@ -12,15 +12,22 @@ export interface CartItem {
   quantity: number
 }
 
+export interface AppliedCoupon {
+  code: string
+  discountPercent: number
+}
+
 interface CartStore {
   items: CartItem[]
   isOpen: boolean
+  coupon: AppliedCoupon | null
   openCart: () => void
   closeCart: () => void
   addItem: (item: Omit<CartItem, 'quantity'>, qty?: number) => void
   removeItem: (variantId: string) => void
   updateQuantity: (variantId: string, quantity: number) => void
   clearCart: () => void
+  setCoupon: (coupon: AppliedCoupon | null) => void
   totalItems: () => number
   totalCents: () => number
 }
@@ -30,9 +37,11 @@ export const useCart = create<CartStore>()(
     (set, get) => ({
       items: [],
       isOpen: false,
+      coupon: null,
 
       openCart: () => set({ isOpen: true }),
       closeCart: () => set({ isOpen: false }),
+      setCoupon: (coupon) => set({ coupon }),
 
       addItem: (newItem, qty = 1) => {
         const items = get().items

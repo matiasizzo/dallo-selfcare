@@ -6,21 +6,25 @@ import Link from 'next/link'
 import { PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js'
 import { useCart } from '@/store/cart'
 import { formatPrice } from '@/lib/products'
+import { getShippingCents, getDiscountCents } from '@/lib/shipping'
 import type { ShippingDetails } from '@/app/checkout/page'
 
 interface Props {
   clientSecret: string
   shipping: ShippingDetails
   onEditShipping: () => void
+  totalCentsFromServer: number
 }
 
-export default function PaymentForm({ clientSecret, shipping, onEditShipping }: Props) {
+export default function PaymentForm({ clientSecret, shipping, onEditShipping, totalCentsFromServer }: Props) {
   const stripe = useStripe()
   const elements = useElements()
-  const { items, totalCents } = useCart()
+  const { items, totalCents, coupon } = useCart()
   const [error, setError] = useState<string | null>(null)
   const [paying, setPaying] = useState(false)
-  const total = totalCents()
+  const subtotal = totalCents()
+  const shippingCents = getShippingCents(subtotal)
+  const discountCents = coupon ? getDiscountCents(subtotal, coupon.discountPercent) : 0
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -98,7 +102,7 @@ export default function PaymentForm({ clientSecret, shipping, onEditShipping }: 
             disabled={!stripe || !elements || paying}
             className="w-full rounded-full bg-cocoa-900 text-white text-xs tracking-[0.2em] uppercase py-4 hover:bg-cocoa-800 transition-colors disabled:opacity-50"
           >
-            {paying ? 'Procesando...' : `Pagar ${formatPrice(total)}`}
+            {paying ? 'Procesando...' : `Pagar ${formatPrice(totalCentsFromServer)}`}
           </button>
 
           <p className="text-[10px] text-text-muted text-center">Pago seguro gestionado por Stripe</p>
@@ -131,16 +135,23 @@ export default function PaymentForm({ clientSecret, shipping, onEditShipping }: 
 
         <div className="mt-8 pt-6 border-t border-sand-300 space-y-3">
           <div className="flex justify-between text-sm text-text-muted">
-            <span>Subtotal</span><span>{formatPrice(total)}</span>
+            <span>Subtotal</span><span>{formatPrice(subtotal)}</span>
           </div>
+          {coupon && (
+            <div className="flex justify-between text-sm text-green-700">
+              <span>{coupon.code} (-{coupon.discountPercent}%)</span>
+              <span>-{formatPrice(discountCents)}</span>
+            </div>
+          )}
           <div className="flex justify-between text-sm text-text-muted">
-            <span>Envío</span><span>Calculado al pagar</span>
+            <span>Envío</span>
+            <span>{shippingCents === 0 ? <span className="text-green-700">Gratis</span> : formatPrice(shippingCents)}</span>
           </div>
           <div className="flex justify-between text-base text-cocoa-900 pt-3 border-t border-sand-300 font-medium">
             <span>Total</span>
             <div className="text-right">
               <span className="text-xs text-text-muted mr-1">EUR</span>
-              <span>{formatPrice(total)}</span>
+              <span>{formatPrice(totalCentsFromServer)}</span>
             </div>
           </div>
         </div>

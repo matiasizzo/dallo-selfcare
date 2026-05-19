@@ -1,14 +1,49 @@
 'use client'
 
+import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
 import { X, Minus, Plus } from 'lucide-react'
 import { useCart } from '@/store/cart'
 import { formatPrice } from '@/lib/products'
+import { getShippingCents, getDiscountCents, FREE_SHIPPING_THRESHOLD_CENTS } from '@/lib/shipping'
 
 export default function CartDrawer() {
-  const { items, isOpen, closeCart, removeItem, updateQuantity, totalItems, totalCents } = useCart()
+  const { items, isOpen, closeCart, removeItem, updateQuantity, totalItems, totalCents, coupon, setCoupon } = useCart()
+  const [couponInput, setCouponInput] = useState('')
+  const [couponLoading, setCouponLoading] = useState(false)
+  const [couponError, setCouponError] = useState<string | null>(null)
+
+  const subtotal = totalCents()
+  const shippingCents = getShippingCents(subtotal)
+  const discountCents = coupon ? getDiscountCents(subtotal, coupon.discountPercent) : 0
+  const total = subtotal + shippingCents - discountCents
+  const toFreeShipping = FREE_SHIPPING_THRESHOLD_CENTS - subtotal
+
+  async function handleApplyCoupon() {
+    if (!couponInput.trim()) return
+    setCouponLoading(true)
+    setCouponError(null)
+    try {
+      const res = await fetch('/api/checkout/validate-coupon', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code: couponInput.trim() }),
+      })
+      const data = await res.json()
+      if (data.valid) {
+        setCoupon({ code: data.code, discountPercent: data.discountPercent })
+        setCouponInput('')
+      } else {
+        setCouponError(data.error ?? 'Código no válido')
+      }
+    } catch {
+      setCouponError('Error al validar el código')
+    } finally {
+      setCouponLoading(false)
+    }
+  }
 
   return (
     <AnimatePresence>
@@ -26,10 +61,7 @@ export default function CartDrawer() {
 
           <motion.aside
             className="fixed right-0 top-0 h-full z-50 flex flex-col bg-bg"
-            style={{
-              width: 'min(440px, 95vw)',
-              boxShadow: '-20px 0 60px rgba(0,0,0,0.12)',
-            }}
+            style={{ width: 'min(440px, 95vw)', boxShadow: '-20px 0 60px rgba(0,0,0,0.12)' }}
             initial={{ x: '100%' }}
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
@@ -37,9 +69,7 @@ export default function CartDrawer() {
           >
             {/* Header */}
             <div className="flex items-center justify-between px-7 py-6 border-b border-line-soft">
-              <h3 className="font-cormorant font-[400] text-[24px] text-ink m-0">
-                Tu bolsa
-              </h3>
+              <h3 className="font-cormorant font-[400] text-[24px] text-ink m-0">Tu bolsa</h3>
               <button
                 onClick={closeCart}
                 className="text-ink-soft hover:text-ink transition-colors duration-200 active:scale-[0.88]"
@@ -81,7 +111,6 @@ export default function CartDrawer() {
                       className="grid gap-4 py-4 border-b border-line-soft last:border-0"
                       style={{ gridTemplateColumns: '64px 1fr auto', alignItems: 'center' }}
                     >
-                      {/* Product image */}
                       <div className="w-16 h-16 bg-bg-gray flex-shrink-0 overflow-hidden relative rounded-lg">
                         {item.imageUrl ? (
                           <Image src={item.imageUrl} alt={item.name} fill className="object-contain p-1" />
@@ -132,10 +161,73 @@ export default function CartDrawer() {
             {/* Footer */}
             {items.length > 0 && (
               <div className="px-7 py-6 border-t border-line-soft space-y-4">
-                <div className="flex justify-between items-baseline">
-                  <span className="text-[13px] text-ink-soft">Subtotal</span>
-                  <span className="font-cormorant text-[20px] font-[400] text-ink">{formatPrice(totalCents())}</span>
+
+                {/* Free shipping progress */}
+                {toFreeShipping > 0 && (
+                  <p className="text-[11px] text-ink-soft text-center">
+                    Añade{' '}
+                    <span className="text-ink font-[500]">{formatPrice(toFreeShipping)}</span>
+                    {' '}más para conseguir envío gratis
+                  </p>
+                )}
+
+                {/* Coupon input */}
+                {!coupon ? (
+                  <div className="flex gap-2">
+                    <input
+                      value={couponInput}
+                      onChange={(e) => { setCouponInput(e.target.value.toUpperCase()); setCouponError(null) }}
+                      onKeyDown={(e) => e.key === 'Enter' && handleApplyCoupon()}
+                      placeholder="Código de descuento"
+                      className="flex-1 border border-line-soft bg-transparent px-3 py-2 text-[12px] text-ink placeholder:text-ink-mute focus:outline-none focus:border-ink transition-colors rounded-lg"
+                    />
+                    <button
+                      onClick={handleApplyCoupon}
+                      disabled={couponLoading || !couponInput.trim()}
+                      className="px-4 py-2 text-[11px] tracking-[0.08em] uppercase border border-line-soft rounded-lg text-ink hover:border-ink transition-colors disabled:opacity-40"
+                    >
+                      {couponLoading ? '...' : 'Aplicar'}
+                    </button>
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-between bg-[rgba(80,130,80,0.08)] border border-[rgba(80,130,80,0.25)] rounded-lg px-3 py-2">
+                    <span className="text-[12px] text-[#3a7a3a] font-[500]">
+                      {coupon.code} · -{coupon.discountPercent}%
+                    </span>
+                    <button
+                      onClick={() => setCoupon(null)}
+                      className="text-[11px] text-ink-mute underline hover:text-ink transition-colors"
+                    >
+                      Quitar
+                    </button>
+                  </div>
+                )}
+                {couponError && (
+                  <p className="text-[11px] text-red-500 -mt-2">{couponError}</p>
+                )}
+
+                {/* Price breakdown */}
+                <div className="space-y-2">
+                  <div className="flex justify-between text-[12px] text-ink-soft">
+                    <span>Subtotal</span>
+                    <span>{formatPrice(subtotal)}</span>
+                  </div>
+                  {coupon && (
+                    <div className="flex justify-between text-[12px] text-[#3a7a3a]">
+                      <span>Descuento ({coupon.discountPercent}%)</span>
+                      <span>-{formatPrice(discountCents)}</span>
+                    </div>
+                  )}
+                  <div className="flex justify-between text-[12px] text-ink-soft">
+                    <span>Envío</span>
+                    <span>{shippingCents === 0 ? <span className="text-[#3a7a3a]">Gratis</span> : formatPrice(shippingCents)}</span>
+                  </div>
+                  <div className="flex justify-between items-baseline pt-2 border-t border-line-soft">
+                    <span className="text-[13px] text-ink-soft">Total</span>
+                    <span className="font-cormorant text-[22px] font-[400] text-ink">{formatPrice(total)}</span>
+                  </div>
                 </div>
+
                 <Link
                   href="/checkout"
                   onClick={closeCart}
