@@ -140,8 +140,8 @@ export default async function ProductPage({ params }: Props) {
   if (storageParts.length > 0) {
     accordionItems.push({ label: 'Conservación & Caducidad', content: storageParts.join('\n') })
   }
-  if (isSkin && product.frequency) {
-    accordionItems.push({ label: 'Precauciones', content: product.frequency })
+  if (product.precautions) {
+    accordionItems.push({ label: 'Precauciones', content: product.precautions })
   }
 
   const crossSellVariant = crossSell ? getDefaultVariant(crossSell) : null
