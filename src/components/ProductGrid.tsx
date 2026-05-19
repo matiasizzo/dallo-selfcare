@@ -10,10 +10,11 @@ function ProductCard({ product }: { product: Product }) {
   const { addItem } = useCart()
   const variant = getDefaultVariant(product)
   const lineColor = LINE_COLORS[product.categories?.slug ?? ''] ?? '#553b2e'
+  const outOfStock = (variant?.stock_quantity ?? 1) === 0
 
   const handleAdd = (e: React.MouseEvent) => {
     e.preventDefault()
-    if (!variant) return
+    if (!variant || outOfStock) return
     addItem({
       variantId: variant.id,
       productId: product.id,
@@ -37,29 +38,40 @@ function ProductCard({ product }: { product: Product }) {
             src={product.image_url}
             alt={product.name}
             fill
-            className="object-contain object-center w-[78%] transition-transform duration-500 group-hover:-translate-y-1"
+            className={`object-contain object-center w-[78%] transition-transform duration-500 group-hover:-translate-y-1${outOfStock ? ' opacity-50' : ''}`}
             sizes="(max-width: 768px) 50vw, 25vw"
           />
         ) : (
           <div className="w-full h-full" />
         )}
 
-        {/* Hover add button */}
-        <button
-          onClick={handleAdd}
-          className="absolute bottom-4 left-4 right-4 bg-paper text-ink border border-line-soft rounded-full py-[11px] px-4 text-[12px] font-[500] tracking-[0.02em] flex items-center justify-center gap-2 opacity-0 translate-y-[10px] group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-[350ms] hover:bg-ink hover:text-bg hover:border-ink"
-          aria-label={`Añadir ${product.name}`}
-        >
-          <Plus size={14} strokeWidth={1.5} />
-          Añadir
-        </button>
+        {outOfStock ? (
+          <span className="absolute bottom-4 left-4 right-4 bg-paper/80 text-ink-soft border border-line-soft rounded-full py-[11px] px-4 text-[12px] font-[500] tracking-[0.06em] uppercase flex items-center justify-center text-center">
+            Agotado
+          </span>
+        ) : (
+          <button
+            onClick={handleAdd}
+            className="absolute bottom-4 left-4 right-4 bg-paper text-ink border border-line-soft rounded-full py-[11px] px-4 text-[12px] font-[500] tracking-[0.02em] flex items-center justify-center gap-2 opacity-0 translate-y-[10px] group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-[350ms] hover:bg-ink hover:text-bg hover:border-ink"
+            aria-label={`Añadir ${product.name}`}
+          >
+            <Plus size={14} strokeWidth={1.5} />
+            Añadir
+          </button>
+        )}
       </div>
 
       {/* Card body */}
       <div className="px-1 pt-4 pb-2 flex flex-col gap-[2px]">
         <h3 className="text-[14px] font-[500] tracking-[0.02em] text-ink m-0">{product.name}</h3>
         {variant && (
-          <p className="text-[13px] text-ink-soft mt-[2px]">{formatPrice(variant.price_cents)}</p>
+          <p className="text-[13px] text-ink-soft mt-[2px]">
+            {outOfStock ? (
+              <span className="tracking-[0.04em] text-[11px] uppercase">Agotado</span>
+            ) : (
+              formatPrice(variant.price_cents)
+            )}
+          </p>
         )}
       </div>
     </Link>
@@ -79,7 +91,8 @@ export default function ProductGrid({
   showViewAll = true,
   anchor,
 }: ProductGridProps) {
-  if (products.length === 0) {
+  const visibleProducts = products.filter((p) => (getDefaultVariant(p)?.price_cents ?? 0) > 0)
+  if (visibleProducts.length === 0) {
     return (
       <section className="w-full py-16 px-8">
         <div className="max-w-[1600px] mx-auto text-center">
@@ -112,7 +125,7 @@ export default function ProductGrid({
 
         {/* Grid: 4-col with 12px gaps */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          {products.map((product) => (
+          {visibleProducts.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
         </div>

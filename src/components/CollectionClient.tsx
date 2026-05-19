@@ -49,20 +49,26 @@ export default function CollectionClient({ products }: Props) {
   const [sort, setSort] = useState('featured')
   const gridObserver = useInView(0.05)
 
+  // Products with price 0 are hidden entirely; those with stock 0 appear as "Agotado"
+  const visibleProducts = useMemo(
+    () => products.filter((p) => (getDefaultVariant(p)?.price_cents ?? 0) > 0),
+    [products]
+  )
+
   const categories = useMemo(() => {
     const seen = new Map<string, { slug: string; name: string }>()
-    products.forEach((p) => {
+    visibleProducts.forEach((p) => {
       if (p.categories && !seen.has(p.categories.slug)) {
         seen.set(p.categories.slug, { slug: p.categories.slug, name: p.categories.name })
       }
     })
     return Array.from(seen.values())
-  }, [products])
+  }, [visibleProducts])
 
   const filtered = useMemo(() => {
     let r = activeCategory
-      ? products.filter((p) => p.categories?.slug === activeCategory)
-      : [...products]
+      ? visibleProducts.filter((p) => p.categories?.slug === activeCategory)
+      : [...visibleProducts]
     if (sort === 'price-asc')
       r = [...r].sort((a, b) => (getDefaultVariant(a)?.price_cents ?? 0) - (getDefaultVariant(b)?.price_cents ?? 0))
     if (sort === 'price-desc')
@@ -171,7 +177,7 @@ export default function CollectionClient({ products }: Props) {
                       {cat.name}
                     </span>
                     <span className="text-[11px] tracking-[0.06em] text-[rgba(246,238,230,0.78)]">
-                      {products.filter((p) => p.categories?.slug === cat.slug).length} productos
+                      {visibleProducts.filter((p) => p.categories?.slug === cat.slug).length} productos
                     </span>
                   </div>
                   {isActive && (
@@ -207,10 +213,10 @@ export default function CollectionClient({ products }: Props) {
                   : 'bg-transparent text-cocoa-900 border-[#ddd1bd] hover:border-cocoa-900'
               }`}
             >
-              Todos · {products.length}
+              Todos · {visibleProducts.length}
             </button>
             {categories.map((cat) => {
-              const count = products.filter((p) => p.categories?.slug === cat.slug).length
+              const count = visibleProducts.filter((p) => p.categories?.slug === cat.slug).length
               const isActive = activeCategory === cat.slug
               return (
                 <button
@@ -295,6 +301,7 @@ export default function CollectionClient({ products }: Props) {
             >
               {filtered.map((product, i) => {
                 const variant = getDefaultVariant(product)
+                const outOfStock = (variant?.stock_quantity ?? 1) === 0
                 return (
                   <motion.div
                     key={product.id}
@@ -312,21 +319,27 @@ export default function CollectionClient({ products }: Props) {
                             src={product.image_url}
                             alt={product.name}
                             fill
-                            className="object-contain object-center transition-transform duration-500 group-hover:-translate-y-1"
+                            className={`object-contain object-center transition-transform duration-500 group-hover:-translate-y-1${outOfStock ? ' opacity-50' : ''}`}
                             sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
                           />
                         ) : (
                           <div className="w-full h-full" />
                         )}
-                        <button
-                          onClick={(e) => handleAddToCart(product, e)}
-                          className="absolute bottom-4 left-4 right-4 bg-white text-cocoa-900 border border-[#e8dccb] rounded-full py-[11px] px-4 text-[12px] font-[500] tracking-[0.02em] flex items-center justify-center gap-2 opacity-0 translate-y-[10px] group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-[220ms] hover:bg-cocoa-900 hover:text-cream hover:border-cocoa-900 active:scale-[0.97]"
-                          style={{ transitionTimingFunction: 'cubic-bezier(0.23, 1, 0.32, 1)' }}
-                          aria-label={`Añadir ${product.name}`}
-                        >
-                          <Plus size={14} strokeWidth={1.5} />
-                          Añadir
-                        </button>
+                        {outOfStock ? (
+                          <span className="absolute bottom-4 left-4 right-4 bg-white/80 text-[#5a4a3d] border border-[#e8dccb] rounded-full py-[11px] px-4 text-[12px] font-[500] tracking-[0.06em] uppercase flex items-center justify-center text-center">
+                            Agotado
+                          </span>
+                        ) : (
+                          <button
+                            onClick={(e) => handleAddToCart(product, e)}
+                            className="absolute bottom-4 left-4 right-4 bg-white text-cocoa-900 border border-[#e8dccb] rounded-full py-[11px] px-4 text-[12px] font-[500] tracking-[0.02em] flex items-center justify-center gap-2 opacity-0 translate-y-[10px] group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-[220ms] hover:bg-cocoa-900 hover:text-cream hover:border-cocoa-900 active:scale-[0.97]"
+                            style={{ transitionTimingFunction: 'cubic-bezier(0.23, 1, 0.32, 1)' }}
+                            aria-label={`Añadir ${product.name}`}
+                          >
+                            <Plus size={14} strokeWidth={1.5} />
+                            Añadir
+                          </button>
+                        )}
                       </div>
                       <div className="px-1 pt-4 pb-2 flex flex-col gap-[2px]">
                         <h3 className="text-[14px] font-[500] tracking-[0.02em] text-cocoa-900 m-0">
@@ -334,7 +347,11 @@ export default function CollectionClient({ products }: Props) {
                         </h3>
                         {variant && (
                           <p className="text-[13px] text-[#5a4a3d] mt-[2px]">
-                            {formatPrice(variant.price_cents)}
+                            {outOfStock ? (
+                              <span className="text-[#8a7a6c] tracking-[0.04em] text-[11px] uppercase">Agotado</span>
+                            ) : (
+                              formatPrice(variant.price_cents)
+                            )}
                           </p>
                         )}
                       </div>
