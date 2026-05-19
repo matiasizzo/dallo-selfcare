@@ -49,6 +49,7 @@ export type Product = {
   usage_instructions: string | null
   dosage: string | null
   frequency: string | null
+  precautions: string | null
   storage: string | null
   shelf_life_months: number | null
   skin_type: string[] | null
