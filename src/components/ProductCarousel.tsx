@@ -4,7 +4,7 @@ import { useRef } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { ChevronLeft, ChevronRight, Plus } from 'lucide-react'
-import { type Product, formatPrice, getDefaultVariant, LINE_COLORS } from '@/lib/products'
+import { type Product, formatPrice, getDefaultVariant, LINE_COLORS, CARD_BG, DEFAULT_CARD_BG } from '@/lib/products'
 import { useCart } from '@/store/cart'
 
 function CarouselCard({ product }: { product: Product }) {
@@ -34,15 +34,15 @@ function CarouselCard({ product }: { product: Product }) {
     >
       {/* Square image */}
       <div
-        className="relative aspect-square overflow-hidden flex items-center justify-center transition-colors duration-300 mb-0"
-        style={{ background: '#f6eee6' }}
+        className="relative aspect-square overflow-hidden flex items-center justify-center mb-0"
+        style={{ background: CARD_BG[product.categories?.slug ?? ''] ?? DEFAULT_CARD_BG }}
       >
         {product.image_url ? (
           <Image
             src={product.image_url}
             alt={product.name}
             fill
-            className={`object-contain object-center transition-transform duration-500 group-hover:-translate-y-1${outOfStock ? ' opacity-50' : ''}`}
+            className={`object-contain object-center transition-[transform] duration-500 group-hover:-translate-y-[6px] group-hover:scale-[1.02]${outOfStock ? ' opacity-50' : ''}`}
             sizes="220px"
           />
         ) : (

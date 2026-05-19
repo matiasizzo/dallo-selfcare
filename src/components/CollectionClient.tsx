@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { Plus } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import type { Product } from '@/lib/supabase'
-import { formatPrice, getDefaultVariant } from '@/lib/products'
+import { formatPrice, getDefaultVariant, CARD_BG, DEFAULT_CARD_BG } from '@/lib/products'
 import { useCart } from '@/store/cart'
 
 const CAT_GRADIENTS: Record<string, string> = {
@@ -312,14 +312,14 @@ export default function CollectionClient({ products }: Props) {
                     <Link href={`/productos/${product.slug}`} className="group block cursor-pointer">
                       <div
                         className="relative aspect-square overflow-hidden flex items-center justify-center"
-                        style={{ background: '#ebe7e0' }}
+                        style={{ background: CARD_BG[product.categories?.slug ?? ''] ?? DEFAULT_CARD_BG }}
                       >
                         {product.image_url ? (
                           <Image
                             src={product.image_url}
                             alt={product.name}
                             fill
-                            className={`object-contain object-center transition-transform duration-500 group-hover:-translate-y-1${outOfStock ? ' opacity-50' : ''}`}
+                            className={`object-contain object-center transition-[transform] duration-500 group-hover:-translate-y-[6px] group-hover:scale-[1.02]${outOfStock ? ' opacity-50' : ''}`}
                             sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
                           />
                         ) : (

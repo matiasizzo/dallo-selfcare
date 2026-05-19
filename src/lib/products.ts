@@ -14,6 +14,17 @@ export const LINE_COLORS: Record<string, string> = {
   skin:       '#C9A96E',
 }
 
+export const CARD_BG: Record<string, string> = {
+  skin:       'radial-gradient(ellipse at 50% 40%, #faf3e8 0%, #eddec8 65%, #d9c0a0 100%)',
+  balance:    'radial-gradient(ellipse at 50% 40%, #edf4f1 0%, #c4dcd5 65%, #9ec4bc 100%)',
+  energy:     'radial-gradient(ellipse at 50% 40%, #faf3e4 0%, #f0dcb0 65%, #ddc078 100%)',
+  metabolism: 'radial-gradient(ellipse at 50% 40%, #faf0f0 0%, #e8c4c0 65%, #d4a0a0 100%)',
+  protection: 'radial-gradient(ellipse at 50% 40%, #f2f0f8 0%, #ccc8e8 65%, #aca8d4 100%)',
+  senolytic:  'radial-gradient(ellipse at 50% 40%, #eef4f8 0%, #bcd4e8 65%, #90bcd4 100%)',
+  nutri:      'radial-gradient(ellipse at 50% 40%, #faf3e8 0%, #eddec8 65%, #d9c0a0 100%)',
+}
+export const DEFAULT_CARD_BG = 'radial-gradient(ellipse at 50% 40%, #faf3e8 0%, #ebdec8 65%, #d9c8ad 100%)'
+
 export function formatPrice(cents: number) {
   return new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR' }).format(cents / 100)
 }

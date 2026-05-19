@@ -67,7 +67,12 @@ export default function Footer() {
           <ul className="list-none p-0 m-0 flex flex-col gap-[10px]">
             <li>
               <Link href="/sobre" className="text-[13px] transition-colors duration-200 hover:text-bg" style={{ color: 'rgba(246,238,230,0.72)' }}>
-                Filosofía
+                Nuestra Historia
+              </Link>
+            </li>
+            <li>
+              <Link href="/aviso-legal" className="text-[13px] transition-colors duration-200 hover:text-bg" style={{ color: 'rgba(246,238,230,0.72)' }}>
+                Aviso Legal
               </Link>
             </li>
           </ul>

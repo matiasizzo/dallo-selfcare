@@ -11,7 +11,7 @@ const NAV_LINKS = [
   { label: 'Todos los productos', href: '/productos' },
   { label: 'Dallo Nutri', href: '/coleccion/nutri' },
   { label: 'Dallo Skin', href: '/coleccion/skin' },
-  { label: 'Filosofía', href: '/sobre' },
+  { label: 'Nuestra Historia', href: '/sobre' },
 ]
 
 const EASE_OUT: [number, number, number, number] = [0.23, 1, 0.32, 1]

@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { Plus } from 'lucide-react'
-import { type Product, formatPrice, getDefaultVariant, LINE_COLORS } from '@/lib/products'
+import { type Product, formatPrice, getDefaultVariant, LINE_COLORS, CARD_BG, DEFAULT_CARD_BG } from '@/lib/products'
 import { useCart } from '@/store/cart'
 
 function ProductCard({ product }: { product: Product }) {
@@ -30,15 +30,15 @@ function ProductCard({ product }: { product: Product }) {
     <Link href={`/productos/${product.slug}`} className="group block cursor-pointer">
       {/* Square image */}
       <div
-        className="relative aspect-square overflow-hidden flex items-center justify-center transition-colors duration-300"
-        style={{ background: 'var(--color-bg-gray, #ebe7e0)' }}
+        className="relative aspect-square overflow-hidden flex items-center justify-center"
+        style={{ background: CARD_BG[product.categories?.slug ?? ''] ?? DEFAULT_CARD_BG }}
       >
         {product.image_url ? (
           <Image
             src={product.image_url}
             alt={product.name}
             fill
-            className={`object-contain object-center w-[78%] transition-transform duration-500 group-hover:-translate-y-1${outOfStock ? ' opacity-50' : ''}`}
+            className={`object-contain object-center w-[78%] transition-[transform] duration-500 group-hover:-translate-y-[6px] group-hover:scale-[1.02]${outOfStock ? ' opacity-50' : ''}`}
             sizes="(max-width: 768px) 50vw, 25vw"
           />
         ) : (
