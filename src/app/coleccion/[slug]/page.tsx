@@ -56,6 +56,7 @@ export default async function CollectionPage({ params }: Props) {
           <p className="text-xs tracking-[0.15em] uppercase text-text-muted">
             {products.length} {products.length === 1 ? 'producto' : 'productos'}
           </p>
+
         </div>
         <ProductGrid products={products} showViewAll={false} title="" />
       </main>

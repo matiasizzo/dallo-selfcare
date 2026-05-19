@@ -34,7 +34,12 @@ export async function getProducts(): Promise<Product[]> {
     console.error('getProducts error:', error.message)
     return []
   }
-  return (data as Product[]) ?? []
+  const all = (data as Product[]) ?? []
+  // Exclude products whose default variant has price 0 (not yet for sale)
+  return all.filter((p) => {
+    const v = getDefaultVariant(p)
+    return v !== null && v.price_cents > 0
+  })
 }
 
 export async function getProductBySlug(slug: string): Promise<Product | null> {
@@ -81,7 +86,11 @@ export async function getProductsByCategory(categorySlug: string): Promise<Produ
     console.error('getProductsByCategory error:', error.message)
     return []
   }
-  return (data as Product[]) ?? []
+  const all = (data as Product[]) ?? []
+  return all.filter((p) => {
+    const v = getDefaultVariant(p)
+    return v !== null && v.price_cents > 0
+  })
 }
 
 export function getDefaultVariant(product: Product) {
