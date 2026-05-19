@@ -95,23 +95,23 @@ export default function SobrePage() {
         <section className="max-w-screen-xl mx-auto px-8 py-20 border-b border-sand-300">
           <p className="text-[10px] tracking-[0.3em] uppercase text-text-muted mb-14">Nuestras líneas</p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-sand-300">
-            <div className="bg-white p-12">
+            <div className="bg-sand-100 p-12">
               <p className="text-[10px] tracking-[0.3em] uppercase text-text-muted mb-4">Dall&apos;Ó Skin</p>
               <h2 className="font-cormorant text-4xl font-light text-cocoa-900 mb-6 leading-tight">Longevidad cutánea</h2>
               <p className="text-sm text-text leading-relaxed mb-8">
                 Cuidado tópico magistral. Limpiadores y sérums de pequeño lote, formulados bajo pedido para reprogramar la longevidad de tu piel con activos de grado biotecnológico.
               </p>
-              <Link href="/coleccion/skin" className="inline-block text-[10px] tracking-[0.2em] uppercase border border-cocoa-900 text-cocoa-900 px-8 py-3 hover:bg-cocoa-900 hover:text-white transition-colors">
+              <Link href="/coleccion/skin" className="inline-block text-[10px] tracking-[0.2em] uppercase border border-brown text-brown px-8 py-3 hover:bg-brown hover:text-bg transition-colors">
                 Ver Dall&apos;Ó Skin
               </Link>
             </div>
-            <div className="bg-sand-100 p-12">
+            <div className="bg-sand-200 p-12">
               <p className="text-[10px] tracking-[0.3em] uppercase text-text-muted mb-4">Dall&apos;Ó Nutri</p>
               <h2 className="font-cormorant text-4xl font-light text-cocoa-900 mb-6 leading-tight">Suplementación de precisión</h2>
               <p className="text-sm text-text leading-relaxed mb-8">
                 Complementos alimenticios formulados con criterios médicos: alta biodisponibilidad, activos sinérgicos y dosis con respaldo clínico. Desde CoQ10 y NAD+ hasta colágeno, magnesio citrato y omega-3 de grado farmacéutico.
               </p>
-              <Link href="/coleccion/nutri" className="inline-block text-[10px] tracking-[0.2em] uppercase border border-cocoa-900 text-cocoa-900 px-8 py-3 hover:bg-cocoa-900 hover:text-white transition-colors">
+              <Link href="/coleccion/nutri" className="inline-block text-[10px] tracking-[0.2em] uppercase border border-brown text-brown px-8 py-3 hover:bg-brown hover:text-bg transition-colors">
                 Ver Dall&apos;Ó Nutri
               </Link>
             </div>
@@ -122,7 +122,7 @@ export default function SobrePage() {
         <section className="max-w-screen-xl mx-auto px-8 py-20 text-center">
           <p className="text-[10px] tracking-[0.3em] uppercase text-text-muted mb-6">Empieza hoy</p>
           <h2 className="font-cormorant text-5xl font-light text-cocoa-900 mb-8">Diseñado para durar.</h2>
-          <Link href="/productos" className="inline-block bg-cocoa-900 text-white text-[10px] tracking-[0.25em] uppercase px-10 py-4 hover:bg-cocoa-800 transition-colors">
+          <Link href="/productos" className="inline-block border border-brown text-brown text-[10px] tracking-[0.25em] uppercase px-10 py-4 hover:bg-brown hover:text-bg transition-colors">
             Ver todos los productos
           </Link>
         </section>
