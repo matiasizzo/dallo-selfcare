@@ -301,7 +301,7 @@ export default function CollectionClient({ products }: Props) {
             >
               {filtered.map((product, i) => {
                 const variant = getDefaultVariant(product)
-                const outOfStock = Number(variant?.stock_quantity ?? 1) === 0
+                const outOfStock = String(variant?.stock_quantity) === '0'
                 return (
                   <motion.div
                     key={product.id}
