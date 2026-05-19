@@ -326,7 +326,7 @@ export default function CollectionClient({ products }: Props) {
                           <div className="w-full h-full" />
                         )}
                         {outOfStock ? (
-                          <span className="absolute bottom-4 left-4 right-4 bg-white/80 text-[#5a4a3d] border border-[#e8dccb] rounded-full py-[11px] px-4 text-[12px] font-[500] tracking-[0.06em] uppercase flex items-center justify-center text-center">
+                          <span className="absolute bottom-4 left-4 right-4 bg-white/90 text-[#5a4a3d] border border-[#e8dccb] rounded-full py-[11px] px-4 text-[12px] font-[500] tracking-[0.06em] uppercase flex items-center justify-center text-center">
                             Agotado
                           </span>
                         ) : (
