@@ -38,7 +38,7 @@ export async function getProducts(): Promise<Product[]> {
   // Exclude products whose default variant has price 0 (not yet for sale)
   return all.filter((p) => {
     const v = getDefaultVariant(p)
-    return v !== null && v.price_cents > 0
+    return v !== null && Number(v.price_cents) > 0
   })
 }
 
@@ -89,7 +89,7 @@ export async function getProductsByCategory(categorySlug: string): Promise<Produ
   const all = (data as Product[]) ?? []
   return all.filter((p) => {
     const v = getDefaultVariant(p)
-    return v !== null && v.price_cents > 0
+    return v !== null && Number(v.price_cents) > 0
   })
 }
 

@@ -19,7 +19,7 @@ export default function ProductActions({ product, defaultVariant }: Props) {
   const { addItem } = useCart()
 
   const lineColor = LINE_COLORS[product.categories?.slug ?? ''] ?? '#C9A96E'
-  const outOfStock = selected.stock_quantity === 0
+  const outOfStock = Number(selected.stock_quantity ?? 1) === 0
 
   function handleAdd() {
     addItem(
