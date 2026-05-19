@@ -11,10 +11,11 @@ function CarouselCard({ product }: { product: Product }) {
   const { addItem } = useCart()
   const variant = getDefaultVariant(product)
   const lineColor = LINE_COLORS[product.categories?.slug ?? ''] ?? '#553b2e'
+  const outOfStock = variant?.stock_quantity == 0 && variant.stock_quantity !== null
 
   const handleAdd = (e: React.MouseEvent) => {
     e.preventDefault()
-    if (!variant) return
+    if (!variant || outOfStock) return
     addItem({
       variantId: variant.id,
       productId: product.id,
@@ -41,27 +42,39 @@ function CarouselCard({ product }: { product: Product }) {
             src={product.image_url}
             alt={product.name}
             fill
-            className="object-contain object-center transition-transform duration-500 group-hover:-translate-y-1"
+            className={`object-contain object-center transition-transform duration-500 group-hover:-translate-y-1${outOfStock ? ' opacity-50' : ''}`}
             sizes="220px"
           />
         ) : (
           <div className="w-full h-full" />
         )}
-        <button
-          onClick={handleAdd}
-          className="absolute bottom-3 left-3 right-3 bg-paper text-ink border border-line-soft rounded-full py-[9px] px-3 text-[11px] font-[500] flex items-center justify-center gap-1.5 opacity-0 translate-y-[8px] group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 hover:bg-ink hover:text-bg hover:border-ink"
-          aria-label={`Añadir ${product.name}`}
-        >
-          <Plus size={12} strokeWidth={1.5} />
-          Añadir
-        </button>
+        {outOfStock ? (
+          <span className="absolute bottom-3 left-3 right-3 bg-paper/90 text-ink-soft border border-line-soft rounded-full py-[9px] px-3 text-[11px] font-[500] tracking-[0.06em] uppercase flex items-center justify-center text-center">
+            Agotado
+          </span>
+        ) : (
+          <button
+            onClick={handleAdd}
+            className="absolute bottom-3 left-3 right-3 bg-paper text-ink border border-line-soft rounded-full py-[9px] px-3 text-[11px] font-[500] flex items-center justify-center gap-1.5 opacity-0 translate-y-[8px] group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 hover:bg-ink hover:text-bg hover:border-ink"
+            aria-label={`Añadir ${product.name}`}
+          >
+            <Plus size={12} strokeWidth={1.5} />
+            Añadir
+          </button>
+        )}
       </div>
 
       {/* Body */}
       <div className="pt-3 pb-1">
         <h3 className="text-[13px] font-[500] text-ink m-0 truncate">{product.name}</h3>
         {variant && (
-          <p className="text-[12px] text-ink-soft mt-[2px] m-0">{formatPrice(variant.price_cents)}</p>
+          <p className="text-[12px] text-ink-soft mt-[2px] m-0">
+            {outOfStock ? (
+              <span className="tracking-[0.04em] text-[11px] uppercase">Agotado</span>
+            ) : (
+              formatPrice(variant.price_cents)
+            )}
+          </p>
         )}
       </div>
     </Link>
