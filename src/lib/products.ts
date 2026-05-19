@@ -16,6 +16,9 @@ export const LINE_COLORS: Record<string, string> = {
 
 export const CARD_BG: Record<string, string> = {
   skin:       'radial-gradient(ellipse at 50% 40%, #faf3e8 0%, #eddec8 65%, #d9c0a0 100%)',
+  aceites:    'radial-gradient(ellipse at 50% 40%, #faf3e8 0%, #eddec8 65%, #d9c0a0 100%)',
+  serums:     'radial-gradient(ellipse at 50% 40%, #faf3e8 0%, #eddec8 65%, #d9c0a0 100%)',
+  limpiadores:'radial-gradient(ellipse at 50% 40%, #faf3e8 0%, #eddec8 65%, #d9c0a0 100%)',
   balance:    'radial-gradient(ellipse at 50% 40%, #edf4f1 0%, #c4dcd5 65%, #9ec4bc 100%)',
   energy:     'radial-gradient(ellipse at 50% 40%, #faf3e4 0%, #f0dcb0 65%, #ddc078 100%)',
   metabolism: 'radial-gradient(ellipse at 50% 40%, #faf0f0 0%, #e8c4c0 65%, #d4a0a0 100%)',
@@ -72,14 +75,22 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
   return data
 }
 
+// Maps a "line" slug to the actual category slugs it groups together
+const CATEGORY_GROUPS: Record<string, string[]> = {
+  skin: ['skin', 'aceites', 'serums', 'limpiadores'],
+}
+
 export async function getProductsByCategory(categorySlug: string): Promise<Product[]> {
-  const { data: cat } = await supabase
+  const slugsToFetch = CATEGORY_GROUPS[categorySlug] ?? [categorySlug]
+
+  const { data: cats } = await supabase
     .from('categories')
     .select('id')
-    .eq('slug', categorySlug)
-    .single<{ id: string }>()
+    .in('slug', slugsToFetch)
 
-  if (!cat) return []
+  if (!cats || cats.length === 0) return []
+
+  const categoryIds = cats.map((c: { id: string }) => c.id)
 
   const { data, error } = await supabase
     .from('products')
@@ -89,7 +100,7 @@ export async function getProductsByCategory(categorySlug: string): Promise<Produ
       product_variants ( * )
     `)
     .eq('active', true)
-    .eq('category_id', cat.id)
+    .in('category_id', categoryIds)
     .or(DALLO_FILTER)
     .order('created_at', { ascending: false })
 
