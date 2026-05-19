@@ -10,7 +10,7 @@ function ProductCard({ product }: { product: Product }) {
   const { addItem } = useCart()
   const variant = getDefaultVariant(product)
   const lineColor = LINE_COLORS[product.categories?.slug ?? ''] ?? '#553b2e'
-  const outOfStock = String(variant?.stock_quantity) === '0'
+  const outOfStock = variant?.stock_quantity == 0 && variant.stock_quantity !== null
 
   const handleAdd = (e: React.MouseEvent) => {
     e.preventDefault()

@@ -7,7 +7,7 @@ import ProductGrid from '@/components/ProductGrid'
 import { getProductsByCategory, LINE_COLORS } from '@/lib/products'
 import { supabase } from '@/lib/supabase'
 
-export const revalidate = 60
+export const dynamic = 'force-dynamic'
 
 interface Props {
   params: Promise<{ slug: string }>
