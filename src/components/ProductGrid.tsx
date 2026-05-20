@@ -64,8 +64,13 @@ function ProductCard({ product }: { product: Product }) {
       {/* Card body */}
       <div className="px-1 pt-4 pb-2 flex flex-col gap-[2px]">
         <h3 className="text-[14px] font-[500] tracking-[0.02em] text-ink m-0">{product.name}</h3>
+        {product.categories?.name && (
+          <span className="inline-block w-fit text-[10px] tracking-[0.1em] uppercase text-ink-mute border border-line-soft rounded-full px-[9px] py-[2px] mt-[3px]">
+            {product.categories.name}
+          </span>
+        )}
         {variant && (
-          <p className="text-[13px] text-ink-soft mt-[2px]">
+          <p className="text-[13px] text-ink-soft mt-[4px]">
             {outOfStock ? (
               <span className="tracking-[0.04em] text-[11px] uppercase">Agotado</span>
             ) : (

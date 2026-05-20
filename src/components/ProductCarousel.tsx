@@ -67,8 +67,13 @@ function CarouselCard({ product }: { product: Product }) {
       {/* Body */}
       <div className="pt-3 pb-1">
         <h3 className="text-[13px] font-[500] text-ink m-0 truncate">{product.name}</h3>
+        {product.categories?.name && (
+          <span className="inline-block w-fit text-[10px] tracking-[0.1em] uppercase text-ink-mute border border-line-soft rounded-full px-[9px] py-[2px] mt-[3px]">
+            {product.categories.name}
+          </span>
+        )}
         {variant && (
-          <p className="text-[12px] text-ink-soft mt-[2px] m-0">
+          <p className="text-[12px] text-ink-soft mt-[4px] m-0">
             {outOfStock ? (
               <span className="tracking-[0.04em] text-[11px] uppercase">Agotado</span>
             ) : (

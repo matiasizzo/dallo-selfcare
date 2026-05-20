@@ -345,8 +345,13 @@ export default function CollectionClient({ products }: Props) {
                         <h3 className="text-[14px] font-[500] tracking-[0.02em] text-cocoa-900 m-0">
                           {product.name}
                         </h3>
+                        {product.categories?.name && (
+                          <span className="inline-block w-fit text-[10px] tracking-[0.1em] uppercase text-[#8a7a6c] border border-[#e0d4c4] rounded-full px-[9px] py-[2px] mt-[3px]">
+                            {product.categories.name}
+                          </span>
+                        )}
                         {variant && (
-                          <p className="text-[13px] text-[#5a4a3d] mt-[2px]">
+                          <p className="text-[13px] text-[#5a4a3d] mt-[4px]">
                             {outOfStock ? (
                               <span className="text-[#8a7a6c] tracking-[0.04em] text-[11px] uppercase">Agotado</span>
                             ) : (
