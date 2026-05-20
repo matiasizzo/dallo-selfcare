@@ -53,10 +53,10 @@ export default function RitualsPage() {
               <Image
                 src={QUEIVI_LOGO}
                 alt="QUEIVI Wellness Clinic"
-                width={220}
-                height={120}
+                width={340}
+                height={190}
                 className="object-contain"
-                style={{ maxHeight: 110 }}
+                style={{ mixBlendMode: 'multiply', maxHeight: 170 }}
               />
             </div>
           </div>
