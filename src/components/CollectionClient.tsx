@@ -345,9 +345,11 @@ export default function CollectionClient({ products }: Props) {
                         <h3 className="text-[14px] font-[500] tracking-[0.02em] text-cocoa-900 m-0">
                           {product.name}
                         </h3>
-                        {product.tagline && (
-                          <span className="inline-block w-fit text-[10px] tracking-[0.1em] uppercase text-[#8a7a6c] border border-[#e0d4c4] rounded-full px-[9px] py-[2px] mt-[3px]">
-                            {product.tagline.split(/\s*[·—]\s*/)[0].trim()}
+                        {(product.tagline || product.categories?.name) && (
+                          <span className="inline-flex items-center leading-none whitespace-nowrap text-[10px] tracking-[0.1em] uppercase text-[#8a7a6c] border border-[#e0d4c4] rounded-full px-2.5 py-[3px] mt-1 w-fit">
+                            {product.tagline
+                              ? product.tagline.split(/\s*[·—]\s*/)[0].trim()
+                              : product.categories!.name}
                           </span>
                         )}
                         {variant && (

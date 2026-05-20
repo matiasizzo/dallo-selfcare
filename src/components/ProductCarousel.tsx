@@ -67,9 +67,11 @@ function CarouselCard({ product }: { product: Product }) {
       {/* Body */}
       <div className="pt-3 pb-1">
         <h3 className="text-[13px] font-[500] text-ink m-0 truncate">{product.name}</h3>
-        {product.tagline && (
-          <span className="inline-block w-fit text-[10px] tracking-[0.1em] uppercase text-ink-mute border border-line-soft rounded-full px-[9px] py-[2px] mt-[3px]">
-            {product.tagline.split(/\s*[·—]\s*/)[0].trim()}
+        {(product.tagline || product.categories?.name) && (
+          <span className="inline-flex items-center leading-none whitespace-nowrap text-[10px] tracking-[0.1em] uppercase text-ink-mute border border-line-soft rounded-full px-2.5 py-[3px] mt-1 w-fit">
+            {product.tagline
+              ? product.tagline.split(/\s*[·—]\s*/)[0].trim()
+              : product.categories!.name}
           </span>
         )}
         {variant && (
