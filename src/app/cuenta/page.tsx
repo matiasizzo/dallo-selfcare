@@ -48,18 +48,6 @@ export default async function AccountPage() {
               </Link>
 
               <Link
-                href="/cuenta/direcciones"
-                className="border border-sand-300 bg-sand-100 p-6 hover:border-cocoa-600 transition-colors group"
-              >
-                <p
-                  className="font-cormorant text-xl font-light text-cocoa-900 mb-1 group-hover:text-cocoa-600 transition-colors"
-                >
-                  Direcciones
-                </p>
-                <p className="text-xs text-text-muted font-sans">Gestiona tus direcciones de envío</p>
-              </Link>
-
-              <Link
                 href="/cuenta/perfil"
                 className="border border-sand-300 bg-sand-100 p-6 hover:border-cocoa-600 transition-colors group"
               >

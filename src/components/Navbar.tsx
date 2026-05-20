@@ -73,12 +73,6 @@ export default function Navbar() {
 
           {/* Right: icons */}
           <div className="flex items-center gap-4 md:gap-[22px] justify-end">
-            <span className="hidden md:flex items-center gap-1 text-[13px] text-ink cursor-pointer select-none hover:text-brown transition-colors duration-200">
-              EUR
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4">
-                <path d="m6 9 6 6 6-6"/>
-              </svg>
-            </span>
             <button
               className="hidden md:block text-ink hover:text-brown transition-colors duration-200 active:scale-[0.88]"
               aria-label="Buscar"
