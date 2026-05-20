@@ -11,20 +11,26 @@ export default function CartDrawer() {
   const { items, isOpen, closeCart, removeItem, updateQuantity, totalItems, totalCents } = useCart()
 
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <>
-          {/* Backdrop */}
+    <>
+      {/* Backdrop — own AnimatePresence so exit animation always fires */}
+      <AnimatePresence>
+        {isOpen && (
           <motion.div
+            key="cart-backdrop"
             className="fixed inset-0 bg-cocoa-900/30 z-40"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={closeCart}
           />
+        )}
+      </AnimatePresence>
 
-          {/* Drawer */}
+      {/* Drawer — own AnimatePresence */}
+      <AnimatePresence>
+        {isOpen && (
           <motion.div
+            key="cart-drawer"
             className="fixed right-0 top-0 h-full w-full max-w-md bg-sand-50 z-50 flex flex-col shadow-2xl"
             initial={{ x: '100%' }}
             animate={{ x: 0 }}
@@ -167,8 +173,8 @@ export default function CartDrawer() {
               </div>
             )}
           </motion.div>
-        </>
-      )}
-    </AnimatePresence>
+        )}
+      </AnimatePresence>
+    </>
   )
 }
