@@ -1,8 +1,8 @@
 const MESSAGES = [
-  'Longevidad es salud',
-  'Formulado bajo pedido · Barcelona',
-  'Envío en frío · 48h España',
-  'Activos de grado biotec',
+  'Activos de Gado Biotec',
+  'Longevidad es Salud',
+  'Formulado bajo receta',
+  'Barcelona · Málaga',
 ]
 
 export default function AnnouncementBar() {

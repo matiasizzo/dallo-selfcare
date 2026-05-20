@@ -46,10 +46,11 @@ export default function CartDrawer() {
   }
 
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <>
+    <>
+      <AnimatePresence>
+        {isOpen && (
           <motion.div
+            key="cart-backdrop"
             className="fixed inset-0 z-40"
             style={{ background: 'rgba(43,32,23,0.35)', backdropFilter: 'blur(4px)' }}
             initial={{ opacity: 0 }}
@@ -58,8 +59,13 @@ export default function CartDrawer() {
             transition={{ duration: 0.22, ease: 'easeOut' }}
             onClick={closeCart}
           />
+        )}
+      </AnimatePresence>
 
+      <AnimatePresence>
+        {isOpen && (
           <motion.aside
+            key="cart-drawer"
             className="fixed right-0 top-0 h-full z-50 flex flex-col bg-bg"
             style={{ width: 'min(440px, 95vw)', boxShadow: '-20px 0 60px rgba(0,0,0,0.12)' }}
             initial={{ x: '100%' }}
@@ -238,8 +244,8 @@ export default function CartDrawer() {
               </div>
             )}
           </motion.aside>
-        </>
-      )}
-    </AnimatePresence>
+        )}
+      </AnimatePresence>
+    </>
   )
 }
