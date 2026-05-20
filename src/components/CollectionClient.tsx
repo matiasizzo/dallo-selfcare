@@ -122,7 +122,7 @@ export default function CollectionClient({ products }: Props) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: EASE_OUT, delay: 0.08 }}
           >
-            Fórmulas magistrales — preparadas bajo pedido en Barcelona y enviadas en frío al mundo.
+            Suplementos nutricionales y cosmética — elaborados bajo pedido en Barcelona y Málaga.
           </motion.p>
         </div>
       </section>
