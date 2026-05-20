@@ -65,10 +65,12 @@ function ProductCard({ product }: { product: Product }) {
       <div className="px-1 pt-4 pb-2 flex flex-col gap-[2px]">
         <h3 className="text-[14px] font-[500] tracking-[0.02em] text-ink m-0">{product.name}</h3>
         {(product.tagline || product.categories?.name) && (
-          <span className="inline-flex items-center leading-none whitespace-nowrap text-[10px] tracking-[0.1em] uppercase text-ink-mute border border-line-soft rounded-full px-2.5 py-[3px] mt-1 w-fit">
-            {product.tagline
-              ? product.tagline.split(/\s*[·—]\s*/)[0].trim()
-              : product.categories!.name}
+          <span className="inline-flex items-center leading-none text-[10px] tracking-[0.1em] uppercase text-ink-mute border border-line-soft rounded-full px-2.5 py-[3px] mt-1 max-w-full overflow-hidden">
+            <span className="truncate">
+              {product.tagline
+                ? product.tagline.split(/\s*[·—]\s*/)[0].trim()
+                : product.categories!.name}
+            </span>
           </span>
         )}
         {variant && (
