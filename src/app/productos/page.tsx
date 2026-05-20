@@ -9,7 +9,7 @@ import { getProducts } from '@/lib/products'
 
 export const metadata: Metadata = {
   title: "Todos los productos | Dall'Ó Selfcare",
-  description: "Descubre la línea completa de suplementos nutricionales y cosmética de Dall'Ó Selfcare. Elaborados bajo pedido en Barcelona y Málaga.",
+  description: "Desarrollo de fórmulas de altísima precisión biológica — mediadores celulares, reguladores de la microbiota y escudos contra el estrés oxidativo ambiental. Elaborados bajo pedido en Barcelona y Málaga.",
   alternates: { canonical: '/productos' },
 }
 

@@ -122,7 +122,7 @@ export default function CollectionClient({ products }: Props) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: EASE_OUT, delay: 0.08 }}
           >
-            Suplementos nutricionales y cosmética — elaborados bajo pedido en Barcelona y Málaga.
+            Desarrollo de fórmulas de altísima precisión biológica — mediadores celulares, reguladores de la microbiota y escudos contra el estrés oxidativo ambiental. Elaborados bajo pedido en Barcelona y Málaga.
           </motion.p>
         </div>
       </section>
