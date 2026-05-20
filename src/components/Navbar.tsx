@@ -11,6 +11,7 @@ const NAV_LINKS = [
   { label: 'Todos los productos', href: '/productos' },
   { label: 'Dallo Nutri', href: '/coleccion/nutri' },
   { label: 'Dallo Skin', href: '/coleccion/skin' },
+  { label: 'Rituals', href: '/rituals' },
   { label: 'Nuestra Historia', href: '/sobre' },
 ]
 
