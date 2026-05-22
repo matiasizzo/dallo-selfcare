@@ -59,6 +59,7 @@ export type Product = {
   featured: boolean
   available_on: string[] | null
   image_url: string | null
+  table_ingredients: string | null
   nutritional_info: {
     serving?: string
     items?: Array<{ name: string; amount: string; nrv?: string }>

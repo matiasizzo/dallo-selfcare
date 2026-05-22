@@ -242,6 +242,17 @@ export default async function ProductPage({ params }: Props) {
               </div>
             )}
 
+            {/* Tabla de ingredientes */}
+            {product.table_ingredients && (
+              <div className="mt-10">
+                <img
+                  src={product.table_ingredients}
+                  alt={`Tabla de ingredientes de ${product.name}`}
+                  className="w-full rounded-sm"
+                />
+              </div>
+            )}
+
             {/* ── Cross-sell: Completa tu ritual ── */}
             {crossSell && crossSellVariant && (
               <CrossSellBox
