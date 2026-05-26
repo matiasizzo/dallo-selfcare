@@ -9,14 +9,14 @@ export default function Hero() {
   return (
     <section
       className="relative overflow-hidden border-b border-cream-400"
-      style={{ minHeight: 'clamp(580px, 88vh, 860px)' }}
+      style={{ aspectRatio: '4/3', maxHeight: '90vh', minHeight: '480px' }}
     >
-      {/* Full-bleed background image */}
+      {/* Full-bleed background image — anchored top so arch stays visible */}
       <Image
         src="/images/hero.png"
         alt="QUEVI Wellness Clinic"
         fill
-        className="object-cover object-center"
+        className="object-cover object-top"
         priority
         sizes="100vw"
       />
