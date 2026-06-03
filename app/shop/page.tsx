@@ -170,79 +170,65 @@ function ProductosTab() {
         return
       }
       try {
-        const { data, error } = await supabase
-          .from('products')
-          .select(`
-            id,
-            name,
-            slug,
-            volume_ml,
-            category:category_id (
-              slug
-            ),
-            product_variants (
-              price_cents,
-              compare_at_cents,
-              is_default,
-              active
-            )
-          `)
-          .eq('active', true)
-          .in('category_id', [
-            // We need to query by category slugs — do a subquery approach
-            // Since supabase-js doesn't support direct nested filters well,
-            // we'll filter client-side after fetching
-          ])
-
-        // Fetch categories first to get IDs
-        const { data: cats } = await supabase
-          .from('categories' as 'products')
+        // Step 1: get category IDs for skin lines
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const { data: cats, error: catsErr } = await (supabase as any)
+          .from('categories')
           .select('id, slug')
           .in('slug', ['limpiadores', 'serums', 'aceites'])
 
-        if (error || !data || !cats) {
+        if (catsErr || !cats || cats.length === 0) {
           setProducts(FALLBACK_PRODUCTS)
           setLoading(false)
           return
         }
 
-        const catIds = new Set((cats as Array<{ id: string; slug: string }>).map((c) => c.id))
+        const catIds = (cats as Array<{ id: string; slug: string }>).map((c) => c.id)
+
+        // Step 2: fetch products in those categories with their default variant
+        const { data, error } = await supabase
+          .from('products')
+          .select(`
+            id, name, slug, volume_ml,
+            product_variants (price_cents, compare_at_cents, is_default, active)
+          `)
+          .eq('active', true)
+          .in('category_id', catIds)
+          .order('featured', { ascending: false })
+
+        if (error || !data) {
+          setProducts(FALLBACK_PRODUCTS)
+          setLoading(false)
+          return
+        }
 
         const mapped: ShopProduct[] = (data as Array<{
           id: string
           name: string
           slug: string
           volume_ml: number | null
-          category: { slug: string } | null
           product_variants: Array<{ price_cents: number; compare_at_cents: number | null; is_default: boolean; active: boolean }>
-        }>)
-          .filter((p) => {
-            const cat = p.category as { id?: string; slug?: string } | null
-            if (!cat) return false
-            // Filter by catIds — category_id must be in our set
-            return true // We'll rely on the .in() filter below
-          })
-          .map((p) => {
-            const defaultVariant = p.product_variants?.find((v) => v.is_default && v.active)
-            const price = defaultVariant ? defaultVariant.price_cents / 100 : 0
-            const was = defaultVariant?.compare_at_cents ? defaultVariant.compare_at_cents / 100 : null
-            const tipo = p.slug.includes('mousse') || p.slug.includes('limpi') ? 'limpiador'
-              : p.slug.includes('serum') || p.slug.includes('senol') || p.slug.includes('rescue') || p.slug.includes('purif') || p.slug.includes('even') ? 'serum'
-              : p.slug.includes('oil') || p.slug.includes('aceite') ? 'aceite'
-              : 'serum'
-            return {
-              id: p.id,
-              slug: p.slug,
-              name: p.name,
-              vol: p.volume_ml ? `${p.volume_ml} ml` : '—',
-              price,
-              was,
-              badge: null,
-              stripe: STRIPE_BY_TIPO[tipo] ?? '#83a886',
-              tipo,
-              code: p.slug.toUpperCase().slice(0, 10),
-            }
-          })
+        }>).map((p) => {
+          const defaultVariant = p.product_variants?.find((v) => v.is_default && v.active)
+            ?? p.product_variants?.find((v) => v.active)
+          const price = defaultVariant ? defaultVariant.price_cents / 100 : 0
+          const was = defaultVariant?.compare_at_cents ? defaultVariant.compare_at_cents / 100 : null
+          const tipo = p.slug.includes('mousse') || p.slug.includes('limpi') ? 'limpiador'
+            : p.slug.includes('oil') || p.slug.includes('aceite') ? 'aceite'
+            : 'serum'
+          return {
+            id: p.id,
+            slug: p.slug,
+            name: p.name,
+            vol: p.volume_ml ? `${p.volume_ml} ml` : '—',
+            price,
+            was,
+            badge: null,
+            stripe: STRIPE_BY_TIPO[tipo] ?? '#83a886',
+            tipo,
+            code: p.slug.toUpperCase().slice(0, 10),
+          }
+        })
 
         setProducts(mapped.length > 0 ? mapped : FALLBACK_PRODUCTS)
       } catch {
