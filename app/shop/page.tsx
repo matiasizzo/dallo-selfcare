@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useEffect } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { motion } from 'framer-motion'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
@@ -19,13 +20,13 @@ const staggerContainer = {
 
 // ── Fallback product data (Dall'O Skin seed products) ──
 const FALLBACK_PRODUCTS = [
-  { id: 'longevity-mousse',  slug: 'd-longevity-mousse',  name: 'D-LONGEVITY Mousse',   vol: '150 ml', price: 0,   was: null, badge: null,   stripe: '#83a886', tipo: 'limpiador', code: 'D-LON-150' },
-  { id: 'purifying-mousse',  slug: 'd-purifying-mousse',  name: 'D-PURIFYING Mousse',   vol: '150 ml', price: 0,   was: null, badge: null,   stripe: '#83a886', tipo: 'limpiador', code: 'D-PUR-150' },
-  { id: 'senolytic-serum',   slug: 'd-senolytic-serum',   name: 'D-Senolytic Serum',    vol: '20 ml',  price: 0,   was: null, badge: 'best', stripe: '#c4876a', tipo: 'serum',    code: 'D-SEN-20'  },
-  { id: 'purifying-serum',   slug: 'd-purifying-serum',   name: 'D-Purifying Serum',    vol: '20 ml',  price: 0,   was: null, badge: null,   stripe: '#c4876a', tipo: 'serum',    code: 'D-PSER-20' },
-  { id: 'evenglow-serum',    slug: 'd-evenglow-serum',    name: 'D-EVENGLOW Serum',     vol: '20 ml',  price: 0,   was: null, badge: 'new',  stripe: '#d49070', tipo: 'serum',    code: 'D-EVG-20'  },
-  { id: 'rescue-serum',      slug: 'd-rescue-serum',      name: 'D-RESCUE Serum',       vol: '20 ml',  price: 0,   was: null, badge: null,   stripe: '#c4876a', tipo: 'serum',    code: 'D-RES-20'  },
-  { id: 'aox-oil',           slug: 'd-aox-oil',           name: 'D-AOX Oil',            vol: '20 ml',  price: 0,   was: null, badge: 'lim',  stripe: '#2c472f', tipo: 'aceite',   code: 'D-AOX-20'  },
+  { id: 'longevity-mousse',  slug: 'd-longevity-mousse',  name: 'D-LONGEVITY Mousse',   vol: '150 ml', price: 0,   was: null, badge: null,   stripe: '#83a886', tipo: 'limpiador', code: 'D-LON-150',  image_url: null },
+  { id: 'purifying-mousse',  slug: 'd-purifying-mousse',  name: 'D-PURIFYING Mousse',   vol: '150 ml', price: 0,   was: null, badge: null,   stripe: '#83a886', tipo: 'limpiador', code: 'D-PUR-150',  image_url: null },
+  { id: 'senolytic-serum',   slug: 'd-senolytic-serum',   name: 'D-Senolytic Serum',    vol: '20 ml',  price: 0,   was: null, badge: 'best', stripe: '#c4876a', tipo: 'serum',    code: 'D-SEN-20',   image_url: null },
+  { id: 'purifying-serum',   slug: 'd-purifying-serum',   name: 'D-Purifying Serum',    vol: '20 ml',  price: 0,   was: null, badge: null,   stripe: '#c4876a', tipo: 'serum',    code: 'D-PSER-20',  image_url: null },
+  { id: 'evenglow-serum',    slug: 'd-evenglow-serum',    name: 'D-EVENGLOW Serum',     vol: '20 ml',  price: 0,   was: null, badge: 'new',  stripe: '#d49070', tipo: 'serum',    code: 'D-EVG-20',   image_url: null },
+  { id: 'rescue-serum',      slug: 'd-rescue-serum',      name: 'D-RESCUE Serum',       vol: '20 ml',  price: 0,   was: null, badge: null,   stripe: '#c4876a', tipo: 'serum',    code: 'D-RES-20',   image_url: null },
+  { id: 'aox-oil',           slug: 'd-aox-oil',           name: 'D-AOX Oil',            vol: '20 ml',  price: 0,   was: null, badge: 'lim',  stripe: '#2c472f', tipo: 'aceite',   code: 'D-AOX-20',   image_url: null },
 ]
 
 type ShopProduct = {
@@ -39,6 +40,7 @@ type ShopProduct = {
   stripe: string
   tipo: string
   code: string
+  image_url: string | null
 }
 
 const TIPO_LABELS: Record<string, string> = {
@@ -189,7 +191,7 @@ function ProductosTab() {
         const { data, error } = await supabase
           .from('products')
           .select(`
-            id, name, slug, volume_ml,
+            id, name, slug, volume_ml, image_url,
             product_variants (price_cents, compare_at_cents, is_default, active)
           `)
           .eq('active', true)
@@ -207,6 +209,7 @@ function ProductosTab() {
           name: string
           slug: string
           volume_ml: number | null
+          image_url: string | null
           product_variants: Array<{ price_cents: number; compare_at_cents: number | null; is_default: boolean; active: boolean }>
         }>).map((p) => {
           const defaultVariant = p.product_variants?.find((v) => v.is_default && v.active)
@@ -227,6 +230,7 @@ function ProductosTab() {
             stripe: STRIPE_BY_TIPO[tipo] ?? '#83a886',
             tipo,
             code: p.slug.toUpperCase().slice(0, 10),
+            image_url: p.image_url ?? null,
           }
         })
 
@@ -372,14 +376,18 @@ function ProductosTab() {
                     {BADGE_LABELS[p.badge]}
                   </span>
                 )}
-                <div className="group-hover/card:-translate-y-1.5 transition-transform duration-500 will-change-transform" style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}>
-                  <PackSVG
-                    id={p.id}
-                    vol={p.vol}
-                    stripe={p.stripe}
-                    name={p.name}
-                    code={p.code}
-                  />
+                <div className="group-hover/card:-translate-y-1.5 transition-transform duration-500 will-change-transform w-full h-full absolute inset-0 flex items-center justify-center" style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}>
+                  {p.image_url ? (
+                    <Image
+                      src={p.image_url}
+                      alt={p.name}
+                      fill
+                      className="object-contain p-6"
+                      sizes="(max-width: 768px) 50vw, 25vw"
+                    />
+                  ) : (
+                    <PackSVG id={p.id} vol={p.vol} stripe={p.stripe} name={p.name} code={p.code} />
+                  )}
                 </div>
                 <button
                   className="absolute bottom-4 left-4 right-4 bg-cream-100 text-carbon-900 border border-cream-400 rounded-full py-3 px-[18px] text-[12px] font-medium tracking-[0.04em] flex items-center justify-center gap-2 opacity-0 translate-y-[10px] group-hover/card:opacity-100 group-hover/card:translate-y-0 transition-all duration-[350ms] hover:bg-brand-600 hover:text-cream-100 hover:border-brand-600 will-change-transform"
