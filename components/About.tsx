@@ -147,7 +147,7 @@ export default function About() {
                   >
                     {qp.name}<em className="italic text-brand-200">{qp.nameEm}</em>
                   </h3>
-                  <p className="text-[13px] m-0 max-h-0 opacity-0 overflow-hidden group-hover:max-h-[60px] group-hover:opacity-100 group-hover:mt-1.5 transition-all duration-[350ms]" style={{ color: 'rgba(245,242,236,0.82)' }}>
+                  <p className="text-[13px] m-0 mt-1.5 leading-[1.55]" style={{ color: 'rgba(245,242,236,0.82)' }}>
                     {qp.desc}
                   </p>
                   <span

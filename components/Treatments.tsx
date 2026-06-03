@@ -3,62 +3,15 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronDown, Clock, Repeat2, CheckCircle2, AlertCircle } from 'lucide-react'
-import Link from 'next/link'
 import { TREATMENTS, type Treatment } from '@/content'
 import { fadeUp, staggerContainer, slideInLeft, slideInRight } from '@/lib/animations'
 import { useScrollAnimation } from '@/lib/useScrollAnimation'
-
-const LINEAS = [
-  { label: 'Línea ', labelEm: 'Shield', href: '/shop#shield', bg: 'linear-gradient(160deg, #93b196 0%, #2c472f 100%)' },
-  { label: 'Línea ', labelEm: 'Repair', href: '/shop#repair', bg: 'linear-gradient(160deg, #d4a987 0%, #6b3722 100%)' },
-  { label: 'Línea ', labelEm: 'Boost', href: '/shop#boost', bg: 'linear-gradient(160deg, #e0a98e 0%, #884e34 100%)' },
-  { label: 'Línea ', labelEm: 'Reset / Soul', href: '/shop#reset', bg: 'linear-gradient(160deg, #4a5d4c 0%, #16231a 100%)' },
-  { label: 'Diagnóstico ', labelEm: 'BIO-SCAN 360°', href: '#diagnostico', bg: 'linear-gradient(160deg, #2c472f 0%, #16231a 100%)' },
-  { label: 'Toda la ', labelEm: 'tienda', href: '/shop', bg: 'linear-gradient(160deg, #93b196 0%, #355539 100%)' },
-]
 
 export default function Treatments() {
   const { ref, isInView } = useScrollAnimation()
 
   return (
     <>
-      {/* Lineas gallery */}
-      <section
-        className="grid gap-[10px] sm:gap-[14px] p-[10px] sm:p-[14px] bg-cream-200 grid-cols-2 lg:grid-cols-3"
-        id="treatments"
-      >
-        {LINEAS.map((l) => (
-          <Link
-            key={l.labelEm}
-            href={l.href}
-            className="relative overflow-hidden cursor-pointer rounded-[2px] group"
-            style={{ aspectRatio: '4/3' }}
-          >
-            {/* Background */}
-            <div
-              className="absolute inset-0 group-hover:scale-[1.05] transition-transform duration-[800ms]"
-              style={{ background: l.bg, transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}
-            />
-            {/* Overlay */}
-            <div className="absolute inset-0" style={{ background: 'linear-gradient(to top, rgba(22,35,26,0.55) 0%, rgba(22,35,26,0.05) 65%, transparent 100%)' }} />
-            {/* Label */}
-            <div className="absolute inset-x-0 bottom-0 z-[2] px-7 py-[26px] flex items-center justify-between gap-3 text-cream-100 font-serif text-[18px] font-normal tracking-[0.01em]">
-              <span>
-                {l.label}<em className="italic text-brand-200">{l.labelEm}</em>
-              </span>
-              <span
-                className="w-8 h-8 rounded-full inline-flex items-center justify-center flex-shrink-0 transition-all duration-300 group-hover:bg-cream-100 group-hover:rotate-[-45deg]"
-                style={{ background: 'rgba(245,242,236,0.16)', border: '1px solid rgba(245,242,236,0.32)', color: 'inherit' }}
-              >
-                <svg className="w-3.5 h-3.5 group-hover:text-brand-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
-                </svg>
-              </span>
-            </div>
-          </Link>
-        ))}
-      </section>
-
       {/* Treatments detail accordion */}
       <section className="py-28 bg-cream-200 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
