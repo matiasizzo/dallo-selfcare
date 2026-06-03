@@ -2,18 +2,19 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { supabase } from '@/lib/supabase'
 import { fadeUp, staggerContainer } from '@/lib/animations'
 import { useScrollAnimation } from '@/lib/useScrollAnimation'
 
 const FALLBACK_PRODUCTS = [
-  { id: 'longevity-mousse', slug: 'd-longevity-mousse', name: 'D-LONGEVITY Mousse',  vol: '150 ml', price: 0, was: null, badge: null,   stripe: '#83a886', tipo: 'limpiador', code: 'D-LON-150' },
-  { id: 'senolytic-serum',  slug: 'd-senolytic-serum',  name: 'D-Senolytic Serum',   vol: '20 ml',  price: 0, was: null, badge: 'best', stripe: '#c4876a', tipo: 'serum',    code: 'D-SEN-20'  },
-  { id: 'evenglow-serum',   slug: 'd-evenglow-serum',   name: 'D-EVENGLOW Serum',    vol: '20 ml',  price: 0, was: null, badge: 'new',  stripe: '#d49070', tipo: 'serum',    code: 'D-EVG-20'  },
-  { id: 'rescue-serum',     slug: 'd-rescue-serum',     name: 'D-RESCUE Serum',      vol: '20 ml',  price: 0, was: null, badge: null,   stripe: '#c4876a', tipo: 'serum',    code: 'D-RES-20'  },
-  { id: 'aox-oil',          slug: 'd-aox-oil',          name: 'D-AOX Oil',           vol: '20 ml',  price: 0, was: null, badge: 'lim',  stripe: '#2c472f', tipo: 'aceite',   code: 'D-AOX-20'  },
-  { id: 'purifying-mousse', slug: 'd-purifying-mousse', name: 'D-PURIFYING Mousse',  vol: '150 ml', price: 0, was: null, badge: null,   stripe: '#83a886', tipo: 'limpiador', code: 'D-PUR-150' },
+  { id: 'longevity-mousse', slug: 'd-longevity-mousse', name: 'D-LONGEVITY Mousse',  vol: '150 ml', price: 0, was: null, badge: null,   stripe: '#83a886', tipo: 'limpiador', code: 'D-LON-150', image_url: null },
+  { id: 'senolytic-serum',  slug: 'd-senolytic-serum',  name: 'D-Senolytic Serum',   vol: '20 ml',  price: 0, was: null, badge: 'best', stripe: '#c4876a', tipo: 'serum',    code: 'D-SEN-20',  image_url: null },
+  { id: 'evenglow-serum',   slug: 'd-evenglow-serum',   name: 'D-EVENGLOW Serum',    vol: '20 ml',  price: 0, was: null, badge: 'new',  stripe: '#d49070', tipo: 'serum',    code: 'D-EVG-20',  image_url: null },
+  { id: 'rescue-serum',     slug: 'd-rescue-serum',     name: 'D-RESCUE Serum',      vol: '20 ml',  price: 0, was: null, badge: null,   stripe: '#c4876a', tipo: 'serum',    code: 'D-RES-20',  image_url: null },
+  { id: 'aox-oil',          slug: 'd-aox-oil',          name: 'D-AOX Oil',           vol: '20 ml',  price: 0, was: null, badge: 'lim',  stripe: '#2c472f', tipo: 'aceite',   code: 'D-AOX-20',  image_url: null },
+  { id: 'purifying-mousse', slug: 'd-purifying-mousse', name: 'D-PURIFYING Mousse',  vol: '150 ml', price: 0, was: null, badge: null,   stripe: '#83a886', tipo: 'limpiador', code: 'D-PUR-150', image_url: null },
 ]
 
 type Product = {
@@ -27,6 +28,7 @@ type Product = {
   stripe: string
   tipo: string
   code: string
+  image_url: string | null
 }
 
 const TIPO_LABELS: Record<string, string> = {
@@ -122,7 +124,7 @@ export default function ProductsPreview() {
 
         const { data, error } = await supabase
           .from('products')
-          .select(`id, name, slug, volume_ml, product_variants (price_cents, compare_at_cents, is_default, active)`)
+          .select(`id, name, slug, volume_ml, image_url, product_variants (price_cents, compare_at_cents, is_default, active)`)
           .eq('active', true)
           .in('category_id', catIds)
           .order('featured', { ascending: false })
@@ -135,7 +137,7 @@ export default function ProductsPreview() {
         }
 
         const mapped: Product[] = (data as Array<{
-          id: string; name: string; slug: string; volume_ml: number | null
+          id: string; name: string; slug: string; volume_ml: number | null; image_url: string | null
           product_variants: Array<{ price_cents: number; compare_at_cents: number | null; is_default: boolean; active: boolean }>
         }>).map((p) => {
           const defaultVariant = p.product_variants?.find((v) => v.is_default && v.active)
@@ -151,6 +153,7 @@ export default function ProductsPreview() {
             price, was, badge: null,
             stripe: STRIPE_BY_TIPO[tipo] ?? '#83a886',
             tipo, code: p.slug.toUpperCase().slice(0, 10),
+            image_url: p.image_url ?? null,
           }
         })
 
@@ -223,14 +226,27 @@ export default function ProductsPreview() {
                   className="group flex flex-col rounded-2xl border border-cream-400 bg-cream-100 overflow-hidden transition-all duration-300 hover:border-brand-300 hover:shadow-lg hover:shadow-brand-100/40 hover:-translate-y-1 will-change-transform"
                   style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}
                 >
-                  {/* Product illustration */}
-                  <div className="relative flex items-center justify-center pt-8 pb-4 bg-cream-100">
+                  {/* Product image */}
+                  <div className="relative bg-cream-100" style={{ aspectRatio: '1/1' }}>
                     {p.badge && (
-                      <span className={`absolute top-3 left-3 px-2 py-0.5 rounded-full text-[10px] font-medium tracking-[0.06em] ${BADGE_CLASSES[p.badge] ?? 'bg-carbon-200 text-carbon-700'}`}>
+                      <span className={`absolute top-3 left-3 z-10 px-2 py-0.5 rounded-full text-[10px] font-medium tracking-[0.06em] ${BADGE_CLASSES[p.badge] ?? 'bg-carbon-200 text-carbon-700'}`}>
                         {BADGE_LABELS[p.badge] ?? p.badge}
                       </span>
                     )}
-                    <PackSVG id={p.id} vol={p.vol} stripe={p.stripe} name={p.name} code={p.code} />
+                    {p.image_url ? (
+                      <Image
+                        src={p.image_url}
+                        alt={p.name}
+                        fill
+                        className="object-contain p-5 group-hover:-translate-y-1 transition-transform duration-500"
+                        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 16vw"
+                        style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center">
+                        <PackSVG id={p.id} vol={p.vol} stripe={p.stripe} name={p.name} code={p.code} />
+                      </div>
+                    )}
                   </div>
 
                   {/* Info */}
