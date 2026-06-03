@@ -9,31 +9,33 @@ export default function Hero() {
   return (
     <section className="w-full overflow-hidden">
 
-      {/* ── DESKTOP ≥ lg: imagen full-width, texto encima a la izquierda ── */}
-      <div
-        className="hidden lg:flex items-center min-h-[520px]"
-        style={{
-          backgroundImage: `url(${HERO_DESKTOP})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center center',
-        }}
-      >
-        <div className="flex flex-col gap-6 px-[60px] py-[80px] text-ink max-w-[500px]">
-          <h1
-            className="font-cormorant font-[400] leading-[1.05] tracking-[-0.005em] text-ink m-0"
-            style={{ fontSize: 'clamp(40px, 4.6vw, 64px)' }}
-          >
-            Alquimia y<br />Longevidad
-          </h1>
-          <p className="text-[15px] text-ink-soft m-0">
-            Suplementación con ciencia.
-          </p>
-          <Link
-            href="/productos"
-            className="self-start inline-flex items-center justify-center px-[26px] py-3 text-[13px] tracking-[0.02em] border border-ink text-ink rounded-full bg-transparent hover:bg-ink hover:text-bg transition-all duration-300"
-          >
-            Comprar ahora
-          </Link>
+      {/* ── DESKTOP ≥ lg: imagen completa sin recorte, texto encima ── */}
+      <div className="hidden lg:block relative w-full">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={HERO_DESKTOP}
+          alt=""
+          className="w-full block"
+          style={{ height: 'auto' }}
+        />
+        <div className="absolute inset-0 flex items-end">
+          <div className="flex flex-col gap-6 px-[60px] pb-[80px] text-ink max-w-[500px]">
+            <h1
+              className="font-cormorant font-[400] leading-[1.05] tracking-[-0.005em] text-ink m-0"
+              style={{ fontSize: 'clamp(40px, 4.6vw, 64px)' }}
+            >
+              Alquimia y<br />Longevidad
+            </h1>
+            <p className="text-[15px] text-ink-soft m-0">
+              Suplementación con ciencia.
+            </p>
+            <Link
+              href="/productos"
+              className="self-start inline-flex items-center justify-center px-[26px] py-3 text-[13px] tracking-[0.02em] border border-ink text-ink rounded-full bg-transparent hover:bg-ink hover:text-bg transition-all duration-300"
+            >
+              Comprar ahora
+            </Link>
+          </div>
         </div>
       </div>
 

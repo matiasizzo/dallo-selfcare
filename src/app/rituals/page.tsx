@@ -19,12 +19,13 @@ const PHONE        = '+34 683 462 705'
 const phases = [
   {
     num: '01',
-    name: 'Shield',
-    role: 'Bio-protección',
+    tag: 'Shield',
+    title: 'Bio-Protección',
     body: 'El seguro de vida de tu piel contra el daño ambiental. Blindaje preventivo, análisis de precisión (luz de Wood), peelings, limpieza profunda, oxigenoterapia y nutricosmética clínica.',
-    cta: 'Reservar diagnóstico',
+    gradient: 'linear-gradient(160deg, #3a5e44 0%, #2a4a34 50%, #1e3828 100%)',
+    iconColor: 'rgba(255,255,255,0.55)',
     icon: (
-      <svg viewBox="0 0 64 64" width="52" height="52" fill="none" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" stroke="url(#rosegold)">
+      <svg viewBox="0 0 64 64" width="56" height="56" fill="none" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" stroke="rgba(255,255,255,0.55)">
         <path d="M32 6 L54 14 V30 C54 44 44 54 32 60 C20 54 10 44 10 30 V14 Z"/>
         <path d="M32 12 L48 18 V30 C48 41 40 49 32 54 C24 49 16 41 16 30 V18 Z"/>
         <path d="M32 22 V46 M22 32 L42 32"/>
@@ -35,12 +36,13 @@ const phases = [
   },
   {
     num: '02',
-    name: 'Repair',
-    role: 'Regeneración',
+    tag: 'Repair',
+    title: 'Regeneración',
     body: 'Restauramos la capacidad biológica de la piel para sanarse. Medicina regenerativa: células madre, PRP, bioestimuladores de colágeno, redensificación hialurónica y plan de nutrición y suplementación.',
-    cta: 'Ver tratamientos',
+    gradient: 'linear-gradient(160deg, #c49a7a 0%, #a87860 50%, #8a5e48 100%)',
+    iconColor: 'rgba(255,255,255,0.55)',
     icon: (
-      <svg viewBox="0 0 64 64" width="52" height="52" fill="none" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" stroke="url(#rosegold)">
+      <svg viewBox="0 0 64 64" width="56" height="56" fill="none" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" stroke="rgba(255,255,255,0.55)">
         <path d="M8 24 L16 44 H48 L56 24 L46 32 L38 16 L32 30 L26 16 L18 32 Z"/>
         <path d="M16 44 H48 V50 H16 Z"/>
         <circle cx="8" cy="24" r="2.2"/>
@@ -54,12 +56,13 @@ const phases = [
   },
   {
     num: '03',
-    name: 'Boost',
-    role: 'Optimización',
+    tag: 'Boost',
+    title: 'Optimización',
     body: 'Biohacking y máximo rendimiento celular. Terapias de precisión con exosomas, luz LED y fotobiomodulación, ozonoterapia, optimización de sueño y energía, mantenimiento mensual.',
-    cta: 'Programar sesión',
+    gradient: 'linear-gradient(160deg, #b88868 0%, #9a6e54 50%, #7e5440 100%)',
+    iconColor: 'rgba(255,255,255,0.55)',
     icon: (
-      <svg viewBox="0 0 64 64" width="52" height="52" fill="none" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" stroke="url(#rosegold)">
+      <svg viewBox="0 0 64 64" width="56" height="56" fill="none" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" stroke="rgba(255,255,255,0.55)">
         <path d="M36 4 L14 36 H28 L26 60 L50 26 H34 Z"/>
         <path d="M36 10 L20 34 H30 L28 52 L44 28 H34 Z"/>
       </svg>
@@ -67,12 +70,13 @@ const phases = [
   },
   {
     num: '04',
-    name: 'Reset · Soul',
-    role: 'Mente & equilibrio',
-    body: 'Armonía para una belleza consciente. Cortamos el cortisol (la hormona del estrés) y trabajamos el bienestar holístico en paz: rituales sensoriales, aromaterapia, piedras volcánicas y mindfulness estético.',
-    cta: 'Reservar ritual',
+    tag: 'Reset / Soul',
+    title: 'Equilibrio',
+    body: 'Armonía para una belleza consciente. Cortamos el cortisol (la hormona del estrés) y trabajamos el bienestar holístico: rituales sensoriales, aromaterapia, piedras volcánicas y mindfulness estético.',
+    gradient: 'linear-gradient(160deg, #1e3828 0%, #162c20 50%, #0e2018 100%)',
+    iconColor: 'rgba(255,255,255,0.55)',
     icon: (
-      <svg viewBox="0 0 64 64" width="52" height="52" fill="none" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" stroke="url(#rosegold)">
+      <svg viewBox="0 0 64 64" width="56" height="56" fill="none" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" stroke="rgba(255,255,255,0.55)">
         <circle cx="22" cy="32" r="14"/>
         <path d="M30 40 L38 48"/>
         <path d="M44 18 C50 22 52 28 50 34 C48 38 44 40 40 38 C42 32 42 24 44 18 Z"/>
@@ -90,18 +94,6 @@ export default function RitualsPage() {
       <Navbar />
 
       <main className="min-h-screen bg-cream">
-
-        {/* SVG gradient defs (rose-gold for phase icons) */}
-        <svg width="0" height="0" style={{ position: 'absolute' }} aria-hidden="true">
-          <defs>
-            <linearGradient id="rosegold" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stopColor="#fce6cf"/>
-              <stop offset="35%" stopColor="#e8c4a4"/>
-              <stop offset="60%" stopColor="#c79477"/>
-              <stop offset="100%" stopColor="#8a5a3f"/>
-            </linearGradient>
-          </defs>
-        </svg>
 
         {/* ── Hero ── */}
         <section
@@ -143,181 +135,149 @@ export default function RitualsPage() {
           </div>
         </section>
 
-        {/* ── Las 4 fases ── */}
-        <section className="px-8 py-20 border-b border-[#e8dccb]" style={{ background: '#f5efe6' }}>
+        {/* ── Los 4 pilares (sección única unificada) ── */}
+        <section className="px-6 py-16 md:py-20 border-b border-[#e8dccb]" style={{ background: '#f2ece3' }}>
           <div className="max-w-[1600px] mx-auto">
 
-            {/* Section header */}
-            <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14">
+            {/* Header row */}
+            <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mb-10">
               <div>
                 <span
                   className="block text-[10px] tracking-[0.3em] uppercase mb-4"
-                  style={{ color: '#a07a5a', opacity: 0.8 }}
+                  style={{ color: QUEIVI_GREEN, opacity: 0.7 }}
                 >
-                  — Las 4 fases · Cuidas de la piel QUEVI
+                  — Protocolos clínicos
                 </span>
                 <h2
-                  className="font-cormorant font-[300] text-cocoa-900 m-0 leading-[1.1]"
-                  style={{ fontSize: 'clamp(34px, 4vw, 58px)' }}
+                  className="font-cormorant font-[300] text-cocoa-900 m-0 leading-[1.05]"
+                  style={{ fontSize: 'clamp(30px, 3.5vw, 52px)' }}
                 >
-                  Cuatro <em>fases</em>.<br />Una piel.
+                  Los 4 <em>pilares</em> del tratamiento.
                 </h2>
               </div>
-              <p
-                className="text-[#5a4a3d] leading-[1.7] max-w-[400px] m-0"
-                style={{ fontSize: 'clamp(14px, 1.2vw, 16px)' }}
+              <a
+                href={WHATSAPP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="self-start sm:self-end inline-flex items-center gap-2 px-6 py-3 text-[12px] tracking-[0.06em] uppercase font-[500] rounded-full transition-all duration-300 hover:opacity-90 whitespace-nowrap"
+                style={{ background: QUEIVI_GREEN, color: '#f5efe6' }}
               >
-                Un protocolo construido en consulta por el Dr. Dall&apos;Ó.
-                Cada fase tiene su lugar y su momento — juntas componen el cuidado completo.
-              </p>
+                Reservar diagnóstico
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M5 12h14M13 6l6 6-6 6"/>
+                </svg>
+              </a>
             </div>
 
-            {/* 2×2 grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-5">
+            {/* 4 cards in a row */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
               {phases.map((phase) => (
                 <article
                   key={phase.num}
-                  className="relative overflow-hidden rounded-xl p-8 lg:p-10 flex flex-col gap-6"
-                  style={{
-                    background: 'linear-gradient(145deg, #2e1a0e 0%, #3d2411 50%, #2a1a0a 100%)',
-                  }}
+                  className="relative overflow-hidden rounded-xl flex flex-col"
+                  style={{ minHeight: 480 }}
                 >
-                  {/* Grain overlay */}
+                  {/* Gradient area with icon */}
                   <div
-                    className="absolute inset-0 pointer-events-none opacity-[0.06]"
-                    style={{
-                      backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E")`,
-                      backgroundSize: '200px 200px',
-                    }}
-                  />
-
-                  {/* Number */}
-                  <span
-                    className="font-cormorant italic"
-                    style={{ fontSize: 13, color: '#c79477', opacity: 0.7, letterSpacing: '0.04em' }}
+                    className="relative flex items-center justify-center"
+                    style={{ background: phase.gradient, flex: '1 1 60%', minHeight: 260 }}
                   >
-                    {phase.num} — Phase
-                  </span>
-
-                  {/* Head: text + icon */}
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <h3
-                        className="font-cormorant font-[400] m-0 leading-none mb-1"
-                        style={{ fontSize: 'clamp(28px, 3vw, 38px)', color: '#f2e8de' }}
-                      >
-                        {phase.name}
-                      </h3>
-                      <span
-                        className="font-cormorant italic"
-                        style={{ fontSize: 'clamp(14px, 1.3vw, 17px)', color: '#c79477' }}
-                      >
-                        {phase.role}
-                      </span>
-                    </div>
-                    <div className="flex-shrink-0 mt-1">
+                    {/* Number top-left */}
+                    <span
+                      className="absolute top-5 left-5 font-cormorant italic"
+                      style={{ fontSize: 13, color: 'rgba(255,255,255,0.45)', letterSpacing: '0.04em' }}
+                    >
+                      {phase.num}
+                    </span>
+                    {/* Icon centered */}
+                    <div className="opacity-70">
                       {phase.icon}
                     </div>
                   </div>
 
-                  {/* Divider */}
-                  <div className="h-px" style={{ background: 'linear-gradient(90deg, #c7947760, transparent)' }} />
-
-                  {/* Body */}
-                  <p
-                    className="m-0 leading-[1.75] flex-1"
-                    style={{ fontSize: 'clamp(13px, 1.1vw, 15px)', color: '#c4b0a0' }}
+                  {/* Text area */}
+                  <div
+                    className="flex flex-col gap-3 p-6"
+                    style={{ background: '#1a1410', flex: '0 0 auto' }}
                   >
-                    {phase.body}
-                  </p>
-
-                  {/* CTA */}
-                  <a
-                    href={WHATSAPP_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 self-start text-[12px] tracking-[0.1em] uppercase transition-opacity duration-200 hover:opacity-70"
-                    style={{ color: '#e8c4a4', borderBottom: '1px solid #c7947780', paddingBottom: 2 }}
-                  >
-                    {phase.cta}
-                    <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M5 12h14M13 6l6 6-6 6"/>
-                    </svg>
-                  </a>
+                    <div>
+                      <span
+                        className="block text-[10px] tracking-[0.22em] uppercase mb-2"
+                        style={{ color: 'rgba(255,255,255,0.4)' }}
+                      >
+                        {phase.tag}
+                      </span>
+                      <h3
+                        className="font-cormorant font-[400] m-0 leading-tight"
+                        style={{ fontSize: 'clamp(22px, 2vw, 28px)', color: '#f0e8e0' }}
+                      >
+                        {phase.title}
+                      </h3>
+                    </div>
+                    <p
+                      className="m-0 leading-[1.7]"
+                      style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)' }}
+                    >
+                      {phase.body}
+                    </p>
+                    <a
+                      href={WHATSAPP_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 text-[11px] tracking-[0.12em] uppercase transition-opacity duration-200 hover:opacity-60 mt-1 w-fit"
+                      style={{ color: 'rgba(255,255,255,0.55)', borderBottom: '1px solid rgba(255,255,255,0.2)', paddingBottom: 2 }}
+                    >
+                      Reservar
+                      <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M5 12h14M13 6l6 6-6 6"/>
+                      </svg>
+                    </a>
+                  </div>
                 </article>
               ))}
             </div>
 
-            {/* QUEVI watermark */}
-            <div className="mt-12 flex items-center gap-4">
-              <div className="h-px flex-1" style={{ background: '#e0d3c4' }} />
-              <div className="text-center">
-                <span
-                  className="block text-[10px] tracking-[0.25em] uppercase mb-1"
-                  style={{ color: '#a07a5a', opacity: 0.6 }}
-                >
-                  — Las 4 fases · Cuidas de la piel
-                </span>
-                <span
-                  className="font-cormorant italic"
-                  style={{ fontSize: 28, color: '#a07a5a', opacity: 0.5 }}
-                >
-                  QUEVI
-                </span>
-              </div>
-              <div className="h-px flex-1" style={{ background: '#e0d3c4' }} />
+            {/* Quote strip */}
+            <div className="mt-16 text-center max-w-[820px] mx-auto">
+              <blockquote
+                className="font-cormorant font-[300] italic text-cocoa-900 m-0 leading-[1.3]"
+                style={{ fontSize: 'clamp(20px, 2.2vw, 30px)' }}
+              >
+                &ldquo;La piel no se trata, se acompaña. Cada gesto es una decisión clínica,
+                cada ritual es una conversación con tu biología.&rdquo;
+              </blockquote>
+              <p
+                className="mt-4 text-[11px] tracking-[0.22em] uppercase"
+                style={{ color: QUEIVI_GREEN, opacity: 0.65 }}
+              >
+                Dra. Quevi × Dr. Dall&apos;Ó — Fundadores
+              </p>
             </div>
           </div>
         </section>
 
-        {/* ── Filosofía ── */}
-        <section className="px-8 py-20 border-b border-[#e8dccb]">
-          <div className="max-w-[1600px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 lg:gap-24 items-start">
+        {/* ── Ritual firma ── */}
+        <section className="px-6 py-16 md:py-20 border-b border-[#e8dccb]">
+          <div className="max-w-[1600px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 lg:gap-24 items-center">
 
             <div>
               <span
                 className="block text-[10px] tracking-[0.28em] uppercase mb-6"
                 style={{ color: QUEIVI_GREEN, opacity: 0.75 }}
               >
-                — Nuestra filosofía
-              </span>
-              <blockquote
-                className="font-cormorant font-[300] italic text-cocoa-900 m-0 mb-8 leading-[1.4]"
-                style={{ fontSize: 'clamp(20px, 2vw, 26px)' }}
-              >
-                &ldquo;La piel no se trata, se acompaña. Cada gesto es una decisión clínica,
-                cada ritual es una conversación con tu biología.&rdquo;
-              </blockquote>
-              <p className="text-[15px] text-[#5a4a3d] leading-[1.75] m-0">
-                Trabajamos en la intersección entre la medicina estética de precisión y el bienestar
-                sensorial. Diagnóstico clínico, tecnología regenerativa y un cierre íntimo en sala
-                — los rituales QUEVI nacen para acompañar el ciclo completo de cuidado.
-              </p>
-            </div>
-
-            {/* Ritual firma card */}
-            <div
-              className="rounded-2xl p-8 md:p-10"
-              style={{ background: 'linear-gradient(145deg, #f0ebe2 0%, #e4d8c8 100%)', border: '1px solid #ddd1bd' }}
-            >
-              <span
-                className="block text-[10px] tracking-[0.3em] uppercase mb-4"
-                style={{ color: QUEIVI_GREEN }}
-              >
                 — Ritual firma
               </span>
-              <h3
-                className="font-cormorant font-[400] text-cocoa-900 m-0 mb-2 leading-tight"
-                style={{ fontSize: 'clamp(22px, 2.4vw, 30px)' }}
+              <h2
+                className="font-cormorant font-[300] text-cocoa-900 m-0 mb-6 leading-tight"
+                style={{ fontSize: 'clamp(28px, 3vw, 46px)' }}
               >
                 QUEVI <em>Pro-Experience</em><br />Facial &amp; corporal.
-              </h3>
-              <div className="h-px my-6" style={{ background: '#ddd1bd' }} />
-              <p className="text-[14px] text-[#5a4a3d] leading-[1.7] m-0 mb-4">
+              </h2>
+              <p className="text-[15px] text-[#5a4a3d] leading-[1.75] m-0 mb-3">
                 90 minutos de sinergia: diagnóstico, reparación bioactiva y cierre sensorial.
                 Una experiencia diseñada por el equipo clínico y los protocolos QUEVI.
               </p>
-              <p className="text-[13px] text-[#7a6a5a] leading-[1.65] m-0 mb-8">
+              <p className="text-[14px] text-[#7a6a5a] leading-[1.65] m-0 mb-10">
                 Combina las cuatro fases en una sola visita — análisis con luz de Wood,
                 peeling de precisión, fotobiomodulación LED, masaje craneal con aromaterapia
                 y piedras volcánicas.
@@ -327,7 +287,7 @@ export default function RitualsPage() {
                   href={WHATSAPP_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-7 py-3 text-[12px] tracking-[0.08em] uppercase font-[500] rounded-full transition-all duration-300 hover:opacity-90 active:scale-[0.97]"
+                  className="inline-flex items-center gap-2 px-7 py-3 text-[12px] tracking-[0.08em] uppercase font-[500] rounded-full transition-all duration-300 hover:opacity-90"
                   style={{ background: QUEIVI_GREEN, color: '#f5efe6' }}
                 >
                   Reservar ahora
@@ -346,11 +306,29 @@ export default function RitualsPage() {
                 </a>
               </div>
             </div>
+
+            {/* Decorative panel */}
+            <div
+              className="rounded-2xl overflow-hidden"
+              style={{ background: 'linear-gradient(145deg, #1e3828 0%, #2a4a35 100%)', minHeight: 380, padding: '48px', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}
+            >
+              <span
+                className="font-cormorant italic"
+                style={{ fontSize: 'clamp(48px, 5vw, 72px)', color: 'rgba(255,255,255,0.08)', lineHeight: 1, display: 'block', marginBottom: 32 }}
+              >
+                QUEVI
+              </span>
+              <div className="h-px mb-6" style={{ background: 'rgba(255,255,255,0.12)' }} />
+              <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.5)', lineHeight: 1.7, margin: 0 }}>
+                Clínica de medicina estética de precisión.<br />
+                Estepona, Málaga · Por cita previa.
+              </p>
+            </div>
           </div>
         </section>
 
         {/* ── Dirección + Mapa ── */}
-        <section className="px-8 py-20">
+        <section className="px-6 py-16 md:py-20">
           <div className="max-w-[1600px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20 items-start">
 
             <div>
@@ -364,7 +342,7 @@ export default function RitualsPage() {
                 className="font-cormorant font-[300] text-cocoa-900 m-0 mb-8 leading-tight"
                 style={{ fontSize: 'clamp(28px, 3vw, 44px)' }}
               >
-                Clínica <em>Dall&apos;Ó</em><br />Barcelona.
+                QUEIVI<br /><em>Wellness Clinic</em>
               </h2>
 
               <address className="not-italic mb-8 space-y-[6px]">
