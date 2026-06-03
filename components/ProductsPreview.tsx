@@ -105,14 +105,27 @@ export default function ProductsPreview() {
         return
       }
       try {
+        // Get category IDs for skin lines
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const { data: cats, error: catsErr } = await (supabase as any)
+          .from('categories')
+          .select('id, slug')
+          .in('slug', ['limpiadores', 'serums', 'aceites'])
+
+        if (catsErr || !cats || cats.length === 0) {
+          setProducts(FALLBACK_PRODUCTS)
+          setLoading(false)
+          return
+        }
+
+        const catIds = (cats as Array<{ id: string; slug: string }>).map((c) => c.id)
+
         const { data, error } = await supabase
           .from('products')
-          .select(`
-            id, name, slug, volume_ml,
-            category:category_id (slug),
-            product_variants (price_cents, compare_at_cents, is_default, active)
-          `)
+          .select(`id, name, slug, volume_ml, product_variants (price_cents, compare_at_cents, is_default, active)`)
           .eq('active', true)
+          .in('category_id', catIds)
+          .order('featured', { ascending: false })
           .limit(6)
 
         if (error || !data) {
@@ -123,10 +136,10 @@ export default function ProductsPreview() {
 
         const mapped: Product[] = (data as Array<{
           id: string; name: string; slug: string; volume_ml: number | null
-          category: { slug: string } | null
           product_variants: Array<{ price_cents: number; compare_at_cents: number | null; is_default: boolean; active: boolean }>
         }>).map((p) => {
           const defaultVariant = p.product_variants?.find((v) => v.is_default && v.active)
+            ?? p.product_variants?.find((v) => v.active)
           const price = defaultVariant ? defaultVariant.price_cents / 100 : 0
           const was = defaultVariant?.compare_at_cents ? defaultVariant.compare_at_cents / 100 : null
           const tipo = p.slug.includes('mousse') || p.slug.includes('limpi') ? 'limpiador'
