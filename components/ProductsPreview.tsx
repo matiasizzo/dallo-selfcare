@@ -7,6 +7,7 @@ import { motion } from 'framer-motion'
 import { supabase } from '@/lib/supabase'
 import { fadeUp, staggerContainer } from '@/lib/animations'
 import { useScrollAnimation } from '@/lib/useScrollAnimation'
+import { useCart } from '@/lib/cartContext'
 
 const FALLBACK_PRODUCTS = [
   { id: 'longevity-mousse', slug: 'd-longevity-mousse', name: 'D-LONGEVITY Mousse',  vol: '150 ml', price: 0, was: null, badge: null,   stripe: '#83a886', tipo: 'limpiador', code: 'D-LON-150', image_url: null },
@@ -167,6 +168,7 @@ export default function ProductsPreview() {
     fetchProducts()
   }, [])
 
+  const { addItem } = useCart()
   const displayProducts = products.slice(0, 6)
 
   return (
@@ -220,10 +222,9 @@ export default function ProductsPreview() {
             className="grid gap-[14px] grid-cols-2 sm:grid-cols-3 lg:grid-cols-6"
           >
             {displayProducts.map((p) => (
-              <motion.div key={p.id} variants={fadeUp}>
-                <Link
-                  href={`/shop#${p.slug}`}
-                  className="group flex flex-col rounded-2xl border border-cream-400 bg-cream-100 overflow-hidden transition-all duration-300 hover:border-brand-300 hover:shadow-lg hover:shadow-brand-100/40 hover:-translate-y-1 will-change-transform"
+              <motion.div key={p.id} variants={fadeUp} className="group/card">
+                <div
+                  className="flex flex-col rounded-2xl border border-cream-400 bg-cream-100 overflow-hidden transition-all duration-300 hover:border-brand-300 hover:shadow-lg hover:shadow-brand-100/40 hover:-translate-y-1 will-change-transform"
                   style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}
                 >
                   {/* Product image */}
@@ -250,7 +251,7 @@ export default function ProductsPreview() {
                   </div>
 
                   {/* Info */}
-                  <div className="flex flex-col gap-1 px-4 pb-5 pt-2">
+                  <div className="flex flex-col gap-1 px-4 pb-4 pt-2">
                     <span className="text-[10px] tracking-[0.18em] uppercase font-medium" style={{ color: p.stripe }}>
                       {TIPO_LABELS[p.tipo] ?? p.tipo}
                     </span>
@@ -267,8 +268,15 @@ export default function ProductsPreview() {
                         </span>
                       )}
                     </div>
+                    <button
+                      onClick={() => addItem({ id: p.id, slug: p.slug, name: p.name, price: p.price, vol: p.vol, image_url: p.image_url, stripe: p.stripe })}
+                      className="mt-2 w-full py-2 rounded-full border border-cream-400 text-[11px] font-medium tracking-[0.04em] text-carbon-700 bg-transparent transition-all duration-200 hover:bg-brand-600 hover:text-cream-50 hover:border-brand-600"
+                      style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}
+                    >
+                      + Añadir
+                    </button>
                   </div>
-                </Link>
+                </div>
               </motion.div>
             ))}
           </motion.div>

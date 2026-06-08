@@ -2,13 +2,14 @@
 
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X } from 'lucide-react'
 import Link from 'next/link'
 import QueviLogo from '@/components/QueviLogo'
+import { useCart } from '@/lib/cartContext'
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const { count, openCart } = useCart()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10)
@@ -48,21 +49,40 @@ export default function Navbar() {
           }`}
           style={{ gridTemplateColumns: '1fr auto 1fr', transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}
         >
-          {/* Left nav links — desktop only */}
-          <nav className="hidden md:flex gap-[30px] text-[13px] items-center">
-            <a href="#treatments" className="relative py-1.5 text-carbon-700 hover:text-brand-600 transition-colors duration-200 tracking-[0.01em] will-change-[color]" style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}>
-              Tratamientos
-            </a>
-            <Link href="/shop" className="relative py-1.5 text-carbon-700 hover:text-brand-600 transition-colors duration-200 tracking-[0.01em] will-change-[color]" style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}>
-              Tienda
-            </Link>
-            <a href="#booking" className="inline-flex items-center px-5 py-2 rounded-full bg-brand-600 text-cream-50 font-medium tracking-[0.02em] transition-all duration-200 hover:bg-brand-700 hover:-translate-y-0.5 active:scale-[0.97] will-change-transform" style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}>
-              Reservar cita
-            </a>
-          </nav>
+          {/* Left — hamburger (mobile) / nav links (desktop) */}
+          <div className="flex items-center">
+            {/* Mobile hamburger */}
+            <button
+              onClick={() => setMenuOpen(v => !v)}
+              className="md:hidden p-2 -ml-2 rounded-lg text-carbon-700 hover:bg-cream-300 transition-colors"
+              aria-label="Toggle menu"
+            >
+              <AnimatePresence mode="wait" initial={false}>
+                {menuOpen ? (
+                  <motion.svg key="x" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.15 }} width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M6 18 18 6M6 6l12 12" />
+                  </motion.svg>
+                ) : (
+                  <motion.svg key="burger" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.15 }} width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M4 6h16M4 12h16M4 18h16" />
+                  </motion.svg>
+                )}
+              </AnimatePresence>
+            </button>
 
-          {/* Mobile: empty left spacer */}
-          <div className="md:hidden" />
+            {/* Desktop nav links */}
+            <nav className="hidden md:flex gap-[30px] text-[13px] items-center">
+              <a href="#treatments" className="py-1.5 text-carbon-700 hover:text-brand-600 transition-colors duration-200 tracking-[0.01em]" style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}>
+                Tratamientos
+              </a>
+              <Link href="/shop" className="py-1.5 text-carbon-700 hover:text-brand-600 transition-colors duration-200 tracking-[0.01em]" style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}>
+                Tienda
+              </Link>
+              <a href="#booking" className="inline-flex items-center px-5 py-2 rounded-full bg-brand-600 text-cream-50 font-medium tracking-[0.02em] transition-all duration-200 hover:bg-brand-700 hover:-translate-y-0.5 active:scale-[0.97] will-change-transform" style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}>
+                Reservar cita
+              </a>
+            </nav>
+          </div>
 
           {/* Center logo */}
           <Link href="/" className="inline-flex items-center justify-center">
@@ -74,53 +94,60 @@ export default function Navbar() {
             />
           </Link>
 
-          {/* Right icons — desktop */}
-          <div className="hidden md:flex items-center gap-[22px] justify-end text-[13px]">
-            <button aria-label="Buscar" className="group">
+          {/* Right icons */}
+          <div className="flex items-center gap-4 justify-end">
+            {/* Search — desktop only */}
+            <button aria-label="Buscar" className="hidden md:flex group">
               <svg className="w-[18px] h-[18px] group-hover:[stroke:#355539] transition-colors" viewBox="0 0 24 24" fill="none" stroke="#1e1e1e" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="11" cy="11" r="7" />
                 <path d="m20 20-3.5-3.5" />
               </svg>
             </button>
-            <button aria-label="Cuenta" className="group">
+            {/* Account — desktop only */}
+            <button aria-label="Cuenta" className="hidden md:flex group">
               <svg className="w-[18px] h-[18px] group-hover:[stroke:#355539] transition-colors" viewBox="0 0 24 24" fill="none" stroke="#1e1e1e" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="12" cy="8" r="4" />
                 <path d="M4 21c0-4 4-7 8-7s8 3 8 7" />
               </svg>
             </button>
-            <Link href="/shop" className="relative w-[30px] h-[30px] inline-flex items-center justify-center" aria-label="Bolsa">
-              <svg className="w-[18px] h-[18px]" viewBox="0 0 24 24" fill="none" stroke="#1e1e1e" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round">
+            {/* Cart — always visible */}
+            <button
+              onClick={openCart}
+              aria-label="Bolsa de compra"
+              className="relative group p-1"
+            >
+              <svg className="w-[20px] h-[20px] group-hover:[stroke:#355539] transition-colors" viewBox="0 0 24 24" fill="none" stroke="#1e1e1e" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M6 7h12l-1 13H7L6 7z" />
                 <path d="M9 7a3 3 0 0 1 6 0" />
               </svg>
-              <span className="absolute -top-1 -right-2 bg-terra-500 text-white rounded-full text-[9px] font-semibold min-w-[16px] h-4 px-1 inline-flex items-center justify-center">
-                3
-              </span>
-            </Link>
-          </div>
-
-          {/* Mobile: hamburger right */}
-          <div className="flex md:hidden justify-end">
-            <button
-              onClick={() => setMenuOpen(v => !v)}
-              className="p-2 rounded-lg text-carbon-700 hover:bg-cream-300 transition-colors"
-              aria-label="Toggle menu"
-            >
-              {menuOpen ? <X size={22} /> : <Menu size={22} />}
+              <AnimatePresence>
+                {count > 0 && (
+                  <motion.span
+                    key="badge"
+                    initial={{ scale: 0, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0, opacity: 0 }}
+                    transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+                    className="absolute -top-1 -right-1 bg-brand-600 text-cream-50 rounded-full text-[9px] font-semibold min-w-[16px] h-4 px-1 inline-flex items-center justify-center"
+                  >
+                    {count > 9 ? '9+' : count}
+                  </motion.span>
+                )}
+              </AnimatePresence>
             </button>
           </div>
         </div>
       </header>
 
-      {/* Mobile menu — slides down below sticky header */}
+      {/* Mobile menu */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div
             key="mobile-menu"
-            initial={{ opacity: 0, y: -12 }}
+            initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            transition={{ duration: 0.22 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
             className="sticky top-0 z-20 backdrop-blur-md shadow-xl border-b border-cream-400 md:hidden"
             style={{ background: 'rgba(245,242,236,0.98)' }}
           >

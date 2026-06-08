@@ -8,6 +8,7 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { supabase } from '@/lib/supabase'
 import { TREATMENTS } from '@/content'
+import { useCart } from '@/lib/cartContext'
 
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
@@ -163,6 +164,7 @@ function ProductosTab() {
   const [loading, setLoading] = useState(true)
   const [activeFormat, setActiveFormat] = useState<string>('')
   const [activeSort, setActiveSort] = useState<string>('featured')
+  const { addItem } = useCart()
 
   useEffect(() => {
     async function fetchProducts() {
@@ -390,6 +392,10 @@ function ProductosTab() {
                   )}
                 </div>
                 <button
+                  onClick={(e) => {
+                    e.preventDefault()
+                    addItem({ id: p.id, slug: p.slug, name: p.name, price: p.price, vol: p.vol, image_url: p.image_url, stripe: p.stripe })
+                  }}
                   className="absolute bottom-4 left-4 right-4 bg-cream-100 text-carbon-900 border border-cream-400 rounded-full py-3 px-[18px] text-[12px] font-medium tracking-[0.04em] flex items-center justify-center gap-2 opacity-0 translate-y-[10px] group-hover/card:opacity-100 group-hover/card:translate-y-0 transition-all duration-[350ms] hover:bg-brand-600 hover:text-cream-100 hover:border-brand-600 will-change-transform"
                   style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}
                 >
