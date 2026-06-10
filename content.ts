@@ -313,6 +313,7 @@ export const RITUALES = [
     description:
       'Intervención biológica para ayudar a prevenir el daño del exposoma mediante microneedling, exosomas y sellado vibracional infrarrojo.',
     duration: '60–90 minutos',
+    priceEur: 290,
     results: [
       'Poros visiblemente refinados y superficie cutánea suavizada',
       'Brillo "desde el interior", libre de signos de fatiga',
@@ -340,6 +341,7 @@ export const RITUALES = [
     description:
       'Tratamos el cuerpo no solo como forma, sino como un sistema biológico que necesita detoxificación y firmeza estructural.',
     duration: '60–90 minutos',
+    priceEur: 320,
     results: [
       'Silueta armonizada y reducción de retención de líquidos',
       'Piel corporal elástica y rejuvenecida',
@@ -367,6 +369,7 @@ export const RITUALES = [
     description:
       'Sinergia de aceites clínicos y masajes neuro-sedantes para auxiliar en el control de la inflamación del cuerpo.',
     duration: '60–90 minutos',
+    priceEur: 260,
     results: [
       'Paz mental profunda',
       'Piel intensamente nutrida, calmada y libre de rojeces',
@@ -394,6 +397,7 @@ export const RITUALES = [
     description:
       'Diseñado para liberar al cuerpo de tensiones profundas y contracturas con activos como Árnica e Hipérico.',
     duration: '60 minutos',
+    priceEur: 250,
     price: '250 € – 380 €',
     results: [
       'Alivio inmediato del dolor muscular',

@@ -75,6 +75,9 @@ export default function Navbar() {
               <a href="#treatments" className="py-1.5 text-carbon-700 hover:text-brand-600 transition-colors duration-200 tracking-[0.01em]" style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}>
                 Tratamientos
               </a>
+              <a href="#rituales" className="py-1.5 text-carbon-700 hover:text-brand-600 transition-colors duration-200 tracking-[0.01em]" style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}>
+                Rituales
+              </a>
               <Link href="/shop" className="py-1.5 text-carbon-700 hover:text-brand-600 transition-colors duration-200 tracking-[0.01em]" style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}>
                 Tienda
               </Link>
@@ -154,6 +157,9 @@ export default function Navbar() {
             <nav className="px-4 py-5 flex flex-col gap-1">
               <a href="#treatments" onClick={() => setMenuOpen(false)} className="px-4 py-3.5 text-base font-medium text-carbon-700 hover:text-brand-600 hover:bg-cream-300 rounded-xl transition-colors">
                 Tratamientos
+              </a>
+              <a href="#rituales" onClick={() => setMenuOpen(false)} className="px-4 py-3.5 text-base font-medium text-carbon-700 hover:text-brand-600 hover:bg-cream-300 rounded-xl transition-colors">
+                Rituales
               </a>
               <Link href="/shop" onClick={() => setMenuOpen(false)} className="px-4 py-3.5 text-base font-medium text-carbon-700 hover:text-brand-600 hover:bg-cream-300 rounded-xl transition-colors">
                 Tienda

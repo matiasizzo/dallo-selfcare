@@ -6,10 +6,12 @@ import { ChevronDown, Clock, Sparkles } from 'lucide-react'
 import { RITUALES, SELLO_DALLO } from '@/content'
 import { fadeUp, staggerContainer, scaleIn } from '@/lib/animations'
 import { useScrollAnimation } from '@/lib/useScrollAnimation'
+import { useCart } from '@/lib/cartContext'
 
 export default function Rituales() {
   const { ref, isInView } = useScrollAnimation()
   const [openId, setOpenId] = useState<string | null>(null)
+  const { addItem } = useCart()
 
   return (
     <section id="rituales" className="py-28 bg-cream-300 overflow-hidden">
@@ -39,6 +41,9 @@ export default function Rituales() {
           <motion.p variants={fadeUp} className="text-carbon-500 text-lg max-w-2xl mx-auto">
             Experiencias de 60 a 90 minutos que combinan la pureza molecular de la línea
             Dall'O Skin con tecnologías de entrega transdérmica para cuidar tu piel y tu cuerpo desde el interior.
+          </motion.p>
+          <motion.p variants={fadeUp} className="text-brand-600 text-sm font-medium mt-3">
+            Cómpralos online y canjéalos en clínica — sin cita previa ni seña.
           </motion.p>
         </motion.div>
 
@@ -82,12 +87,8 @@ export default function Rituales() {
                       <div className="flex items-center gap-2 mt-2 text-carbon-400 text-xs">
                         <Clock size={12} />
                         <span>{ritual.duration}</span>
-                        {ritual.price && (
-                          <>
-                            <span className="text-cream-500">·</span>
-                            <span className="text-terra-600 font-medium">{ritual.price}</span>
-                          </>
-                        )}
+                        <span className="text-cream-500">·</span>
+                        <span className="text-terra-600 font-medium">{ritual.priceEur} €</span>
                       </div>
                     </div>
 
@@ -149,16 +150,24 @@ export default function Rituales() {
                           </ol>
                         </div>
 
-                        <a
-                          href="#booking"
-                          className="group inline-flex items-center justify-center gap-2 w-full py-3 bg-brand-600 hover:bg-brand-700 text-cream-50 text-sm font-medium rounded-full transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.97] will-change-transform"
+                        <button
+                          onClick={() => addItem({
+                            id: `ritual-${ritual.id}`,
+                            slug: ritual.id,
+                            name: ritual.name,
+                            price: ritual.priceEur,
+                            vol: ritual.duration,
+                            image_url: null,
+                            stripe: '#355539',
+                          })}
+                          className="group inline-flex items-center justify-center gap-2 w-full py-3 bg-brand-600 hover:bg-brand-700 text-cream-50 text-sm font-medium rounded-full transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.97] will-change-transform cursor-pointer"
                           style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}
                         >
-                          Reservar este ritual
+                          Añadir al carrito · {ritual.priceEur} €
                           <svg className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
+                            <path d="M6 7h12l-1 13H7L6 7z" /><path d="M9 7a3 3 0 0 1 6 0" />
                           </svg>
-                        </a>
+                        </button>
                       </div>
                     </motion.div>
                   )}
