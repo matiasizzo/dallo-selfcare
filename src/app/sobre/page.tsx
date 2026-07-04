@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import AnnouncementBar from '@/components/AnnouncementBar'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import Link from 'next/link'
@@ -13,7 +12,6 @@ export const metadata: Metadata = {
 export default function SobrePage() {
   return (
     <>
-      <AnnouncementBar />
       <Navbar />
       <main className="bg-cream">
 

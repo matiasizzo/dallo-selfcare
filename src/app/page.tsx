@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import AnnouncementBar from '@/components/AnnouncementBar'
 import Navbar from '@/components/Navbar'
 import Hero from '@/components/Hero'
 import ToneStrip from '@/components/ToneStrip'
@@ -36,7 +35,6 @@ export default async function HomePage() {
 
   return (
     <>
-      <AnnouncementBar />
       <Navbar />
       <main>
         <Hero />

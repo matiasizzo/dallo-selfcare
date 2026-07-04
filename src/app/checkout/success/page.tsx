@@ -3,7 +3,6 @@
 import { useEffect } from 'react'
 import Link from 'next/link'
 import { useCart } from '@/store/cart'
-import AnnouncementBar from '@/components/AnnouncementBar'
 import Navbar from '@/components/Navbar'
 
 export default function CheckoutSuccessPage() {
@@ -15,7 +14,6 @@ export default function CheckoutSuccessPage() {
 
   return (
     <>
-      <AnnouncementBar />
       <Navbar />
       <main className="min-h-screen bg-white flex items-center justify-center px-6">
         <div className="max-w-md w-full text-center">

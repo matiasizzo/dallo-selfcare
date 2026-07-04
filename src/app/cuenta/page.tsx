@@ -1,6 +1,5 @@
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
-import AnnouncementBar from '@/components/AnnouncementBar'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { createSupabaseServerClient } from '@/lib/supabase-server'
@@ -21,7 +20,6 @@ export default async function AccountPage() {
 
   return (
     <>
-      <AnnouncementBar />
       <Navbar />
       <main className="min-h-screen bg-cream">
         <div className="max-w-screen-xl mx-auto px-6 py-16">

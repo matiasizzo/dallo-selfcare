@@ -1,7 +1,6 @@
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import type { Metadata } from 'next'
-import AnnouncementBar from '@/components/AnnouncementBar'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import { createSupabaseServerClient } from '@/lib/supabase-server'
@@ -70,7 +69,6 @@ export default async function OrdersPage() {
 
   return (
     <>
-      <AnnouncementBar />
       <Navbar />
       <main className="min-h-screen bg-cream">
         <div className="max-w-screen-xl mx-auto px-8 pt-20 pb-6 border-b border-sand-300">
