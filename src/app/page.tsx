@@ -1,7 +1,6 @@
 export const dynamic = 'force-dynamic'
 
 import type { Metadata } from 'next'
-import AnnouncementBar from '@/components/AnnouncementBar'
 import Navbar from '@/components/Navbar'
 import Hero from '@/components/Hero'
 import BrandManifesto from '@/components/BrandManifesto'
@@ -38,7 +37,6 @@ export default async function HomePage() {
 
   return (
     <>
-      <AnnouncementBar />
       <Navbar />
       <main>
         <Hero />

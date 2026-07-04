@@ -1,7 +1,6 @@
 export const dynamic = 'force-dynamic'
 
 import type { Metadata } from 'next'
-import AnnouncementBar from '@/components/AnnouncementBar'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import CollectionClient from '@/components/CollectionClient'
@@ -18,7 +17,6 @@ export default async function ProductsPage() {
 
   return (
     <>
-      <AnnouncementBar />
       <Navbar />
       <main className="min-h-screen bg-cream">
         <CollectionClient products={products} />

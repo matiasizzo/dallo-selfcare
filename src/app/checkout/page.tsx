@@ -6,7 +6,6 @@ import { Elements } from '@stripe/react-stripe-js'
 import { useCart } from '@/store/cart'
 import ShippingForm from '@/components/ShippingForm'
 import PaymentForm from '@/components/PaymentForm'
-import AnnouncementBar from '@/components/AnnouncementBar'
 import Navbar from '@/components/Navbar'
 import Link from 'next/link'
 
@@ -59,7 +58,6 @@ export default function CheckoutPage() {
   if (!items.length) {
     return (
       <>
-        <AnnouncementBar />
         <Navbar />
         <div className="min-h-screen bg-white flex flex-col items-center justify-center gap-4">
           <p className="font-cormorant text-3xl font-light text-cocoa-900">Tu carrito está vacío</p>
@@ -73,7 +71,6 @@ export default function CheckoutPage() {
 
   return (
     <>
-      <AnnouncementBar />
       <Navbar />
       <main className="bg-white min-h-screen">
         {/* Step 1: shipping — no Elements wrapper needed */}

@@ -1,6 +1,5 @@
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
-import AnnouncementBar from '@/components/AnnouncementBar'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import ProductGrid from '@/components/ProductGrid'
@@ -45,7 +44,6 @@ export default async function CollectionPage({ params }: Props) {
 
   return (
     <>
-      <AnnouncementBar />
       <Navbar />
       <main className="min-h-screen bg-cream">
         <div className="max-w-screen-xl mx-auto px-8 pt-20 pb-6 border-b border-sand-300">
